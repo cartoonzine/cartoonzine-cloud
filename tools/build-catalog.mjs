@@ -215,6 +215,7 @@ async function emit(builder, args, epg, sourcesReport) {
             writes.push([path.join(tmp, 'cat', s, `${p}.json`), cards]);
         }
         const entry = { nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages };
+        if (cat.console) entry.console = cat.console;
         // Formato do motor antigo: episódios "achatados" (um item por episódio) em lotes
         if (cat.type === 'series' && args.compatEpisodios) {
             const eps = [];
