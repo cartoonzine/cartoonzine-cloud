@@ -246,7 +246,7 @@
     // Campos que o normalize já trata; qualquer OUTRO campo do seu JSON
     // (ex.: previewVtt, trailer, idade, elenco...) é mantido como veio.
     const CAMPOS_CONHECIDOS = new Set(['title', 'name', 'nome', 'tvgName', 'thumb', 'posterUrl', 'poster', 'logo', 'image', 'cover',
-        'bannerThumb', 'backdropUrl', 'backdrop', 'url', 'streamUrl', 'stream_url', 'link', 'rom', 'file', 'src',
+        'bannerThumb', 'backdropUrl', 'backdrop', 'url',
         'desc', 'overview', 'description', 'year', 'genre', 'genres', 'cat', 'category', 'group', 'console',
         'tvgId', 'tvg_id', 'headers', 'destaque', 'id', 'seasons', 'episodes', 'episode', 'season', 'number', 'still',
         'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats']);
@@ -343,7 +343,7 @@
         };
 
         // Episódio solto em lista M3U/JSON de VOD? ("Naruto S01E03")
-        if (categoryType === 'vod' || (categoryType === 'live' && VOD_EXT.test(url))) {
+        if (src.agruparSeries !== false && (categoryType === 'vod' || (categoryType === 'live' && VOD_EXT.test(url)))) {
             const ep = detectEpisode(title);
             if (ep) {
                 const seriesId = makeId(prefix, 'serie|' + normText(ep.serie) + '|');
@@ -380,10 +380,12 @@
             this.catCards = new Map();    // cat -> [ids de cards]
             this.catType = new Map();     // cat -> tipo predominante
             this.catDest = new Map();     // cat -> destino (videos|iptv|radio|games)
+            this.catConsole = new Map();  // cat -> console (jogos)
             this.stats = { recebidos: 0, duplicados: 0, descartados: 0 };
         }
 
-        _addCard(cat, id, type, dest) {
+        _addCard(cat, id, type, dest, consoleId) {
+            if (consoleId && !this.catConsole.has(cat)) this.catConsole.set(cat, consoleId);
             if (!this.catCards.has(cat)) {
                 this.catCards.set(cat, []);
                 this.catOrder.push(cat);
@@ -441,7 +443,7 @@
                     this._addCard(item.cat, item.seriesId, 'series', dest);
                 }
             } else {
-                this._addCard(item.cat, item.id, item.categoryType, dest);
+                this._addCard(item.cat, item.id, item.categoryType, dest, item.console);
             }
             return true;
         }
@@ -539,6 +541,7 @@
                 slug: slug(nome),
                 type: this.catType.get(nome),
                 destino: this.catDest.get(nome),
+                console: this.catConsole.get(nome),
                 total: this.catCards.get(nome).length
             }));
         }
