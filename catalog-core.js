@@ -20,7 +20,7 @@
     'use strict';
 
     const PLACEHOLDER = './assets/img/loja-bg.jpg';
-    const DESC_CARD_MAX = 180;
+    const DESC_CARD_MAX = 600;
 
     // ------------------------------------------------------------------
     // Hash e IDs estáveis
@@ -243,6 +243,26 @@
         return String(g).split(/[,/|]/).map(s => s.trim()).filter(Boolean);
     }
 
+    // Campos que o normalize já trata; qualquer OUTRO campo do seu JSON
+    // (ex.: previewVtt, trailer, idade, elenco...) é mantido como veio.
+    const CAMPOS_CONHECIDOS = new Set(['title', 'name', 'nome', 'tvgName', 'thumb', 'posterUrl', 'poster', 'logo', 'image', 'cover',
+        'bannerThumb', 'backdropUrl', 'backdrop', 'url', 'streamUrl', 'stream_url', 'link', 'rom', 'file', 'src',
+        'desc', 'overview', 'description', 'year', 'genre', 'genres', 'cat', 'category', 'group', 'console',
+        'tvgId', 'tvg_id', 'headers', 'destaque', 'id', 'seasons', 'episodes', 'episode', 'season', 'number', 'still',
+        'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats']);
+
+    function extras(raw) {
+        const out = {};
+        if (!raw || typeof raw !== 'object') return out;
+        for (const k of Object.keys(raw)) {
+            if (CAMPOS_CONHECIDOS.has(k) || k.startsWith('_')) continue;
+            const v = raw[k];
+            if (v === undefined || v === null || v === '') continue;
+            out[k] = v;
+        }
+        return out;
+    }
+
     /**
      * Converte um registro bruto (de JSON ou M3U) em 0..N itens normalizados.
      * Séries com "seasons" viram N episódios (agrupados depois pelo builder).
@@ -262,7 +282,8 @@
                 thumb: raw.posterUrl || raw.thumb || raw.poster || raw.logo,
                 bannerThumb: raw.backdropUrl || raw.bannerThumb || raw.backdrop,
                 desc: raw.overview || raw.desc || raw.description,
-                year: raw.year, genre: asGenre(raw.genre || raw.genres)
+                year: raw.year, genre: asGenre(raw.genre || raw.genres),
+                extra: extras(raw), destaque: raw.destaque ? true : undefined
             };
             const out = [];
             for (const temp of raw.seasons) {
@@ -272,6 +293,7 @@
                     const url = normUrl(ep.url || ep.streamUrl || ep.link);
                     if (!url) continue;
                     out.push(clean({
+                        ...extras(ep),
                         id: makeId(prefix, `ep|${seriesId}|${s}|${e}`),
                         _key: `ep|${seriesId}|${s}|${e}`,
                         title: ep.title ? `${serie} - T${s}E${e} - ${ep.title}` : `${serie} - T${s}E${e}`,
@@ -303,6 +325,7 @@
         else categoryType = VOD_EXT.test(url) ? 'vod' : 'live';
 
         const item = {
+            ...extras(raw),
             title,
             thumb: raw.thumb || raw.posterUrl || raw.poster || raw.logo || raw.image || raw.cover,
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
@@ -436,7 +459,9 @@
             const seasons = new Set();
             for (const id of s.episodes) seasons.add(this.items.get(id).season);
             return clean({
+                ...(s.meta.extra || {}),
                 id: seriesId, seriesId,
+                destaque: s.meta.destaque,
                 title: s.meta.serie,
                 thumb: s.meta.thumb || PLACEHOLDER,
                 bannerThumb: s.meta.bannerThumb || s.meta.thumb || PLACEHOLDER,
@@ -463,6 +488,42 @@
                 episodes: bySeason.get(n).sort((a, b) => a.episode - b.episode)
             }));
             return Object.assign(this.seriesCard(seriesId), { seasons });
+        }
+
+        /**
+         * Episódios no FORMATO DO MOTOR ANTIGO (um item por episódio, com "serie"),
+         * para apps que montam a lista de episódios filtrando window.DB.videos.
+         */
+        compatEpisodes(seriesId, cat) {
+            const s = this.series.get(seriesId);
+            if (!s) return [];
+            const m = s.meta;
+            const genero = Array.isArray(m.genre) ? m.genre.join(', ') : m.genre;
+            const eps = s.episodes.map(id => this.items.get(id))
+                .sort((a, b) => a.season - b.season || a.episode - b.episode);
+            return eps.map(ep => {
+                const extra = {};
+                for (const k of Object.keys(ep)) if (!CAMPOS_CONHECIDOS.has(k) && k !== 'epTitle' && !k.startsWith('_')) extra[k] = ep[k];
+                return clean(Object.assign(extra, {
+                    id: ep.id,
+                    serie: m.serie,
+                    title: `${m.serie} - T${ep.season}E${ep.episode}`,
+                    epTitle: ep.epTitle,
+                    thumb: m.thumb || PLACEHOLDER,
+                    bannerThumb: m.bannerThumb || m.thumb || PLACEHOLDER,
+                    url: ep.url,
+                    mirrors: ep.mirrors,
+                    headers: ep.headers,
+                    desc: m.desc || 'Disponível sob demanda.',
+                    year: m.year,
+                    genre: genero,
+                    cat: cat || ep.cat,
+                    categoryType: 'vod',
+                    provider: 'legacy',
+                    seriesId, season: ep.season, episode: ep.episode,
+                    destaque: m.destaque
+                }));
+            });
         }
 
         /** Card enxuto p/ grades (descrição curta). */
@@ -670,7 +731,14 @@
                 let s = c.slug, i = 2;
                 while (used.has(s)) s = `${c.slug}-${i++}`;
                 used.add(s);
-                return Object.assign(c, { slug: s, pages: Math.ceil(c.total / this.pageSize) });
+                const extra = {};
+                if (c.type === 'series') {
+                    let eps = 0;
+                    for (const sid of this.b.catCards.get(c.nome) || []) { const se = this.b.series.get(sid); if (se) eps += se.episodes.length; }
+                    extra.compatPages = Math.ceil(eps / 5000);
+                    extra.compatTotal = eps;
+                }
+                return Object.assign(c, { slug: s, pages: Math.ceil(c.total / this.pageSize) }, extra);
             });
             this._bySlug = new Map(this._cats.map(c => [c.slug, c]));
             return this._cats;
@@ -696,6 +764,20 @@
             if (!cat) return [];
             const ids = this.b.catCards.get(cat.nome) || [];
             return ids.slice(n * this.pageSize, (n + 1) * this.pageSize).map(id => this.b.card(id, cat.nome));
+        }
+
+        /** Episódios de uma categoria de séries no formato antigo, em lotes. */
+        compatPage(slugOrName, n = 0, tamanho = 5000) {
+            this._categories();
+            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
+            if (!cat) return [];
+            if (!this._compat) this._compat = new Map();
+            if (!this._compat.has(cat.nome)) {
+                const all = [];
+                for (const sid of this.b.catCards.get(cat.nome) || []) if (this.b.series.has(sid)) all.push(...this.b.compatEpisodes(sid, cat.nome));
+                this._compat.set(cat.nome, all);
+            }
+            return this._compat.get(cat.nome).slice(n * tamanho, (n + 1) * tamanho);
         }
 
         item(id) {
