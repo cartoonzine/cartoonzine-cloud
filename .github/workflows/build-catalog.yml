@@ -1,0 +1,98 @@
+# Reconstrói o catálogo automaticamente e publica no próprio repositório.
+# O site (GitHub Pages / Cloudflare Pages / Netlify) passa a servir /catalog.
+name: Build do catálogo
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"      # a cada 6 horas
+  workflow_dispatch:            # botão "Run workflow" manual
+  push:
+    paths:
+      - sources.json
+      - catalog-core.js
+      - tools/build-catalog.mjs
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-catalog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Gerar catálogo
+        run: |
+          node --max-old-space-size=6144 tools/build-catalog.mjs \
+            --sources sources.json --out catalog \
+            --check-streams --check-limit 3000
+
+      - name: Publicar se mudou
+        run: |
+          git config user.name  "cartoonzine-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add catalog health-cache.json
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+          else
+            git commit -m "catálogo: atualização automática"
+            git push
+          fi
+# Reconstrói o catálogo automaticamente e publica no próprio repositório.
+# O site (GitHub Pages / Cloudflare Pages / Netlify) passa a servir /catalog.
+name: Build do catálogo
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"      # a cada 6 horas
+  workflow_dispatch:            # botão "Run workflow" manual
+  push:
+    paths:
+      - sources.json
+      - catalog-core.js
+      - tools/build-catalog.mjs
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-catalog
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Gerar catálogo
+        run: |
+          node --max-old-space-size=6144 tools/build-catalog.mjs \
+            --sources sources.json --out catalog \
+            --check-streams --check-limit 3000
+
+      - name: Publicar se mudou
+        run: |
+          git config user.name  "cartoonzine-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add catalog health-cache.json
+          if git diff --cached --quiet; then
+            echo "Nada mudou."
+          else
+            git commit -m "catálogo: atualização automática"
+            git push
+          fi
