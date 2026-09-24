@@ -54,7 +54,7 @@
       "nome": "TVzine - Canais (Saimo)",
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
-      "url": ""
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/canais_saimo.m3u"
     },
     {
       "nome": "TVzine - Filmes M3U",
