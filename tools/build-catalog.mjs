@@ -27,6 +27,8 @@
  *   --check-limit <n>     máximo de links testados por execução (padrão: 3000)
  *   --health <arq>        memória dos testes entre execuções (padrão: health-cache.json)
  *   --force               publica mesmo se o catálogo encolher mais de 50%
+ *   --compat-episodios    gera também TODOS os episódios em lotes (só para o modo antigo
+ *                         seriesComoEpisodios: true — ocupa bastante espaço)
  */
 import { createRequire } from 'node:module';
 import fs from 'node:fs/promises';
@@ -57,6 +59,7 @@ function parseArgs(argv) {
             case '--check-limit': a.checkLimit = +v; i++; break;
             case '--health': a.health = v; i++; break;
             case '--force': a.force = true; break;
+            case '--compat-episodios': a.compatEpisodios = true; break;
             default: console.warn('Opção desconhecida:', k);
         }
     }
@@ -211,7 +214,19 @@ async function emit(builder, args, epg, sourcesReport) {
             for (const c of cards) if (c.destaque && destaques.length < 40) destaques.push(c);
             writes.push([path.join(tmp, 'cat', s, `${p}.json`), cards]);
         }
-        categories.push({ nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages });
+        const entry = { nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages };
+        // Formato do motor antigo: episódios "achatados" (um item por episódio) em lotes
+        if (cat.type === 'series' && args.compatEpisodios) {
+            const eps = [];
+            for (const id of ids) if (builder.series.has(id)) eps.push(...builder.compatEpisodes(id, cat.nome));
+            const LOTE = 5000;
+            entry.compatPages = Math.ceil(eps.length / LOTE);
+            entry.compatTotal = eps.length;
+            for (let p = 0; p < entry.compatPages; p++) {
+                writes.push([path.join(tmp, 'compat', s, `${p}.json`), eps.slice(p * LOTE, (p + 1) * LOTE)]);
+            }
+        }
+        categories.push(entry);
     }
 
     // 2) Séries
