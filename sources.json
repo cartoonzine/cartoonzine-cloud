@@ -1,5 +1,5 @@
 {
-  "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas.",
+  "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
   "fontes": [
     {
       "nome": "Filmes Saimo",
@@ -61,14 +61,18 @@
       "tipo": "tvzine_worker",
       "prefixoId": "TV_VOD",
       "categoryType": "vod",
-      "url": ""
+      "url": "",
+      "destino": "filmes",
+      "agruparSeries": false
     },
     {
       "nome": "TVzine - Séries M3U",
       "tipo": "tvzine_worker",
       "prefixoId": "TV_SER",
       "categoryType": "vod",
-      "url": ""
+      "url": "",
+      "destino": "series",
+      "agruparSeries": false
     },
     {
       "nome": "Rádios FM/Web (Links Diretos)",
@@ -81,13 +85,15 @@
       "tipo": "radio",
       "formato": "m3u",
       "targetCategory": "Rádios",
-      "url": ""
+      "url": "",
+      "destino": "streams"
     },
     {
       "nome": "Mídias de Rádio",
       "tipo": "radio",
       "targetCategory": "Mídias de Rádio",
-      "url": ""
+      "url": "",
+      "destino": "audio"
     },
     {
       "nome": "Arcade",
