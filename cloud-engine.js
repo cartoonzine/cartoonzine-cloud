@@ -1,816 +1,1045 @@
 /**
- * @fileoverview catalog-core.js — Núcleo compartilhado do Cartoonzine
- * Roda IGUAL no navegador (window.CatalogCore) e no Node (require).
- * Tudo que define "o que é um item" mora aqui: IDs estáveis, parsers
- * M3U/JSON, normalização, deduplicação, agrupamento de séries e busca.
- * Assim o pipeline de build e o modo legado do navegador nunca divergem.
+ * @fileoverview cloud-engine.js v2 — Orquestrador Mestre do Cartoonzine
+ *
+ * Motor HÍBRIDO de catálogo para milhões de itens (VOD, séries, IPTV, rádio, jogos):
+ *
+ *  • MODO ESTÁTICO (o "jeito Netflix"): o catálogo é pré-processado fora do
+ *    navegador (tools/build-catalog.mjs) e fatiado em arquivos pequenos.
+ *    O app baixa só o que aparece na tela: páginas de cada fileira, detalhe
+ *    do item, episódios da série e fatias do índice de busca.
+ *  • MODO LEGADO: sem catálogo gerado, as fontes são baixadas e processadas
+ *    no navegador — dentro de um Web Worker, para não travar a interface.
+ *  • HÍBRIDO: fontes marcadas com "aoVivo": true no sources.json são sempre
+ *    carregadas ao vivo e somadas ao catálogo estático.
+ *
+ * Requer: <script src="catalog-core.js"></script> ANTES deste arquivo.
+ *
+ * Configuração opcional (antes dos scripts):
+ *   <script>window.CLOUD_ENGINE_CONFIG = { modo: 'auto', manifestUrl: './catalog/manifest.json' }</script>
+ *
+ * API principal (window.CloudEngine):
+ *   await CloudEngine.ready
+ *   CloudEngine.categorias()                  -> [{nome, slug, type, destino, total, pages}]
+ *   await CloudEngine.getPage(cat, n)         -> cards da página n (cat = nome ou slug)
+ *   await CloudEngine.search('naruto')        -> resultados ranqueados
+ *   await CloudEngine.getItem(id)             -> item completo (url, espelhos, headers...)
+ *   await CloudEngine.getSeries(id)           -> série com temporadas e episódios
+ *   CloudEngine.streamCandidates(item)        -> [url, ...espelhos] p/ failover no player
+ *   CloudEngine.montarGrade(el, cat, render)  -> rolagem infinita pronta
+ *
+ * Eventos no document: cloud_engine_progress, cloud_engine_ready, cloud_engine_update
  */
-(function (root, factory) {
-    const api = factory();
-    // Sempre publica no global (window/self), MESMO que exista um "module"
-    // na página (Electron, NW.js, bundlers, outras libs) — antes isso fazia
-    // o núcleo "sumir" para o cloud-engine.js.
-    if (root) root.CatalogCore = api;
-    if (typeof module === 'object' && module && module.exports) module.exports = api;
-    // Avisa quem estiver esperando (cloud-engine.js carregado antes/async)
-    if (root && typeof root.dispatchEvent === 'function' && typeof Event === 'function') {
-        try { root.dispatchEvent(new Event('catalogcore:ready')); } catch (e) { /* ignore */ }
-    }
-})(typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this, function () {
+(function () {
     'use strict';
 
-    const PLACEHOLDER = './assets/img/loja-bg.jpg';
-    const DESC_CARD_MAX = 600;
+    // O núcleo pode chegar depois (ordem trocada, defer/async, type="module",
+    // scripts injetados) — o motor espera por ele e, se preciso, carrega sozinho.
+    const MEU_SRC = (document.currentScript && document.currentScript.src) ||
+        ([...document.scripts].map(s => s.src).find(u => /cloud-engine(\.min)?\.js/.test(u)) || '');
+    let Core = window.CatalogCore || null;
 
-    // ------------------------------------------------------------------
-    // Hash e IDs estáveis
-    // ------------------------------------------------------------------
-    /** cyrb53: hash rápido de 53 bits, funciona com qualquer Unicode. */
-    function cyrb53(str, seed = 0) {
-        let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
-        for (let i = 0; i < str.length; i++) {
-            const ch = str.charCodeAt(i);
-            h1 = Math.imul(h1 ^ ch, 2654435761);
-            h2 = Math.imul(h2 ^ ch, 1597334677);
-        }
-        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
-        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
-        return 4294967296 * (2097151 & h2) + (h1 >>> 0);
+    function urlDoCore() {
+        const cfg = window.CLOUD_ENGINE_CONFIG || {};
+        if (cfg.coreUrl) return new URL(cfg.coreUrl, location.href).href;
+        const tag = [...document.scripts].find(s => /catalog-core(\.min)?\.js/.test(s.src));
+        if (tag) return tag.src;
+        // mesma pasta do cloud-engine.js
+        return new URL('catalog-core.js', MEU_SRC || location.href).href;
     }
 
-    /** Mesmo conteúdo => mesmo ID, sempre (favoritos e "continuar assistindo" não quebram). */
-    function makeId(prefix, key) {
-        return `${prefix}_${cyrb53(String(key)).toString(36).toUpperCase()}`;
-    }
-
-    /** Fatia de 3 caracteres hex usada para distribuir itens em arquivos (4096 fatias). */
-    function idShard(id) {
-        return (cyrb53(String(id), 7) & 0xfff).toString(16).padStart(3, '0');
-    }
-
-    // ------------------------------------------------------------------
-    // Texto
-    // ------------------------------------------------------------------
-    function normText(s) {
-        return String(s == null ? '' : s)
-            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-            .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-    }
-
-    function slug(s) {
-        return normText(s).replace(/ /g, '-') || 'geral';
-    }
-
-    function normUrl(u) {
-        if (!u) return '';
-        return String(u).trim().replace(/#.*$/, '');
-    }
-
-    const STOP = new Set(['a', 'o', 'e', 'de', 'da', 'do', 'das', 'dos', 'the', 'of', 'and', 'em', 'hd', 'fhd', 'sd', '4k']);
-
-    /** Palavras pesquisáveis de um título (sem acento, sem stopwords). */
-    function searchTokens(title) {
-        const out = [];
-        for (const w of normText(title).split(' ')) {
-            if (w.length >= 2 && !STOP.has(w) && !out.includes(w)) out.push(w);
-        }
-        return out;
-    }
-
-    /** Chave do arquivo de busca: 2 primeiros caracteres da palavra. */
-    function searchShardKey(token) {
-        return normText(token).replace(/ /g, '').slice(0, 2).padEnd(2, '_');
-    }
-
-    /** Verifica se todas as palavras da consulta casam (por prefixo) com o título. */
-    function matchesQuery(normTitle, queryTokens) {
-        const words = normTitle.split(' ');
-        return queryTokens.every(q => words.some(w => w.startsWith(q)));
-    }
-
-    // ------------------------------------------------------------------
-    // Detecção de episódios em títulos ("Show S01E02", "Show T1E2", "Show 1x02")
-    // ------------------------------------------------------------------
-    const EP_RE = /^(.*?)[\s._\-–|:]*(?:[ST](\d{1,2})\s*[E](\d{1,4})|(\d{1,2})x(\d{1,3}))\b/i;
-
-    function detectEpisode(title) {
-        const m = EP_RE.exec(String(title || ''));
-        if (!m) return null;
-        const serie = m[1].replace(/[\s._\-–|:]+$/, '').trim();
-        if (!serie) return null;
-        return {
-            serie,
-            season: parseInt(m[2] || m[4], 10),
-            episode: parseInt(m[3] || m[5], 10)
-        };
-    }
-
-    const VOD_EXT = /\.(mp4|mkv|avi|mov|webm|m4v)(\?|$)/i;
-
-    // ------------------------------------------------------------------
-    // Parser M3U incremental (aceita pedaços de texto — serve p/ arquivos gigantes)
-    // ------------------------------------------------------------------
-    function createM3UParser(onEntry, onHeader) {
-        let buffer = '';
-        let cur = null;
-        let pendingOpts = {};
-
-        function parseAttrs(line) {
-            const attrs = {};
-            const re = /([\w-]+)="([^"]*)"/g;
-            let m;
-            while ((m = re.exec(line))) attrs[m[1].toLowerCase()] = m[2];
-            return attrs;
-        }
-
-        function handleLine(raw) {
-            const line = raw.trim();
-            if (!line) return;
-            if (line.startsWith('#EXTM3U')) {
-                const a = parseAttrs(line);
-                const epg = a['url-tvg'] || a['x-tvg-url'];
-                if (epg && onHeader) onHeader({ epg: epg.split(',').map(s => s.trim()).filter(Boolean) });
-                return;
-            }
-            if (line.startsWith('#EXTINF')) {
-                const attrs = parseAttrs(line);
-                // título = texto após a última vírgula que está FORA de aspas
-                let inQ = false, idx = -1;
-                for (let i = 0; i < line.length; i++) {
-                    if (line[i] === '"') inQ = !inQ;
-                    else if (line[i] === ',' && !inQ) idx = i;
-                }
-                cur = {
-                    title: idx !== -1 ? line.slice(idx + 1).trim() : (attrs['tvg-name'] || ''),
-                    thumb: attrs['tvg-logo'] || '',
-                    group: attrs['group-title'] || '',
-                    tvgId: attrs['tvg-id'] || '',
-                    tvgName: attrs['tvg-name'] || ''
-                };
-                return;
-            }
-            if (line.startsWith('#EXTGRP:')) { if (cur) cur.group = cur.group || line.slice(8).trim(); return; }
-            if (line.startsWith('#EXTVLCOPT:')) {
-                const opt = line.slice(11);
-                const eq = opt.indexOf('=');
-                if (eq > 0) pendingOpts[opt.slice(0, eq).trim()] = opt.slice(eq + 1).trim();
-                return;
-            }
-            if (line.startsWith('#')) return;
-            // Qualquer linha não-comentário é URL (http, https, rtmp, rtsp, relativa...)
-            if (cur) {
-                cur.url = line;
-                const headers = {};
-                if (pendingOpts['http-user-agent']) headers['User-Agent'] = pendingOpts['http-user-agent'];
-                if (pendingOpts['http-referrer']) headers['Referer'] = pendingOpts['http-referrer'];
-                if (Object.keys(headers).length) cur.headers = headers;
-                if (!cur.title) cur.title = cur.tvgName || 'Sem nome';
-                onEntry(cur);
-            }
-            cur = null;
-            pendingOpts = {};
-        }
-
-        return {
-            push(chunk) {
-                buffer += chunk;
-                let start = 0, nl;
-                while ((nl = buffer.indexOf('\n', start)) !== -1) {
-                    handleLine(buffer.slice(start, nl));
-                    start = nl + 1;
-                }
-                buffer = buffer.slice(start);
-            },
-            end() {
-                if (buffer) handleLine(buffer);
-                buffer = '';
-            }
-        };
-    }
-
-    function parseM3U(text) {
-        const out = [];
-        let epg = [];
-        const p = createM3UParser(e => out.push(e), h => { epg = epg.concat(h.epg); });
-        p.push(text);
-        p.end();
-        return { entries: out, epg };
-    }
-
-    // ------------------------------------------------------------------
-    // Fontes: tipos do manifesto -> tipo de item
-    // ------------------------------------------------------------------
-    /** Formato do arquivo de uma fonte (json ou m3u). */
-    function sourceFormat(src) {
-        if (src.formato) return src.formato;
-        if (src.tipo === 'vod_m3u' || src.tipo === 'tvzine_worker') return 'm3u';
-        if (/\.m3u8?(\?|$)/i.test(src.url || '')) return 'm3u';
-        return 'json';
-    }
-
-    /** Para qual "prateleira" antiga do app a fonte vai (compatibilidade). */
-    function destinoDe(src) {
-        if (src.destino) return src.destino;
-        return { tvzine_worker: 'iptv', radio: 'radio', emulator_json: 'games' }[src.tipo] || 'videos';
-    }
-
-    function isUsableUrl(u) {
-        return !!u && !/SEU_USER|SEU_REPO/.test(u);
-    }
-
-    /** Extrai a lista de um JSON com formatos variados. */
-    function extractList(dados) {
-        if (Array.isArray(dados)) return dados;
-        if (!dados || typeof dados !== 'object') return [];
-        for (const k of ['data', 'items', 'results', 'videos', 'channels', 'games', 'roms', 'movies', 'series']) {
-            if (Array.isArray(dados[k])) return dados[k];
-        }
-        const firstArr = Object.values(dados).find(Array.isArray);
-        return firstArr || [];
-    }
-
-    function clean(obj) {
-        for (const k of Object.keys(obj)) {
-            const v = obj[k];
-            if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length)) delete obj[k];
-        }
-        return obj;
-    }
-
-    function asGenre(g) {
-        if (!g) return undefined;
-        if (Array.isArray(g)) return g.map(String).filter(Boolean);
-        return String(g).split(/[,/|]/).map(s => s.trim()).filter(Boolean);
-    }
-
-    // Campos que o normalize já trata; qualquer OUTRO campo do seu JSON
-    // (ex.: previewVtt, trailer, idade, elenco...) é mantido como veio.
-    const CAMPOS_CONHECIDOS = new Set(['title', 'name', 'nome', 'tvgName', 'thumb', 'posterUrl', 'poster', 'logo', 'image', 'cover',
-        'bannerThumb', 'backdropUrl', 'backdrop', 'url', 'streamUrl', 'stream_url', 'link', 'rom', 'file', 'src',
-        'desc', 'overview', 'description', 'year', 'genre', 'genres', 'cat', 'category', 'group', 'console',
-        'tvgId', 'tvg_id', 'headers', 'destaque', 'id', 'seasons', 'episodes', 'episode', 'season', 'number', 'still',
-        'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats']);
-
-    function extras(raw) {
-        const out = {};
-        if (!raw || typeof raw !== 'object') return out;
-        for (const k of Object.keys(raw)) {
-            if (CAMPOS_CONHECIDOS.has(k) || k.startsWith('_')) continue;
-            const v = raw[k];
-            if (v === undefined || v === null || v === '') continue;
-            out[k] = v;
-        }
-        return out;
-    }
-
-    /**
-     * Converte um registro bruto (de JSON ou M3U) em 0..N itens normalizados.
-     * Séries com "seasons" viram N episódios (agrupados depois pelo builder).
-     */
-    function normalize(raw, src) {
-        const prefix = src.prefixoId || (src.tipo === 'emulator_json' ? 'GAME' : src.tipo === 'radio' ? 'RAD' : 'LIV');
-        const baseCat = src.targetCategory || raw.group || raw.category || raw.cat || src.nome || 'Geral';
-        const origem = src.nome;
-        const _dest = destinoDe(src);
-
-        // --- Série no formato {title, seasons:[{season, episodes:[...]}]} ---
-        if (Array.isArray(raw.seasons)) {
-            const serie = raw.title || raw.name || 'Série';
-            const seriesId = makeId(prefix, 'serie|' + normText(serie) + '|' + (raw.year || ''));
-            const meta = {
-                serie, seriesId,
-                thumb: raw.posterUrl || raw.thumb || raw.poster || raw.logo,
-                bannerThumb: raw.backdropUrl || raw.bannerThumb || raw.backdrop,
-                desc: raw.overview || raw.desc || raw.description,
-                year: raw.year, genre: asGenre(raw.genre || raw.genres),
-                extra: extras(raw), destaque: raw.destaque ? true : undefined
+    function carregarCore() {
+        if (window.CatalogCore) return Promise.resolve(window.CatalogCore);
+        return new Promise((resolve, reject) => {
+            let feito = false;
+            const ok = () => {
+                if (feito || !window.CatalogCore) return;
+                feito = true;
+                window.removeEventListener('catalogcore:ready', ok);
+                resolve(window.CatalogCore);
             };
-            const out = [];
-            for (const temp of raw.seasons) {
-                const s = parseInt(temp.season ?? temp.number ?? 1, 10);
-                for (const ep of (temp.episodes || [])) {
-                    const e = parseInt(ep.episode ?? ep.number ?? out.length + 1, 10);
-                    const url = normUrl(ep.url || ep.streamUrl || ep.link);
-                    if (!url) continue;
-                    out.push(clean({
-                        ...extras(ep),
-                        id: makeId(prefix, `ep|${seriesId}|${s}|${e}`),
-                        _key: `ep|${seriesId}|${s}|${e}`,
-                        title: ep.title ? `${serie} - T${s}E${e} - ${ep.title}` : `${serie} - T${s}E${e}`,
-                        epTitle: ep.title,
-                        serie, seriesId, season: s, episode: e,
-                        thumb: ep.thumb || ep.still || meta.thumb,
-                        bannerThumb: meta.bannerThumb,
-                        url,
-                        desc: ep.overview || ep.desc || meta.desc,
-                        year: meta.year, genre: meta.genre,
-                        cat: baseCat, categoryType: 'episode',
-                        origem, _dest, _seriesMeta: meta
-                    }));
-                }
-            }
-            return out;
-        }
-
-        const url = normUrl(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src);
-        if (!url) return [];
-        const title = String(raw.title || raw.name || raw.nome || raw.tvgName || 'Sem nome').trim();
-
-        // Tipo do item
-        let categoryType;
-        if (src.categoryType) categoryType = src.categoryType;
-        else if (src.tipo === 'emulator_json') categoryType = 'game';
-        else if (src.tipo === 'radio') categoryType = 'radio';
-        else if (src.tipo === 'vod_json') categoryType = 'vod';
-        else categoryType = VOD_EXT.test(url) ? 'vod' : 'live';
-
-        const item = {
-            ...extras(raw),
-            title,
-            thumb: raw.thumb || raw.posterUrl || raw.poster || raw.logo || raw.image || raw.cover,
-            bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
-            url,
-            desc: raw.desc || raw.overview || raw.description,
-            year: raw.year ? parseInt(raw.year, 10) || undefined : undefined,
-            genre: asGenre(raw.genre || raw.genres),
-            cat: baseCat,
-            categoryType,
-            console: src.console || raw.console,
-            tvgId: raw.tvgId || raw.tvg_id,
-            headers: raw.headers,
-            destaque: raw.destaque ? true : undefined,
-            origem, _dest
-        };
-
-        // Episódio solto em lista M3U/JSON de VOD? ("Naruto S01E03")
-        if (categoryType === 'vod' || (categoryType === 'live' && VOD_EXT.test(url))) {
-            const ep = detectEpisode(title);
-            if (ep) {
-                const seriesId = makeId(prefix, 'serie|' + normText(ep.serie) + '|');
-                Object.assign(item, {
-                    categoryType: 'episode', serie: ep.serie, seriesId,
-                    season: ep.season, episode: ep.episode,
-                    _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre }
-                });
-                item._key = `ep|${seriesId}|${ep.season}|${ep.episode}`;
-            }
-        }
-
-        // Chave de deduplicação: mesma obra de fontes diferentes vira UM item com espelhos
-        if (!item._key) {
-            if (categoryType === 'vod' && item.year) item._key = `vod|${normText(title)}|${item.year}`;
-            else if (categoryType === 'live' && item.tvgId) item._key = `live|${item.tvgId.toLowerCase()}`;
-            else if (categoryType === 'game') item._key = `game|${item.console || ''}|${normText(title)}`;
-            else item._key = `${categoryType}|${url}`;
-        }
-        item.id = raw.id && src.manterIdOriginal ? String(raw.id) : makeId(prefix, item._key);
-        return [clean(item)];
+            window.addEventListener('catalogcore:ready', ok);
+            document.addEventListener('DOMContentLoaded', ok);
+            // Dá um instante para um <script> que já está na página terminar;
+            // se não chegar, injeta o catalog-core.js da mesma pasta.
+            setTimeout(() => {
+                if (feito) return;
+                if (window.CatalogCore) return ok();
+                const url = urlDoCore();
+                console.warn('☁️ [Cloud Engine] catalog-core.js não estava carregado — carregando de', url);
+                const sc = document.createElement('script');
+                sc.src = url;
+                sc.onload = () => {
+                    ok();
+                    if (!feito) reject(new Error(`${url} carregou mas não definiu window.CatalogCore (arquivo errado/antigo?)`));
+                };
+                sc.onerror = () => reject(new Error(`não foi possível baixar ${url} (confira o caminho)`));
+                document.head.appendChild(sc);
+            }, 50);
+        });
     }
 
-    // ------------------------------------------------------------------
-    // CatalogBuilder: junta, deduplica, agrupa séries e organiza por categoria
-    // ------------------------------------------------------------------
-    class CatalogBuilder {
-        constructor(opts = {}) {
-            this.maxItems = opts.maxItems || Infinity;
-            this.items = new Map();       // id -> item completo
-            this.keyToId = new Map();     // _key -> id
-            this.series = new Map();      // seriesId -> {meta, cats:Set, episodes:[]}
-            this.catOrder = [];           // ordem de aparição das categorias
-            this.catCards = new Map();    // cat -> [ids de cards]
-            this.catType = new Map();     // cat -> tipo predominante
-            this.catDest = new Map();     // cat -> destino (videos|iptv|radio|games)
-            this.stats = { recebidos: 0, duplicados: 0, descartados: 0 };
-        }
+    // Igual ao motor antigo: as listas existem desde o primeiro instante (outros
+    // scripts do app, como o player, contam com isso). Nada é apagado: o motor
+    // só SOMA os itens da nuvem depois (ver preencherCompat).
+    window.DB = window.DB || { videos: [], games: [], destaques: [] };
+    window.CZ_IPTV = window.CZ_IPTV || [];
+    window.CZ_VIDEOS_RADIO = window.CZ_VIDEOS_RADIO || [];
 
-        _addCard(cat, id, type, dest) {
-            if (!this.catCards.has(cat)) {
-                this.catCards.set(cat, []);
-                this.catOrder.push(cat);
-                this.catType.set(cat, type);
-                this.catDest.set(cat, dest || 'videos');
+    const CFG = Object.assign({
+        modo: 'auto',                          // 'auto' | 'estatico' | 'legado'
+        manifestUrl: './catalog/manifest.json',
+        sourcesUrl: './sources.json',
+        fontes: null,                          // opcional: array de fontes inline (ignora sourcesUrl)
+        coreUrl: null,                         // detectado automaticamente pela tag <script>
+        concorrencia: 6,                       // downloads simultâneos
+        timeoutMs: 20000,
+        tentativas: 2,
+        paginasEmMemoria: 200,                 // cache LRU em RAM (páginas/fatias)
+        paginasIniciaisPorCategoria: 1,        // páginas por categoria no window.DB ANTES do "pronto"
+        modoNetflix: true,                     // window.DB recebe o catálogo AOS POUCOS (carregarMais) e episódios só ao abrir a série
+        compatCompleto: false,                 // true = despeja o catálogo inteiro no window.DB (modo antigo, pesado)
+        seriesComoEpisodios: false,            // true = todos os episódios de todas as séries no window.DB (modo antigo, pesado)
+        renderAoCompletar: true,               // (só com compatCompleto) chama window.render() quando terminar
+        paginasPorCarga: 2,                    // páginas (120 cards cada) trazidas a cada carregarMais()
+        legadoMaxItens: 500000,
+        usarWorker: true,                      // modo legado/aoVivo roda num Web Worker
+        checarAtualizacaoMs: 30 * 60 * 1000,   // procura catálogo novo a cada 30 min (0 = nunca)
+        renderAutomatico: true                 // chama window.render() quando pronto
+    }, window.CLOUD_ENGINE_CONFIG || {});
+
+    // URLs sempre absolutas (Workers e alguns WebViews não resolvem relativas)
+    const abs = (u) => new URL(u, location.href).href;
+    CFG.manifestUrl = abs(CFG.manifestUrl);
+    CFG.sourcesUrl = abs(CFG.sourcesUrl);
+
+    const log = (...m) => console.log('☁️ [Cloud Engine]', ...m);
+    const emit = (name, detail) => document.dispatchEvent(new CustomEvent(name, { detail }));
+    const fetchOpts = { timeoutMs: CFG.timeoutMs, tentativas: CFG.tentativas };
+    const baseUrl = CFG.manifestUrl.replace(/[^/]*$/, '');
+
+    // ==================================================================
+    // Cache em 2 níveis: RAM (LRU) + IndexedDB (sobrevive a recarregar)
+    // ==================================================================
+    class LRU {
+        constructor(max) { this.max = max; this.m = new Map(); }
+        get(k) {
+            if (!this.m.has(k)) return undefined;
+            const v = this.m.get(k); this.m.delete(k); this.m.set(k, v); return v;
+        }
+        set(k, v) {
+            this.m.delete(k); this.m.set(k, v);
+            if (this.m.size > this.max) this.m.delete(this.m.keys().next().value);
+        }
+        clear() { this.m.clear(); }
+    }
+
+    const KV = (() => {
+        let dbp = null;
+        const open = () => dbp || (dbp = new Promise((res) => {
+            try {
+                const rq = indexedDB.open('cloud-engine-v2', 1);
+                rq.onupgradeneeded = () => rq.result.createObjectStore('kv');
+                rq.onsuccess = () => res(rq.result);
+                rq.onerror = () => res(null);
+                rq.onblocked = () => res(null);
+            } catch { res(null); }
+        }));
+        const tx = async (mode, fn) => {
+            const db = await open();
+            if (!db) return undefined;
+            return new Promise((res) => {
+                try {
+                    const t = db.transaction('kv', mode);
+                    const r = fn(t.objectStore('kv'));
+                    t.oncomplete = () => res(r && r.result);
+                    t.onerror = t.onabort = () => res(undefined);
+                } catch { res(undefined); }
+            });
+        };
+        return {
+            get: k => tx('readonly', s => s.get(k)),
+            set: (k, v) => tx('readwrite', s => s.put(v, k)),
+            /** Remove entradas de versões antigas do catálogo. */
+            async purgeExcept(prefix) {
+                const db = await open();
+                if (!db) return;
+                try {
+                    const t = db.transaction('kv', 'readwrite');
+                    const st = t.objectStore('kv');
+                    const rq = st.openCursor();
+                    rq.onsuccess = () => {
+                        const c = rq.result;
+                        if (!c) return;
+                        const k = String(c.key);
+                        if (k.startsWith('v:') && !k.startsWith(prefix)) c.delete();
+                        c.continue();
+                    };
+                } catch { /* ignore */ }
             }
-            this.catCards.get(cat).push(id);
+        };
+    })();
+
+    // ==================================================================
+    // Provedor ESTÁTICO: lê o catálogo fatiado gerado pelo build
+    // ==================================================================
+    class StaticProvider {
+        constructor() {
+            this.mem = new LRU(CFG.paginasEmMemoria);
+            this.inflight = new Map();
+            this.run = Core.makeLimiter(CFG.concorrencia);
+            this.manifest = null;
+            this.mkey = 'manifest:' + CFG.manifestUrl;
         }
 
-        add(item) {
-            this.stats.recebidos++;
-            const existingId = this.keyToId.get(item._key);
-            if (existingId) {
-                // Duplicado: vira espelho (mirror) do original + herda campos faltantes
-                const orig = this.items.get(existingId);
-                this.stats.duplicados++;
-                if (item.url && item.url !== orig.url) {
-                    orig.mirrors = orig.mirrors || [];
-                    if (!orig.mirrors.includes(item.url) && orig.mirrors.length < 8) orig.mirrors.push(item.url);
+        async init() {
+            let m = null;
+            try {
+                const { res, done } = await Core.fetchWithRetry(CFG.manifestUrl, Object.assign({ init: { cache: 'no-cache' } }, fetchOpts, { tentativas: 1 }));
+                try { m = await res.json(); } finally { done(); }
+                if (!m || m.schema !== 2 || !Array.isArray(m.categories)) throw new Error('manifest inválido');
+                KV.set(this.mkey, m);
+            } catch (e) {
+                // Só usa o cache se foi falta de REDE/servidor (sem status ou 5xx).
+                // 404 = o catálogo não existe mais -> não finge que existe.
+                const semRede = !e.status || e.status >= 500;
+                m = semRede ? await KV.get(this.mkey) : null;
+                if (!m) throw e;
+                log('📴 Sem rede — usando catálogo em cache', m.version);
+            }
+            this._setManifest(m);
+            setTimeout(() => KV.purgeExcept(`v:${m.version}:`), 5000);
+            return m;
+        }
+
+        _setManifest(m) {
+            this.manifest = m;
+            this.mem.clear();
+            this.bySlug = new Map(m.categories.map(c => [c.slug, c]));
+            this.byName = new Map(m.categories.map(c => [c.nome, c]));
+            this.shardSet = new Set(m.searchShards || []);
+        }
+
+        async checkUpdate() {
+            try {
+                const { res, done } = await Core.fetchWithRetry(CFG.manifestUrl, Object.assign({ init: { cache: 'no-cache' } }, fetchOpts, { tentativas: 0 }));
+                let m; try { m = await res.json(); } finally { done(); }
+                if (m && m.schema === 2 && m.version !== this.manifest.version) {
+                    KV.set(this.mkey, m);
+                    this._setManifest(m);
+                    KV.purgeExcept(`v:${m.version}:`);
+                    return m;
                 }
-                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId']) {
-                    if (orig[k] == null && item[k] != null) orig[k] = item[k];
-                }
-                if (item.cat !== orig.cat && orig.categoryType !== 'episode') {
-                    orig.cats = orig.cats || [orig.cat];
-                    if (!orig.cats.includes(item.cat)) {
-                        orig.cats.push(item.cat);
-                        this._addCard(item.cat, orig.id, orig.categoryType, item._dest);
+            } catch { /* tenta de novo depois */ }
+            return null;
+        }
+
+        /** Busca um arquivo do catálogo: RAM -> IndexedDB -> rede (com deduplicação). */
+        async file(rel, { opcional = false } = {}) {
+            const key = `v:${this.manifest.version}:${rel}`;
+            const hit = this.mem.get(key);
+            if (hit !== undefined) return hit;
+            if (this.inflight.has(key)) return this.inflight.get(key);
+
+            const p = (async () => {
+                let v = await KV.get(key);
+                if (v === undefined) {
+                    try {
+                        v = await this.run(async () => {
+                            const { res, done } = await Core.fetchWithRetry(`${baseUrl}${rel}?v=${this.manifest.version}`, fetchOpts);
+                            try { return await res.json(); } finally { done(); }
+                        });
+                    } catch (e) {
+                        if (opcional && e.status === 404) v = null;
+                        else throw e;
                     }
+                    KV.set(key, v);
                 }
-                return false;
-            }
-            if (this.items.size >= this.maxItems) { this.stats.descartados++; return false; }
-
-            // Colisão de hash (raríssima): desambigua
-            if (this.items.has(item.id)) item.id = item.id + '_' + this.items.size.toString(36);
-
-            const meta = item._seriesMeta;
-            const dest = item._dest;
-            delete item._seriesMeta;
-            delete item._dest;
-            this.keyToId.set(item._key, item.id);
-            delete item._key;
-            this.items.set(item.id, item);
-
-            if (item.categoryType === 'episode') {
-                let s = this.series.get(item.seriesId);
-                if (!s) {
-                    s = { meta: clean(Object.assign({}, meta)), cats: new Set(), episodes: [] };
-                    this.series.set(item.seriesId, s);
-                }
-                s.episodes.push(item.id);
-                if (!s.cats.has(item.cat)) {
-                    s.cats.add(item.cat);
-                    this._addCard(item.cat, item.seriesId, 'series', dest);
-                }
-            } else {
-                this._addCard(item.cat, item.id, item.categoryType, dest);
-            }
-            return true;
+                this.mem.set(key, v);
+                return v;
+            })().finally(() => this.inflight.delete(key));
+            this.inflight.set(key, p);
+            return p;
         }
 
-        addRaw(raw, src) {
-            let n = 0;
-            for (const it of normalize(raw, src)) if (this.add(it)) n++;
-            return n;
+        cat(c) { return this.bySlug.get(c) || this.byName.get(c); }
+
+        async page(c, n) {
+            const cat = this.cat(c);
+            if (!cat || n < 0 || n >= cat.pages) return [];
+            const cards = await this.file(`cat/${cat.slug}/${n}.json`);
+            // Pré-carrega a próxima página em segundo plano (rolagem sem espera)
+            if (n + 1 < cat.pages) idle(() => this.file(`cat/${cat.slug}/${n + 1}.json`).catch(() => {}));
+            return cards;
         }
 
-        /** Card de série (um por série, não um por episódio). */
-        seriesCard(seriesId, cat) {
-            const s = this.series.get(seriesId);
-            if (!s) return null;
-            const seasons = new Set();
-            for (const id of s.episodes) seasons.add(this.items.get(id).season);
-            return clean({
-                ...(s.meta.extra || {}),
-                id: seriesId, seriesId,
-                destaque: s.meta.destaque,
-                title: s.meta.serie,
-                thumb: s.meta.thumb || PLACEHOLDER,
-                bannerThumb: s.meta.bannerThumb || s.meta.thumb || PLACEHOLDER,
-                desc: s.meta.desc, year: s.meta.year, genre: s.meta.genre,
-                cat: cat || [...s.cats][0],
-                categoryType: 'series',
-                seasons: seasons.size,
-                episodes: s.episodes.length
+        async compatPage(c, n) {
+            const cat = this.cat(c);
+            if (!cat || !cat.compatPages || n >= cat.compatPages) return [];
+            return (await this.file(`compat/${cat.slug}/${n}.json`, { opcional: true })) || [];
+        }
+
+        async item(id) {
+            const shard = await this.file(`items/${Core.idShard(id)}.json`, { opcional: true });
+            return (shard && shard[id]) || null;
+        }
+
+        async series(id) {
+            return this.file(`series/${encodeURIComponent(id)}.json`, { opcional: true });
+        }
+
+        /** Acha a fatia de busca mais específica que existe para a palavra. */
+        _shardFor(tk) {
+            for (let d = Math.min(tk.length, 6); d >= 2; d--) {
+                const k = tk.slice(0, d);
+                if (this.shardSet.has(k)) return k;
+                if (d === tk.length && this.shardSet.has(k + '_')) return k + '_';
+            }
+            return null;
+        }
+
+        async search(q, limit) {
+            const tokens = [...new Set(Core.normText(q).split(' ').filter(t => t.length >= 2))];
+            if (!tokens.length) return [];
+            // Baixa as fatias das (até 3) palavras mais longas e filtra pela MENOR:
+            // a palavra mais rara é a que mais restringe o resultado.
+            const keys = [...new Set(tokens.sort((a, b) => b.length - a.length).slice(0, 3)
+                .map(tk => this._shardFor(tk)).filter(Boolean))];
+            if (!keys.length) return [];
+            const sets = await Promise.all(keys.map(k => this.file(`search/${k}.json`, { opcional: true }).catch(() => null)));
+            const valid = sets.filter(Boolean);
+            if (!valid.length) return [];
+            const rows = valid.reduce((a, b) => (b.length < a.length ? b : a));
+            return Core.rankSearch(rows, q, limit);
+        }
+    }
+
+    // ==================================================================
+    // Provedor LOCAL: monta o catálogo no navegador (em Worker se possível)
+    // ==================================================================
+    function coreScriptUrl() {
+        return urlDoCore();
+    }
+
+    const WORKER_SRC = `
+        importScripts(self.CORE_URL);
+        let cat = null;
+        self.onmessage = async (e) => {
+            const { id, op, args } = e.data;
+            try {
+                let result;
+                if (op === 'ingest') {
+                    cat = new CatalogCore.LocalCatalog({ maxItems: args.maxItems });
+                    result = await cat.ingest(args.fontes, Object.assign({}, args.opts, {
+                        onProgress: p => self.postMessage({ progress: p })
+                    }));
+                } else if (op === 'page') result = cat.page(args[0], args[1]);
+                else if (op === 'compatPage') result = cat.compatPage(args[0], args[1]);
+                else if (op === 'item') result = cat.item(args[0]);
+                else if (op === 'series') result = cat.series(args[0]);
+                else if (op === 'search') result = cat.search(args[0], args[1]);
+                self.postMessage({ id, ok: true, result });
+            } catch (err) {
+                self.postMessage({ id, ok: false, error: String(err && err.message || err) });
+            }
+        };`;
+
+    class LocalProvider {
+        constructor(fontes) { this.fontes = fontes; this.manifest = null; }
+
+        async init() {
+            const opts = { concorrencia: CFG.concorrencia, timeoutMs: CFG.timeoutMs, tentativas: CFG.tentativas };
+            // Workers não enxergam URLs relativas: resolve tudo para absoluto
+            const fontes = this.fontes.map(f => Object.assign({}, f, f.url ? { url: abs(f.url) } : {}));
+
+            if (CFG.usarWorker && typeof Worker !== 'undefined') {
+                try {
+                    this._startWorker();
+                    this.manifest = await this._call('ingest', { fontes, opts, maxItems: CFG.legadoMaxItens });
+                    return this.manifest;
+                } catch (e) {
+                    log('⚠️ Worker indisponível, processando na thread principal:', e.message);
+                    if (this.w) this.w.terminate();
+                    this.w = null;
+                }
+            }
+            this.local = new Core.LocalCatalog({ maxItems: CFG.legadoMaxItens });
+            this.manifest = await this.local.ingest(fontes, Object.assign({}, opts, {
+                onProgress: p => emit('cloud_engine_progress', p)
+            }));
+            return this.manifest;
+        }
+
+        _startWorker() {
+            const src = `self.CORE_URL = ${JSON.stringify(coreScriptUrl())};\n` + WORKER_SRC;
+            this.w = new Worker(URL.createObjectURL(new Blob([src], { type: 'text/javascript' })));
+            this.seq = 0;
+            this.pending = new Map();
+            this.w.onmessage = (e) => {
+                const d = e.data;
+                if (d.progress) return emit('cloud_engine_progress', d.progress);
+                const p = this.pending.get(d.id);
+                if (!p) return;
+                this.pending.delete(d.id);
+                d.ok ? p.res(d.result) : p.rej(new Error(d.error));
+            };
+            // Erro no worker (ex.: catalog-core.js não encontrado) NUNCA deixa promessas penduradas
+            this.w.onerror = (e) => {
+                e.preventDefault && e.preventDefault();
+                const err = new Error(e.message || 'falha no worker');
+                for (const p of this.pending.values()) p.rej(err);
+                this.pending.clear();
+            };
+        }
+
+        _call(op, args) {
+            if (!this.w) return Promise.resolve(this.local[op](...args));
+            return new Promise((res, rej) => {
+                const id = ++this.seq;
+                this.pending.set(id, { res, rej });
+                this.w.postMessage({ id, op, args });
             });
         }
 
-        /** Detalhe completo da série: temporadas ordenadas com episódios. */
-        seriesDetail(seriesId) {
-            const s = this.series.get(seriesId);
-            if (!s) return null;
-            const bySeason = new Map();
-            for (const id of s.episodes) {
-                const ep = this.items.get(id);
-                if (!bySeason.has(ep.season)) bySeason.set(ep.season, []);
-                bySeason.get(ep.season).push(toFull(ep));
+        destruir() { if (this.w) this.w.terminate(); this.w = null; }
+        page(c, n) { return this._call('page', [c, n]); }
+        compatPage(c, n) { return this._call('compatPage', [c, n]); }
+        item(id) { return this._call('item', [id]); }
+        series(id) { return this._call('series', [id]); }
+        search(q, limit) { return this._call('search', [q, limit]); }
+    }
+
+    // ==================================================================
+    // Roteador: junta estático + local e decide quem responde cada pedido
+    // ==================================================================
+    const idle = (fn) => (window.requestIdleCallback || ((f) => setTimeout(f, 200)))(fn);
+
+    const Engine = {
+        modo: null,
+        manifest: null,
+        _static: null,
+        _local: null,
+        _catOwner: new Map(),   // slug/nome -> provedor
+
+        async _carregarFontes() {
+            if (Array.isArray(CFG.fontes)) return CFG.fontes;
+            if (Array.isArray(window.CZ_FONTES)) return window.CZ_FONTES;
+            try {
+                const { res, done } = await Core.fetchWithRetry(CFG.sourcesUrl, fetchOpts);
+                try {
+                    const j = await res.json();
+                    return Array.isArray(j) ? j : (j.fontes || j.sources || []);
+                } finally { done(); }
+            } catch (e) {
+                log('⚠️ Não consegui ler', CFG.sourcesUrl, e.message);
+                return [];
             }
-            const seasons = [...bySeason.keys()].sort((a, b) => a - b).map(n => ({
-                season: n,
-                episodes: bySeason.get(n).sort((a, b) => a.episode - b.episode)
-            }));
-            return Object.assign(this.seriesCard(seriesId), { seasons });
-        }
+        },
+
+        _juntarManifestos() {
+            const cats = [];
+            const add = (m, prov, origem) => {
+                if (!m) return;
+                for (const c of m.categories) {
+                    let slug = c.slug;
+                    if (this._catOwner.has(slug)) slug = `${slug}-${origem}`;   // evita colisão
+                    const cc = Object.assign({}, c, { slug, provedor: origem, _slugInterno: c.slug });
+                    this._catOwner.set(slug, prov);
+                    cats.push(cc);
+                }
+            };
+            this._catOwner.clear();
+            add(this._static && this._static.manifest, this._static, 'estatico');
+            add(this._local && this._local.manifest, this._local, 'local');
+            const sm = (this._static && this._static.manifest) || {};
+            const lm = (this._local && this._local.manifest) || {};
+            this.manifest = {
+                version: [sm.version, lm.version].filter(Boolean).join('+'),
+                generatedAt: sm.generatedAt || lm.generatedAt,
+                pageSize: sm.pageSize || lm.pageSize,
+                categories: cats,
+                destaques: [...(sm.destaques || []), ...(lm.destaques || [])],
+                epg: [...new Set([...(sm.epg || []), ...(lm.epg || [])])],
+                totals: {
+                    itens: ((sm.totals || {}).itens || 0) + ((lm.totals || {}).itens || 0),
+                    series: ((sm.totals || {}).series || 0) + ((lm.totals || {}).series || 0),
+                    categorias: cats.length
+                },
+                fontes: [...(sm.fontes || []), ...(lm.fontes || [])]
+            };
+        },
+
+        _resolver(c) {
+            const cat = typeof c === 'object' ? c : this.manifest.categories.find(x => x.slug === c || x.nome === c);
+            if (!cat) return null;
+            return { cat, prov: this._catOwner.get(cat.slug) };
+        },
+
+        // ---------------------------------------------------- API pública
+        categorias(filtro) {
+            const cats = this.manifest ? this.manifest.categories : [];
+            if (!filtro) return cats;
+            return cats.filter(c => (!filtro.destino || c.destino === filtro.destino) && (!filtro.type || c.type === filtro.type));
+        },
+
+        async getPage(c, n = 0) {
+            const r = this._resolver(c);
+            if (!r) return [];
+            return (await r.prov.page(r.cat._slugInterno, n)) || [];
+        },
+
+        /** Lote n de episódios no formato do motor antigo (categorias de séries). */
+        async getCompatPage(c, n = 0) {
+            const r = this._resolver(c);
+            if (!r || !r.prov.compatPage) return [];
+            return (await r.prov.compatPage(r.cat._slugInterno, n)) || [];
+        },
+
+        /** Percorre todas as páginas de uma categoria: for await (const lote of CloudEngine.percorrer('Filmes')) */
+        async *percorrer(c) {
+            const r = this._resolver(c);
+            if (!r) return;
+            for (let n = 0; n < r.cat.pages; n++) yield await this.getPage(r.cat, n);
+        },
+
+        async getItem(id) {
+            for (const p of [this._local, this._static]) {
+                if (!p) continue;
+                const it = await p.item(id).catch(() => null);
+                if (it) return it;
+            }
+            return null;
+        },
+
+        async getSeries(id) {
+            for (const p of [this._local, this._static]) {
+                if (!p) continue;
+                const s = await p.series(id).catch(() => null);
+                if (s) return s;
+            }
+            return null;
+        },
+
+        async search(q, { limite = 60 } = {}) {
+            const partes = await Promise.all([this._static, this._local].filter(Boolean)
+                .map(p => p.search(q, limite).catch(() => [])));
+            const vistos = new Set();
+            return partes.flat().filter(r => !vistos.has(r.id) && vistos.add(r.id)).slice(0, limite);
+        },
+
+        streamCandidates: (item) => Core.streamCandidates(item),
 
         /**
-         * Episódios no FORMATO DO MOTOR ANTIGO (um item por episódio, com "serie"),
-         * para apps que montam a lista de episódios filtrando window.DB.videos.
+         * Rolagem infinita pronta: vai anexando páginas conforme o usuário rola.
+         * render(card) deve devolver um Element (ou string HTML).
+         * opts.root = elemento que rola (para fileiras horizontais); opts.maxPaginas p/ limitar.
          */
-        compatEpisodes(seriesId, cat) {
-            const s = this.series.get(seriesId);
-            if (!s) return [];
-            const m = s.meta;
-            const genero = Array.isArray(m.genre) ? m.genre.join(', ') : m.genre;
-            const eps = s.episodes.map(id => this.items.get(id))
-                .sort((a, b) => a.season - b.season || a.episode - b.episode);
-            return eps.map(ep => {
-                const extra = {};
-                for (const k of Object.keys(ep)) if (!CAMPOS_CONHECIDOS.has(k) && k !== 'epTitle' && !k.startsWith('_')) extra[k] = ep[k];
-                return clean(Object.assign(extra, {
-                    id: ep.id,
-                    serie: m.serie,
-                    title: `${m.serie} - T${ep.season}E${ep.episode}`,
-                    epTitle: ep.epTitle,
-                    thumb: m.thumb || PLACEHOLDER,
-                    bannerThumb: m.bannerThumb || m.thumb || PLACEHOLDER,
-                    url: ep.url,
-                    mirrors: ep.mirrors,
-                    headers: ep.headers,
-                    desc: m.desc || 'Disponível sob demanda.',
-                    year: m.year,
-                    genre: genero,
-                    cat: cat || ep.cat,
-                    categoryType: 'vod',
-                    provider: 'legacy',
-                    seriesId, season: ep.season, episode: ep.episode,
-                    destaque: m.destaque
-                }));
-            });
-        }
+        montarGrade(container, c, render, opts = {}) {
+            const r = this._resolver(c);
+            if (!r) return { destruir() {} };
+            let n = 0, carregando = false, fim = r.cat.pages === 0;
+            const maxPag = opts.maxPaginas || Infinity;
+            const sentinela = document.createElement('div');
+            sentinela.style.cssText = 'width:1px;height:1px;flex:0 0 1px';
+            container.appendChild(sentinela);
 
-        /** Card enxuto p/ grades (descrição curta). */
-        card(id, cat) {
-            if (this.series.has(id)) return this.seriesCard(id, cat);
-            const it = this.items.get(id);
-            return it ? toCard(it, cat) : null;
-        }
-
-        categories() {
-            return this.catOrder.map(nome => ({
-                nome,
-                slug: slug(nome),
-                type: this.catType.get(nome),
-                destino: this.catDest.get(nome),
-                total: this.catCards.get(nome).length
-            }));
-        }
-
-        /** Remove itens (ex.: streams mortos) e limpa categorias/séries. */
-        remove(ids) {
-            const dead = ids instanceof Set ? ids : new Set(ids);
-            if (!dead.size) return 0;
-            for (const id of dead) this.items.delete(id);
-            for (const [sid, s] of this.series) {
-                s.episodes = s.episodes.filter(id => !dead.has(id));
-                if (!s.episodes.length) { this.series.delete(sid); dead.add(sid); }
-            }
-            for (const [cat, list] of this.catCards) {
-                const f = list.filter(id => !dead.has(id));
-                if (f.length) this.catCards.set(cat, f);
-                else { this.catCards.delete(cat); this.catOrder = this.catOrder.filter(c => c !== cat); }
-            }
-            return dead.size;
-        }
-    }
-
-    function toCard(it, cat) {
-        const c = Object.assign({}, it);
-        c.thumb = c.thumb || PLACEHOLDER;
-        c.bannerThumb = c.bannerThumb || c.thumb;
-        if (cat) c.cat = cat;
-        if (c.desc && c.desc.length > DESC_CARD_MAX) c.desc = c.desc.slice(0, DESC_CARD_MAX - 1) + '…';
-        delete c.cats;
-        return c;
-    }
-
-    function toFull(it) {
-        const c = Object.assign({}, it);
-        c.thumb = c.thumb || PLACEHOLDER;
-        c.bannerThumb = c.bannerThumb || c.thumb;
-        return c;
-    }
-
-    /** URLs para o player tentar em ordem (failover automático). */
-    function streamCandidates(item) {
-        return [item.url].concat(item.mirrors || []).filter(Boolean);
-    }
-
-
-    // ------------------------------------------------------------------
-    // Busca: ranqueia linhas [tituloNorm, id, titulo, thumb, cat, tipo]
-    // ------------------------------------------------------------------
-    function rankSearch(rows, query, limit = 60) {
-        const qTokens = normText(query).split(' ').filter(Boolean);
-        if (!qTokens.length) return [];
-        const qFull = qTokens.join(' ');
-        const seen = new Set();
-        const hits = [];
-        for (const r of rows) {
-            if (seen.has(r[1]) || !matchesQuery(r[0], qTokens)) continue;
-            seen.add(r[1]);
-            // pontuação: título igual > começa com a busca > contém a frase > só palavras;
-            // desempate: mais palavras exatas > título mais curto
-            const score = r[0] === qFull ? 0 : r[0].startsWith(qFull) ? 1 : r[0].includes(qFull) ? 2 : 3;
-            const words = r[0].split(' ');
-            const exatas = qTokens.reduce((n, q) => n + (words.includes(q) ? 1 : 0), 0);
-            hits.push([score, -exatas, r[0].length, r]);
-        }
-        hits.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
-        return hits.slice(0, limit).map(([, , , r]) => ({
-            id: r[1], title: r[2], thumb: r[3], cat: r[4], categoryType: r[5]
-        }));
-    }
-
-    function makeLimiter(n) {
-        let active = 0; const q = [];
-        const next = () => {
-            if (active >= n || !q.length) return;
-            active++;
-            const { fn, res, rej } = q.shift();
-            Promise.resolve().then(fn).then(res, rej).finally(() => { active--; next(); });
-        };
-        return fn => new Promise((res, rej) => { q.push({ fn, res, rej }); next(); });
-    }
-
-    async function fetchWithRetry(url, { timeoutMs = 20000, tentativas = 2, fetchFn, init = {} } = {}) {
-        const f = fetchFn || fetch;
-        let last;
-        for (let t = 0; t <= tentativas; t++) {
-            const ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
-            const timer = ac ? setTimeout(() => ac.abort(), timeoutMs) : null;
-            try {
-                const r = await f(url, Object.assign({}, init, ac ? { signal: ac.signal } : {}));
-                if (!r.ok) {
-                    const err = new Error(`HTTP ${r.status} em ${url}`);
-                    err.status = r.status;
-                    throw err;
-                }
-                return { res: r, done: () => timer && clearTimeout(timer) };
-            } catch (e) {
-                if (timer) clearTimeout(timer);
-                last = e;
-                if (e.status === 404) break;             // não adianta insistir
-                if (t < tentativas) await new Promise(ok => setTimeout(ok, 600 * 2 ** t));
-            }
-        }
-        throw last;
-    }
-
-    /** Lê a resposta em pedaços (streaming) quando possível. */
-    async function readChunks(res, onChunk) {
-        if (res.body && typeof res.body.getReader === 'function') {
-            const reader = res.body.getReader();
-            const dec = new TextDecoder();
-            for (;;) {
-                const { done, value } = await reader.read();
-                if (done) break;
-                onChunk(dec.decode(value, { stream: true }));
-            }
-            onChunk(dec.decode());
-        } else {
-            onChunk(await res.text());
-        }
-    }
-
-    // ------------------------------------------------------------------
-    // LocalCatalog: catálogo montado AO VIVO a partir das fontes.
-    // Usado no modo legado (sem build) e para fontes marcadas "aoVivo".
-    // Expõe a mesma interface do catálogo estático (páginas, busca, séries).
-    // ------------------------------------------------------------------
-    class LocalCatalog {
-        constructor(opts = {}) {
-            this.pageSize = opts.pageSize || 120;
-            this.b = new CatalogBuilder({ maxItems: opts.maxItems });
-            this.epg = new Set();
-            this.fontes = [];
-            this._cats = null;
-            this._rows = null;
-        }
-
-        async ingest(fontes, opts = {}) {
-            const run = makeLimiter(opts.concorrencia || 6);
-            const usable = fontes.filter(s => s.ativo !== false && isUsableUrl(s.url));
-            const progress = opts.onProgress || (() => {});
-            let concluidas = 0;
-
-            // Baixa em paralelo (limitado); cada fonte é parseada assim que chega.
-            // A ORDEM das categorias segue o manifesto: fontes que chegam antes
-            // esperam a vez numa fila (os dados brutos ficam guardados).
-            const tarefas = usable.map(src => run(async () => {
-                const { res, done } = await fetchWithRetry(src.url, opts);
+            const carregar = async () => {
+                if (carregando || fim) return;
+                carregando = true;
                 try {
-                    if (sourceFormat(src) === 'm3u') {
-                        const entries = [];
-                        const p = createM3UParser(e => entries.push(e), h => h.epg.forEach(u => this.epg.add(u)));
-                        await readChunks(res, c => p.push(c));
-                        p.end();
-                        return entries;
+                    const cards = await this.getPage(r.cat, n++);
+                    const frag = document.createDocumentFragment();
+                    for (const card of cards) {
+                        const el = render(card);
+                        if (!el) continue;
+                        if (typeof el === 'string') {
+                            const t = document.createElement('template');
+                            t.innerHTML = el.trim();
+                            frag.append(...t.content.childNodes);
+                        } else frag.appendChild(el);
                     }
-                    return extractList(await res.json());
-                } finally { done(); }
-            }));
-            tarefas.forEach(t => t.catch(() => {}));   // erros são tratados abaixo, na ordem
-
-            for (let i = 0; i < usable.length; i++) {
-                const src = usable[i];
-                try {
-                    const lista = await tarefas[i];
-                    let n = 0;
-                    for (const raw of lista) n += this.b.addRaw(raw, src);
-                    this.fontes.push({ nome: src.nome, ok: true, itens: n });
+                    container.insertBefore(frag, sentinela);
+                    if (n >= r.cat.pages || n >= maxPag) { fim = true; obs.disconnect(); sentinela.remove(); }
                 } catch (e) {
-                    this.fontes.push({ nome: src.nome, ok: false, erro: String(e && e.message || e) });
+                    n--;   // deixa tentar de novo na próxima rolagem
+                    log('⚠️ Falha ao carregar página', e.message);
+                } finally {
+                    carregando = false;
                 }
-                progress({ fonte: src.nome, concluidas: ++concluidas, total: usable.length, itens: this.b.items.size });
-            }
-            this._cats = null;
-            this._rows = null;
-            return this.manifest();
-        }
-
-        /** Adiciona itens já prontos (ex.: vindos de outro worker). */
-        addRawList(lista, src) {
-            let n = 0;
-            for (const raw of lista) n += this.b.addRaw(raw, src);
-            this._cats = null; this._rows = null;
-            return n;
-        }
-
-        _categories() {
-            if (this._cats) return this._cats;
-            const used = new Set();
-            this._cats = this.b.categories().map(c => {
-                let s = c.slug, i = 2;
-                while (used.has(s)) s = `${c.slug}-${i++}`;
-                used.add(s);
-                const extra = {};
-                if (c.type === 'series') {
-                    let eps = 0;
-                    for (const sid of this.b.catCards.get(c.nome) || []) { const se = this.b.series.get(sid); if (se) eps += se.episodes.length; }
-                    extra.compatPages = Math.ceil(eps / 5000);
-                    extra.compatTotal = eps;
-                }
-                return Object.assign(c, { slug: s, pages: Math.ceil(c.total / this.pageSize) }, extra);
-            });
-            this._bySlug = new Map(this._cats.map(c => [c.slug, c]));
-            return this._cats;
-        }
-
-        manifest() {
-            const categories = this._categories();
-            const destaques = [];
-            for (const it of this.b.items.values()) {
-                if (it.destaque) { destaques.push(this.b.card(it.id)); if (destaques.length >= 40) break; }
-            }
-            return {
-                schema: 2, version: 'local-' + this.b.items.size, generatedAt: new Date().toISOString(),
-                pageSize: this.pageSize,
-                totals: { itens: this.b.items.size, series: this.b.series.size, categorias: categories.length },
-                categories, destaques, epg: [...this.epg], fontes: this.fontes
+                // Se a tela ainda não encheu, continua carregando
+                if (!fim && isVisible(sentinela, opts.root)) carregar();
             };
-        }
 
-        page(slugOrName, n = 0) {
-            this._categories();
-            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
-            if (!cat) return [];
-            const ids = this.b.catCards.get(cat.nome) || [];
-            return ids.slice(n * this.pageSize, (n + 1) * this.pageSize).map(id => this.b.card(id, cat.nome));
-        }
+            const obs = new IntersectionObserver((ents) => {
+                if (ents.some(e => e.isIntersecting)) carregar();
+            }, { root: opts.root || null, rootMargin: opts.margem || '800px' });
+            obs.observe(sentinela);
 
-        /** Episódios de uma categoria de séries no formato antigo, em lotes. */
-        compatPage(slugOrName, n = 0, tamanho = 5000) {
-            this._categories();
-            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
-            if (!cat) return [];
-            if (!this._compat) this._compat = new Map();
-            if (!this._compat.has(cat.nome)) {
-                const all = [];
-                for (const sid of this.b.catCards.get(cat.nome) || []) if (this.b.series.has(sid)) all.push(...this.b.compatEpisodes(sid, cat.nome));
-                this._compat.set(cat.nome, all);
-            }
-            return this._compat.get(cat.nome).slice(n * tamanho, (n + 1) * tamanho);
-        }
+            return { destruir() { obs.disconnect(); sentinela.remove(); fim = true; } };
+        },
 
-        item(id) {
-            if (this.b.series.has(id)) return this.b.seriesCard(id);
-            const it = this.b.items.get(id);
-            return it ? Object.assign({}, it) : null;
-        }
-
-        series(id) { return this.b.seriesDetail(id); }
-
-        search(q, limit) {
-            if (!this._rows) {
-                this._rows = [];
-                for (const it of this.b.items.values()) {
-                    if (it.categoryType !== 'episode') this._rows.push([normText(it.title), it.id, it.title, it.thumb || PLACEHOLDER, it.cat, it.categoryType]);
+        /** Monta as fileiras da home só quando chegam perto da tela (lazy rows). */
+        montarHome(container, renderFileira, opts = {}) {
+            const cats = opts.categorias || this.categorias(opts.filtro);
+            const obs = new IntersectionObserver((ents) => {
+                for (const e of ents) {
+                    if (!e.isIntersecting) continue;
+                    obs.unobserve(e.target);
+                    renderFileira(e.target._cat, e.target);
                 }
-                for (const sid of this.b.series.keys()) {
-                    const c = this.b.seriesCard(sid);
-                    this._rows.push([normText(c.title), c.id, c.title, c.thumb, c.cat, 'series']);
-                }
+            }, { rootMargin: '600px' });
+            for (const c of cats) {
+                const el = document.createElement('section');
+                el.className = opts.classe || 'cz-fileira';
+                el.dataset.cat = c.slug;
+                el._cat = c;
+                el.style.minHeight = opts.alturaMinima || '220px';
+                container.appendChild(el);
+                obs.observe(el);
             }
-            return rankSearch(this._rows, q, limit);
+            return { destruir() { obs.disconnect(); } };
+        },
+
+        async recarregar() { return iniciar(true); }
+    };
+
+    function isVisible(el, root) {
+        const r = el.getBoundingClientRect();
+        const b = root ? root.getBoundingClientRect() : { top: 0, left: 0, bottom: innerHeight, right: innerWidth };
+        return r.top < b.bottom + 800 && r.left < b.right + 800;
+    }
+
+    // ==================================================================
+    // Compatibilidade: preenche window.DB / CZ_IPTV / rádio / games
+    // ==================================================================
+    // Regras: NUNCA apaga o que o app já tem (DB legado). Só soma itens da nuvem,
+    // marcados com _cz:'cloud', e numa atualização troca apenas esses.
+    // Itens que o app já tem (mesmo id ou mesma url) têm prioridade.
+    function lista(obj, chave) {
+        if (!Array.isArray(obj[chave])) obj[chave] = [];
+        return obj[chave];
+    }
+    function dbDoApp() {
+        if (!window.DB || typeof window.DB !== 'object') window.DB = {};
+        return window.DB;
+    }
+    function removerNossos(arr) {
+        let w = 0;
+        for (let i = 0; i < arr.length; i++) if (!(arr[i] && arr[i]._cz === 'cloud')) arr[w++] = arr[i];
+        arr.length = w;
+    }
+    function domPronto() {
+        if (document.readyState !== 'loading') return new Promise(r => setTimeout(r, 0));
+        return new Promise(r => document.addEventListener('DOMContentLoaded', () => setTimeout(r, 0), { once: true }));
+    }
+
+    let compatGeracao = 0;
+    let compatCtx = null;
+
+    /** Mesmos TIPOS de campo do motor antigo (o app faz .trim(), .split() etc.). */
+    function formatoAntigo(card) {
+        if (!card) return card;
+        if (Array.isArray(card.genre)) card.genre = card.genre.join(', ');
+        if (typeof card.year === 'number') card.year = String(card.year);
+        for (const k of ['title', 'desc', 'thumb', 'bannerThumb', 'cat', 'url']) {
+            if (card[k] != null && typeof card[k] !== 'string') card[k] = String(card[k]);
+        }
+        if (!card.provider) card.provider = 'legacy';
+        return card;
+    }
+
+    async function preencherCompat() {
+        const lim = CFG.paginasIniciaisPorCategoria;
+        if (!lim) return;
+        const geracao = ++compatGeracao;          // cancela um preenchimento anterior em andamento
+        // Espera o app terminar de montar o DB legado dele (evita ser sobrescrito)
+        await domPronto();
+
+        // Resolve os alvos só AGORA (o app pode ter recriado window.DB)
+        const db = dbDoApp();
+        const alvo = {
+            videos: lista(db, 'videos'),
+            games: lista(db, 'games'),
+            iptv: Array.isArray(window.CZ_IPTV) ? window.CZ_IPTV : (window.CZ_IPTV = []),
+            radio: Array.isArray(window.CZ_VIDEOS_RADIO) ? window.CZ_VIDEOS_RADIO : (window.CZ_VIDEOS_RADIO = [])
+        };
+        const destaques = lista(db, 'destaques');
+        for (const arr of [...Object.values(alvo), destaques]) removerNossos(arr);
+
+        // O que o app já tem, por id e por url (o DB legado tem prioridade)
+        const jaTem = new Map();
+        for (const [k, arr] of Object.entries(alvo)) {
+            const set = new Set();
+            for (const it of arr) { if (!it) continue; if (it.id) set.add('i:' + it.id); if (it.url) set.add('u:' + it.url); if (it.streamUrl) set.add('u:' + it.streamUrl); }
+            jaTem.set(k, set);
+        }
+
+        const marcar = (card) => {
+            formatoAntigo(card);
+            card._cz = 'cloud';
+            if (!card.provider) card.provider = 'legacy';     // mesmo provider do motor antigo (PlaybackService)
+            if (card.categoryType === 'series' && !card.serie) card.serie = card.title;
+            return card;
+        };
+
+        const somar = (cat, cards) => {
+            const k = alvo[cat.destino] ? cat.destino : 'videos';
+            const destino = alvo[k];
+            const set = jaTem.get(k);
+            for (const card of cards || []) {
+                if (set.has('i:' + card.id) || (card.url && set.has('u:' + card.url))) continue;
+                set.add('i:' + card.id);
+                if (k === 'iptv') {                               // apelidos que listas IPTV costumam usar
+                    card.name = card.name || card.title;
+                    card.logo = card.logo || card.thumb;
+                    card.group = card.group || card.cat;
+                }
+                destino.push(marcar(card));
+            }
+        };
+
+        // 1) Primeiras páginas de cada categoria ANTES do "pronto" (abertura rápida)
+        const cats = Engine.manifest.categories;
+        // Séries no formato antigo: cada EPISÓDIO vira um item (com "serie"),
+        // exatamente como o motor antigo — é assim que o app monta a lista de episódios.
+        const usaCompat = c => CFG.seriesComoEpisodios && c.type === 'series' &&
+            (c.destino || 'videos') === 'videos' && c.compatPages > 0;
+        const buscar = t => (t.compat ? Engine.getCompatPage(t.c, t.n) : Engine.getPage(t.c, t.n)).catch(() => []);
+
+        // 1) Primeiro lote de cada categoria ANTES do "pronto" (abertura rápida)
+        const primeiras = [];
+        for (const c of cats) {
+            if (usaCompat(c)) primeiras.push({ c, n: 0, compat: true });
+            else for (let n = 0; n < Math.min(c.pages, lim); n++) primeiras.push({ c, n });
+        }
+        const res = await Promise.all(primeiras.map(buscar));
+        res.forEach((cards, i) => somar(primeiras[i].c, cards));
+
+        const idsDest = new Set(destaques.map(d => d && d.id));
+        for (const d of (Engine.manifest.destaques || [])) if (!idsDest.has(d.id)) destaques.push(marcar(Object.assign({}, d)));
+
+        // Contexto para carregar mais sob demanda (modo Netflix)
+        const cursor = new Map();
+        for (const c of cats) cursor.set(c, usaCompat(c) ? { compat: true, n: 1, max: c.compatPages } : { compat: false, n: Math.min(c.pages, lim), max: c.pages });
+        compatCtx = { geracao, somar, marcar, cursor, buscar };
+
+        // 2) O RESTO do catálogo em segundo plano (como o motor antigo: tudo no window.DB)
+        if (CFG.compatCompleto) {
+            const resto = [];
+            for (const c of cats) {
+                if (usaCompat(c)) for (let n = 1; n < c.compatPages; n++) resto.push({ c, n, compat: true });
+                else for (let n = Math.min(c.pages, lim); n < c.pages; n++) resto.push({ c, n });
+            }
+            if (resto.length) completarCompat(resto, somar, geracao, buscar);
         }
     }
 
-    return {
-        VERSION: '2.0.0',
-        PLACEHOLDER,
-        cyrb53, makeId, idShard,
-        normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
-        detectEpisode, createM3UParser, parseM3U,
-        sourceFormat, isUsableUrl, extractList, normalize,
-        CatalogBuilder, streamCandidates, destinoDe,
-        rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
+    async function completarCompat(resto, somar, geracao, buscar) {
+        const t0 = performance.now();
+        const LOTE = 12;
+        for (let i = 0; i < resto.length; i += LOTE) {
+            const lote = resto.slice(i, i + LOTE);
+            const res = await Promise.all(lote.map(buscar));
+            if (geracao !== compatGeracao) return;            // catálogo atualizado no meio: para
+            res.forEach((cards, j) => somar(lote[j].c, cards));
+            await new Promise(r => setTimeout(r, 0));         // deixa a interface respirar
+        }
+        const db = window.DB || {};
+        log(`📚 Catálogo completo no window.DB em ${Math.round(performance.now() - t0)}ms — VOD ${(db.videos || []).length} · TV ${(window.CZ_IPTV || []).length}`);
+        emit('cloud_engine_compat_completo', { videos: (db.videos || []).length });
+        if (CFG.renderAoCompletar && typeof window.render === 'function') {
+            try { window.render(); } catch (e) { console.warn('⚠️ [Cloud Engine] render():', e); }
+        }
+    }
+
+    // ==================================================================
+    // Modo Netflix: o app pede MAIS conteúdo conforme o usuário navega
+    // ==================================================================
+    function catsPorNome(nome) {
+        if (!compatCtx) return [];
+        return [...compatCtx.cursor.keys()].filter(c => c.nome === nome || c.slug === nome);
+    }
+
+    /** Ainda há páginas da categoria que não entraram no window.DB? */
+    Engine.temMais = function (nome) {
+        return catsPorNome(nome).some(c => { const k = compatCtx.cursor.get(c); return k.n < k.max; });
     };
-});
+
+    /** Total de títulos da categoria no catálogo (não só os já carregados). */
+    Engine.totalCategoria = function (nome) {
+        return (Engine.manifest ? Engine.manifest.categories : [])
+            .filter(c => c.nome === nome || c.slug === nome).reduce((t, c) => t + (c.total || 0), 0);
+    };
+
+    const carregando = new Map();
+    /**
+     * Traz as próximas páginas da categoria para o window.DB.videos (formato antigo).
+     * Devolve quantos itens novos entraram. Chamadas simultâneas são unificadas.
+     */
+    Engine.carregarMais = function (nome, paginas) {
+        const qtd = paginas || CFG.paginasPorCarga || 2;
+        if (carregando.has(nome)) return carregando.get(nome);
+        const p = (async () => {
+            if (!compatCtx) await Engine.ready;
+            const ctx = compatCtx;
+            if (!ctx) return 0;
+            const tarefas = [];
+            for (const c of catsPorNome(nome)) {
+                const k = ctx.cursor.get(c);
+                for (let i = 0; i < qtd && k.n < k.max; i++, k.n++) tarefas.push({ c, n: k.n, compat: k.compat });
+            }
+            if (!tarefas.length) return 0;
+            const antes = (window.DB.videos || []).length;
+            const res = await Promise.all(tarefas.map(ctx.buscar));
+            if (ctx !== compatCtx) return 0;                  // catálogo trocou no meio
+            res.forEach((cards, i) => ctx.somar(tarefas[i].c, cards));
+            const novos = (window.DB.videos || []).length - antes;
+            emit('cloud_engine_mais', { categoria: nome, novos, temMais: Engine.temMais(nome) });
+            return novos;
+        })().finally(() => carregando.delete(nome));
+        carregando.set(nome, p);
+        return p;
+    };
+
+    /** Traz a categoria INTEIRA (usado quando o usuário aplica um filtro). */
+    Engine.carregarCategoriaInteira = async function (nome, onProgress) {
+        let total = 0;
+        while (Engine.temMais(nome)) {
+            total += await Engine.carregarMais(nome, 12);
+            if (onProgress) try { onProgress(total); } catch (e) { /* ignore */ }
+            await new Promise(r => setTimeout(r, 0));
+        }
+        return total;
+    };
+
+    /**
+     * Abre uma série: busca SÓ os episódios dela e coloca no window.DB.videos
+     * no formato antigo (um item por episódio, com "serie"), NO LUGAR do card.
+     * Aceita o card, o id do card ou o seriesId. Devolve a lista de episódios.
+     */
+    Engine.carregarEpisodios = async function (cardOuId) {
+        const db = dbDoApp();
+        const lista = lista_(db);
+        const card = typeof cardOuId === 'object' ? cardOuId : lista.find(v => v && (v.id === cardOuId || v.seriesId === cardOuId));
+        const sid = (card && (card.seriesId || card.id)) || cardOuId;
+        const jaTem = lista.filter(v => v && v._czEp && v.seriesId === sid);
+        if (jaTem.length) return jaTem;
+        const s = await Engine.getSeries(sid);
+        if (!s || !s.seasons) return [];
+        const eps = [];
+        for (const t of s.seasons) for (const ep of t.episodes) {
+            const extra = {};
+            for (const k of Object.keys(ep)) if (!(k in extra) && !['genre', 'year', 'cats'].includes(k)) extra[k] = ep[k];
+            const it = Object.assign(extra, {
+                id: ep.id,
+                serie: s.title,
+                title: `${s.title} - T${ep.season}E${ep.episode}`,
+                thumb: s.thumb || ep.thumb,
+                bannerThumb: s.bannerThumb || s.thumb,
+                url: ep.url,
+                desc: s.desc || ep.desc || 'Disponível sob demanda.',
+                year: s.year, genre: s.genre,
+                cat: (card && card.cat) || ep.cat,
+                categoryType: 'vod', provider: 'legacy',
+                seriesId: sid, season: ep.season, episode: ep.episode,
+                _czEp: true
+            });
+            if (compatCtx) compatCtx.marcar(it); else { formatoAntigo(it); it._cz = 'cloud'; }
+            eps.push(it);
+        }
+        // Coloca os episódios exatamente onde o card estava (a grade não muda de ordem)
+        const idx = card ? lista.indexOf(card) : -1;
+        if (idx >= 0) lista.splice(idx, 1, ...eps);
+        else lista.push(...eps);
+        emit('cloud_engine_episodios', { seriesId: sid, serie: s.title, episodios: eps.length });
+        return eps;
+    };
+    function lista_(db) { return lista(db, 'videos'); }
+
+    /**
+     * Intercepta setView('player', id): se o id for um card de série da nuvem, ou um
+     * episódio que ainda não está no window.DB (ex.: "continuar assistindo"), carrega
+     * os episódios daquela série ANTES de abrir o player. Vale para qualquer tela do app.
+     */
+    function instalarInterceptadorPlayer() {
+        if (typeof window.setView !== 'function' || window.setView.__czWrapped) return !!(window.setView && window.setView.__czWrapped);
+        const original = window.setView;
+        const wrapped = function (view, param) {
+            const args = arguments, self = this;
+            if (view !== 'player' || param == null || !Engine.manifest) return original.apply(self, args);
+            const lista = (window.DB && window.DB.videos) || [];
+            const v = lista.find(x => x && x.id === param);
+            const abrir = (novoId) => { const a = Array.from(args); a[1] = novoId; return original.apply(self, a); };
+            if (v && !(v._cz === 'cloud' && v.categoryType === 'series')) return original.apply(self, args);
+            (async () => {
+                try {
+                    if (v) {                                          // card de série da nuvem
+                        const eps = await Engine.carregarEpisodios(v);
+                        if (!eps.length) return abrir(param);
+                        const salvo = localStorage.getItem('last_watched_' + (v.serie || v.title));
+                        const alvo = eps.find(e => e.id === salvo) || eps[0];
+                        return abrir(alvo.id);
+                    }
+                    // id que não está no DB: pode ser episódio salvo em "continuar assistindo"
+                    const it = await Engine.getItem(param);
+                    if (it && it.seriesId) await Engine.carregarEpisodios(it.seriesId);
+                    else if (it && it.url && !lista.some(x => x && x.id === it.id)) lista.push(compatCtx ? compatCtx.marcar(Object.assign({}, it)) : formatoAntigo(Object.assign({}, it)));
+                } catch (e) {
+                    console.warn('⚠️ [Cloud Engine] não consegui preparar o player:', e);
+                }
+                return abrir(param);
+            })();
+        };
+        wrapped.__czWrapped = true;
+        window.setView = wrapped;
+        return true;
+    }
+    // Instala assim que o app definir setView, e reinstala se o app redefinir depois
+    (function vigiar() {
+        instalarInterceptadorPlayer();
+        setTimeout(vigiar, window.setView && window.setView.__czWrapped ? 1000 : 100);
+    })();
+
+    /**
+     * Garante um item TOCÁVEL: card de série vira o 1º episódio (ou o pedido),
+     * card sem url busca o detalhe completo. Usado pelo legacy-provider.js.
+     */
+    Engine.resolverParaTocar = async function (item, opts = {}) {
+        if (!item) return null;
+        // Com link: mantém o item EXATAMENTE como está; só troca a url se o
+        // principal não responder e existir reserva.
+        if (item.url || item.streamUrl) return escolherLinkQueFunciona(item);
+
+        // Sem link (card de série do modo novo): pega o episódio no formato antigo
+        if (item.categoryType === 'series' || item.seriesId) {
+            const s = await Engine.getSeries(item.seriesId || item.id);
+            if (!s || !s.seasons || !s.seasons.length) return item;
+            const temp = s.seasons.find(t => t.season === opts.temporada) || s.seasons[0];
+            const ep = temp.episodes.find(e => e.episode === opts.episodio) || temp.episodes[0];
+            return escolherLinkQueFunciona(formatoAntigo(Object.assign({}, item, {
+                id: ep.id, url: ep.url, mirrors: ep.mirrors, headers: ep.headers,
+                serie: s.title, season: ep.season, episode: ep.episode,
+                title: `${s.title} - T${ep.season}E${ep.episode}`, categoryType: 'vod'
+            })));
+        }
+        const full = await Engine.getItem(item.id).catch(() => null);
+        if (!full || !full.url) return item;
+        return escolherLinkQueFunciona(Object.assign({}, item, { url: full.url, mirrors: full.mirrors, headers: full.headers }));
+    };
+
+    /**
+     * Testa os links (principal + reservas) e devolve o item com o PRIMEIRO que
+     * responde. Pega DNS bloqueado pela operadora, servidor fora do ar etc.
+     * Só testa quando existe reserva — sem reserva, devolve direto (sem atraso).
+     */
+    async function alcancavel(url, ms) {
+        if (!/^https?:/i.test(url)) return true;
+        const ac = new AbortController();
+        const t = setTimeout(() => ac.abort(), ms);
+        try {
+            await fetch(url, { method: 'HEAD', mode: 'no-cors', cache: 'no-store', signal: ac.signal });
+            return true;                      // qualquer resposta (até 404/405) = o servidor existe
+        } catch (e) {
+            return false;                     // DNS não resolveu, conexão recusada ou timeout
+        } finally { clearTimeout(t); }
+    }
+
+    async function escolherLinkQueFunciona(item) {
+        const principal = item.url || item.streamUrl;
+        const reservas = (item.mirrors || []).filter(u => u && u !== principal);
+        if (!principal || !reservas.length || CFG.testarLinks === false) return item;
+        const candidatos = [principal, ...reservas];
+        // testa todos em paralelo, mas respeita a ordem de preferência
+        const testes = candidatos.map(u => alcancavel(u, CFG.testeLinkMs || 4000));
+        for (let i = 0; i < candidatos.length; i++) {
+            if (await testes[i]) {
+                if (i === 0) return item;
+                log(`🔀 Link principal inacessível, usando reserva ${i}: ${candidatos[i].slice(0, 60)}`);
+                return Object.assign({}, item, {
+                    url: candidatos[i],
+                    mirrors: candidatos.filter((_, j) => j !== i)
+                });
+            }
+        }
+        return item;                          // nenhum respondeu: deixa o player tentar o principal
+    }
+    Engine.escolherLinkQueFunciona = escolherLinkQueFunciona;
+    Engine.preencherCompat = preencherCompat;
+
+    // ==================================================================
+    // Ignição
+    // ==================================================================
+    let timerUpdate = null;
+
+    async function iniciar(recarga = false) {
+        const t0 = performance.now();
+        log(recarga ? 'Recarregando...' : 'Iniciando ignição...', `(modo: ${CFG.modo})`);
+        if (Engine._local) Engine._local.destruir();
+        Engine._static = null;
+        Engine._local = null;
+
+        // 1) Catálogo estático
+        if (CFG.modo !== 'legado') {
+            try {
+                const sp = new StaticProvider();
+                await sp.init();
+                Engine._static = sp;
+            } catch (e) {
+                if (CFG.modo === 'estatico') throw e;
+                log('ℹ️ Catálogo estático indisponível (' + e.message + ') — usando modo legado.');
+            }
+        }
+
+        // 2) Fontes locais: tudo (modo legado) ou só as "aoVivo" (híbrido)
+        const fontes = await Engine._carregarFontes();
+        const locais = Engine._static ? fontes.filter(f => f.aoVivo === true) : fontes;
+        if (locais.some(f => f.ativo !== false && Core.isUsableUrl(f.url))) {
+            const lp = new LocalProvider(locais);
+            await lp.init();
+            Engine._local = lp;
+        }
+
+        Engine.modo = Engine._static && Engine._local ? 'hibrido' : Engine._static ? 'estatico' : 'legado';
+        Engine._juntarManifestos();
+
+        if (window.EPGManager && Engine.manifest.epg.length) window.EPGManager.loadUrls(Engine.manifest.epg);
+        try {
+            await preencherCompat();
+        } catch (e) {
+            // Compatibilidade nunca derruba o motor: a API (getPage/search...) continua funcionando
+            console.warn('⚠️ [Cloud Engine] Não consegui preencher window.DB:', e);
+        }
+
+        const falhas = (Engine.manifest.fontes || []).filter(f => !f.ok);
+        falhas.forEach(f => console.warn(`❌ [Cloud Engine] Fonte "${f.nome}": ${f.erro}`));
+        log(`✅ Pronto em ${Math.round(performance.now() - t0)}ms — modo ${Engine.modo} | ` +
+            `${Engine.manifest.totals.itens.toLocaleString('pt-BR')} itens em ${Engine.manifest.categories.length} categorias | ` +
+            `na memória: VOD ${((window.DB || {}).videos || []).length} · TV ${(window.CZ_IPTV || []).length} · Rádio ${(window.CZ_VIDEOS_RADIO || []).length} · Jogos ${((window.DB || {}).games || []).length}`);
+
+        emit('cloud_engine_ready', { modo: Engine.modo, manifest: Engine.manifest });
+        if (CFG.renderAutomatico && typeof window.render === 'function') window.render();
+
+        // 3) Atualizações automáticas do catálogo estático
+        clearInterval(timerUpdate);
+        if (Engine._static && CFG.checarAtualizacaoMs > 0) {
+            timerUpdate = setInterval(async () => {
+                if (document.hidden) return;
+                const m = await Engine._static.checkUpdate();
+                if (!m) return;
+                Engine._juntarManifestos();
+                await preencherCompat().catch(e => console.warn('⚠️ [Cloud Engine] compat:', e));
+                log('🔄 Catálogo atualizado para a versão', m.version);
+                emit('cloud_engine_update', { manifest: Engine.manifest });
+            }, CFG.checarAtualizacaoMs);
+        }
+        return Engine.manifest;
+    }
+
+    window.CloudEngine = Engine;
+    Engine.ready = carregarCore().then((c) => { Core = c; return iniciar(); }).catch((e) => {
+        console.error('❌ [Cloud Engine] Falha fatal:', e);
+        Engine.modo = 'erro';
+        Engine.manifest = { categories: [], destaques: [], epg: [], totals: { itens: 0, series: 0, categorias: 0 }, fontes: [] };
+        emit('cloud_engine_ready', { modo: 'erro', erro: String(e.message || e) });
+        return Engine.manifest;
+    });
+})();
