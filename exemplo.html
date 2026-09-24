@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cartoonzine — exemplo do Cloud Engine v2</title>
+<style>
+  :root { color-scheme: dark; --bg:#0d0f14; --card:#1a1e27; --txt:#e8eaf0; --sub:#8a91a3; --acc:#ff4f6d; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:15px/1.4 system-ui, sans-serif; }
+  header { position:sticky; top:0; z-index:5; display:flex; gap:12px; align-items:center; padding:12px 16px; background:#0d0f14ee; backdrop-filter:blur(6px); }
+  header b { color:var(--acc); font-size:18px; }
+  #busca { flex:1; max-width:420px; padding:9px 12px; border-radius:8px; border:1px solid #2a3040; background:#141821; color:var(--txt); }
+  #status { color:var(--sub); font-size:13px; margin-left:auto; }
+  main { padding:0 16px 40px; }
+  h2 { font-size:17px; margin:22px 0 8px; }
+  h2 small { color:var(--sub); font-weight:400; }
+  .fileira { display:flex; gap:10px; overflow-x:auto; padding-bottom:8px; scroll-snap-type:x proximity; }
+  .card { flex:0 0 140px; background:var(--card); border-radius:8px; overflow:hidden; cursor:pointer; scroll-snap-align:start; }
+  .card img { width:100%; aspect-ratio:2/3; object-fit:cover; display:block; background:#222; }
+  .card span { display:block; padding:6px 8px; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #resultados { display:grid; grid-template-columns:repeat(auto-fill,minmax(130px,1fr)); gap:10px; }
+  #resultados .card { flex:none; }
+  dialog { background:var(--card); color:var(--txt); border:0; border-radius:12px; max-width:560px; width:92vw; }
+  dialog pre { white-space:pre-wrap; font-size:12px; color:var(--sub); max-height:50vh; overflow:auto; }
+</style>
+</head>
+<body>
+<header>
+  <b>Cartoonzine</b>
+  <input id="busca" type="search" placeholder="Buscar filmes, séries, canais…" autocomplete="off">
+  <span id="status">carregando…</span>
+</header>
+<main>
+  <section id="busca-sec" hidden><h2>Resultados</h2><div id="resultados"></div></section>
+  <div id="home"></div>
+</main>
+<dialog id="det"><h3 id="det-t"></h3><pre id="det-b"></pre><button onclick="det.close()">Fechar</button></dialog>
+
+<!-- 1) núcleo  2) motor -->
+<script src="catalog-core.js"></script>
+<script src="cloud-engine.js"></script>
+<script>
+  const $ = (s) => document.querySelector(s);
+
+  function card(c) {
+    const el = document.createElement('div');
+    el.className = 'card';
+    el.dataset.id = c.id;
+    el.innerHTML = `<img loading="lazy" alt=""><span></span>`;
+    el.querySelector('img').src = c.thumb;
+    el.querySelector('img').onerror = function () { this.style.visibility = 'hidden'; };
+    el.querySelector('span').textContent = c.title;
+    el.onclick = () => abrir(c);
+    return el;
+  }
+
+  async function abrir(c) {
+    const info = c.categoryType === 'series' ? await CloudEngine.getSeries(c.id) : await CloudEngine.getItem(c.id);
+    $('#det-t').textContent = c.title;
+    if (info && info.seasons) {
+      $('#det-b').textContent = info.seasons.map(s => `Temporada ${s.season}: ${s.episodes.length} episódios`).join('\n');
+    } else {
+      $('#det-b').textContent = 'Tentará tocar, em ordem:\n' + CloudEngine.streamCandidates(info || c).join('\n');
+    }
+    $('#det').showModal();
+  }
+
+  document.addEventListener('cloud_engine_progress', (e) => {
+    const p = e.detail;
+    $('#status').textContent = `lendo fontes ${p.concluidas}/${p.total} · ${p.itens.toLocaleString('pt-BR')} itens`;
+  });
+
+  document.addEventListener('cloud_engine_ready', (e) => {
+    const m = CloudEngine.manifest;
+    $('#status').textContent = `${e.detail.modo} · ${m.totals.itens.toLocaleString('pt-BR')} itens`;
+
+    // Home: cada fileira só é montada quando chega perto da tela,
+    // e cada fileira carrega páginas conforme rola para o lado.
+    CloudEngine.montarHome($('#home'), (cat, sec) => {
+      sec.innerHTML = `<h2><span></span> <small></small></h2><div class="fileira"></div>`;
+      sec.querySelector('h2 span').textContent = cat.nome;          // textContent: nomes vêm das listas, nunca use innerHTML
+      sec.querySelector('h2 small').textContent = cat.total.toLocaleString('pt-BR');
+      const fileira = sec.querySelector('.fileira');
+      CloudEngine.montarGrade(fileira, cat, card, { root: fileira, margem: '0px 1200px 0px 0px' });
+    }, { alturaMinima: '300px' });
+  });
+
+  let tBusca;
+  $('#busca').addEventListener('input', (e) => {
+    clearTimeout(tBusca);
+    const q = e.target.value.trim();
+    tBusca = setTimeout(async () => {
+      $('#busca-sec').hidden = q.length < 2;
+      $('#home').hidden = q.length >= 2;
+      if (q.length < 2) return;
+      const r = await CloudEngine.search(q, { limite: 60 });
+      const box = $('#resultados');
+      box.replaceChildren(...r.map(card));
+      if (!r.length) box.textContent = 'Nada encontrado.';
+    }, 250);
+  });
+</script>
+</body>
+</html>

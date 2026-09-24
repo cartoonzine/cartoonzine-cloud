@@ -1,0 +1,309 @@
+{
+  "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas.",
+  "fontes": [
+    {
+      "nome": "Filmes Saimo",
+      "tipo": "vod_json",
+      "prefixoId": "VOD",
+      "targetCategory": "Filmes",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/filmes_saimo.json"
+    },
+    {
+      "nome": "Séries Saimo",
+      "tipo": "vod_json",
+      "prefixoId": "VOD_SER",
+      "targetCategory": "Séries",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo.json"
+    },
+    {
+      "nome": "Filmes",
+      "tipo": "vod_json",
+      "prefixoId": "VOD",
+      "targetCategory": "Filmes",
+      "url": ""
+    },
+    {
+      "nome": "Séries",
+      "tipo": "vod_json",
+      "prefixoId": "VOD_SER",
+      "targetCategory": "Séries",
+      "url": ""
+    },
+    {
+      "nome": "Cartoons VOD",
+      "tipo": "vod_json",
+      "prefixoId": "VOD_CRT",
+      "targetCategory": "Cartoons",
+      "url": ""
+    },
+    {
+      "nome": "Desenhos 24 Horas",
+      "tipo": "vod_m3u",
+      "prefixoId": "LIV_KID",
+      "targetCategory": "Desenhos 24 Horas",
+      "url": ""
+    },
+    {
+      "nome": "Animes",
+      "tipo": "vod_m3u",
+      "prefixoId": "LIV_ANI",
+      "targetCategory": "Animes",
+      "url": ""
+    },
+    {
+      "nome": "TVzine - Canais (Saimo)",
+      "tipo": "tvzine_worker",
+      "prefixoId": "TV",
+      "url": ""
+    },
+    {
+      "nome": "TVzine - Filmes M3U",
+      "tipo": "tvzine_worker",
+      "prefixoId": "TV_VOD",
+      "categoryType": "vod",
+      "url": ""
+    },
+    {
+      "nome": "TVzine - Séries M3U",
+      "tipo": "tvzine_worker",
+      "prefixoId": "TV_SER",
+      "categoryType": "vod",
+      "url": ""
+    },
+    {
+      "nome": "Rádios FM/Web (Links Diretos)",
+      "tipo": "radio",
+      "targetCategory": "Rádios",
+      "url": ""
+    },
+    {
+      "nome": "Rádios M3U",
+      "tipo": "radio",
+      "formato": "m3u",
+      "targetCategory": "Rádios",
+      "url": ""
+    },
+    {
+      "nome": "Mídias de Rádio",
+      "tipo": "radio",
+      "targetCategory": "Mídias de Rádio",
+      "url": ""
+    },
+    {
+      "nome": "Arcade",
+      "tipo": "emulator_json",
+      "prefixoId": "ARC",
+      "console": "arcade",
+      "targetCategory": "Arcade",
+      "url": ""
+    },
+    {
+      "nome": "Nintendo (NES)",
+      "tipo": "emulator_json",
+      "prefixoId": "NES",
+      "console": "nes",
+      "targetCategory": "Nintendo (NES)",
+      "url": ""
+    },
+    {
+      "nome": "Super Nintendo",
+      "tipo": "emulator_json",
+      "prefixoId": "SNE",
+      "console": "snes",
+      "targetCategory": "Super Nintendo",
+      "url": ""
+    },
+    {
+      "nome": "Nintendo 64",
+      "tipo": "emulator_json",
+      "prefixoId": "N64",
+      "console": "n64",
+      "targetCategory": "Nintendo 64",
+      "url": ""
+    },
+    {
+      "nome": "Nintendo DS",
+      "tipo": "emulator_json",
+      "prefixoId": "NDS",
+      "console": "nds",
+      "targetCategory": "Nintendo DS",
+      "url": ""
+    },
+    {
+      "nome": "Game Boy Color",
+      "tipo": "emulator_json",
+      "prefixoId": "GBC",
+      "console": "gbc",
+      "targetCategory": "Game Boy Color",
+      "url": ""
+    },
+    {
+      "nome": "Game Boy Advance",
+      "tipo": "emulator_json",
+      "prefixoId": "GBA",
+      "console": "gba",
+      "targetCategory": "Game Boy Advance",
+      "url": ""
+    },
+    {
+      "nome": "Mega Drive",
+      "tipo": "emulator_json",
+      "prefixoId": "MD",
+      "console": "megadrive",
+      "targetCategory": "Mega Drive",
+      "url": ""
+    },
+    {
+      "nome": "Master System",
+      "tipo": "emulator_json",
+      "prefixoId": "MS",
+      "console": "mastersystem",
+      "targetCategory": "Master System",
+      "url": ""
+    },
+    {
+      "nome": "Game Gear",
+      "tipo": "emulator_json",
+      "prefixoId": "GG",
+      "console": "gamegear",
+      "targetCategory": "Game Gear",
+      "url": ""
+    },
+    {
+      "nome": "Sega CD",
+      "tipo": "emulator_json",
+      "prefixoId": "SCD",
+      "console": "segacd",
+      "targetCategory": "Sega CD",
+      "url": ""
+    },
+    {
+      "nome": "Sega 32X",
+      "tipo": "emulator_json",
+      "prefixoId": "32X",
+      "console": "sega32x",
+      "targetCategory": "Sega 32X",
+      "url": ""
+    },
+    {
+      "nome": "Sega Saturn",
+      "tipo": "emulator_json",
+      "prefixoId": "SAT",
+      "console": "saturn",
+      "targetCategory": "Sega Saturn",
+      "url": ""
+    },
+    {
+      "nome": "Atari 2600",
+      "tipo": "emulator_json",
+      "prefixoId": "A26",
+      "console": "atari2600",
+      "targetCategory": "Atari 2600",
+      "url": ""
+    },
+    {
+      "nome": "PC Engine",
+      "tipo": "emulator_json",
+      "prefixoId": "PCE",
+      "console": "pcengine",
+      "targetCategory": "PC Engine",
+      "url": ""
+    },
+    {
+      "nome": "PC Engine CD",
+      "tipo": "emulator_json",
+      "prefixoId": "PCD",
+      "console": "pcenginecd",
+      "targetCategory": "PC Engine CD",
+      "url": ""
+    },
+    {
+      "nome": "Neo Geo Pocket",
+      "tipo": "emulator_json",
+      "prefixoId": "NGP",
+      "console": "ngp",
+      "targetCategory": "Neo Geo Pocket",
+      "url": ""
+    },
+    {
+      "nome": "Neo Geo CD",
+      "tipo": "emulator_json",
+      "prefixoId": "NGC",
+      "console": "neogeocd",
+      "targetCategory": "Neo Geo CD",
+      "url": ""
+    },
+    {
+      "nome": "Neo Geo",
+      "tipo": "emulator_json",
+      "prefixoId": "NEO",
+      "console": "neogeo",
+      "targetCategory": "Neo Geo",
+      "url": ""
+    },
+    {
+      "nome": "MSX",
+      "tipo": "emulator_json",
+      "prefixoId": "MSX",
+      "console": "msx",
+      "targetCategory": "MSX",
+      "url": ""
+    },
+    {
+      "nome": "Odyssey 2",
+      "tipo": "emulator_json",
+      "prefixoId": "ODY",
+      "console": "odyssey2",
+      "targetCategory": "Odyssey 2",
+      "url": ""
+    },
+    {
+      "nome": "ColecoVision",
+      "tipo": "emulator_json",
+      "prefixoId": "COL",
+      "console": "colecovision",
+      "targetCategory": "ColecoVision",
+      "url": ""
+    },
+    {
+      "nome": "Amiga",
+      "tipo": "emulator_json",
+      "prefixoId": "AMI",
+      "console": "amiga",
+      "targetCategory": "Amiga",
+      "url": ""
+    },
+    {
+      "nome": "MS-DOS",
+      "tipo": "emulator_json",
+      "prefixoId": "DOS",
+      "console": "msdos",
+      "targetCategory": "MS-DOS",
+      "url": ""
+    },
+    {
+      "nome": "Flash Player",
+      "tipo": "emulator_json",
+      "prefixoId": "FLA",
+      "console": "flash",
+      "targetCategory": "Flash Player",
+      "url": ""
+    },
+    {
+      "nome": "PlayStation 1",
+      "tipo": "emulator_json",
+      "prefixoId": "PS1",
+      "console": "ps1",
+      "targetCategory": "PlayStation 1",
+      "url": ""
+    },
+    {
+      "nome": "3DO",
+      "tipo": "emulator_json",
+      "prefixoId": "3DO",
+      "console": "3do",
+      "targetCategory": "3DO",
+      "url": ""
+    }
+  ]
+}
