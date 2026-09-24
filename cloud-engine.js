@@ -101,6 +101,7 @@
         seriesComoEpisodios: false,            // true = todos os episódios de todas as séries no window.DB (modo antigo, pesado)
         renderAoCompletar: true,               // (só com compatCompleto) chama window.render() quando terminar
         paginasPorCarga: 2,                    // páginas (120 cards cada) trazidas a cada carregarMais()
+        carregarCompleto: ['iptv', 'radio', 'streams', 'audio', 'filmes', 'series'],  // listas que entram INTEIRAS (TV/rádio/TVzine VOD)
         legadoMaxItens: 500000,
         usarWorker: true,                      // modo legado/aoVivo roda num Web Worker
         checarAtualizacaoMs: 30 * 60 * 1000,   // procura catálogo novo a cada 30 min (0 = nunca)
@@ -656,12 +657,23 @@
 
         // Resolve os alvos só AGORA (o app pode ter recriado window.DB)
         const db = dbDoApp();
+        const global = (nome) => Array.isArray(window[nome]) ? window[nome] : (window[nome] = []);
         const alvo = {
             videos: lista(db, 'videos'),
             games: lista(db, 'games'),
-            iptv: Array.isArray(window.CZ_IPTV) ? window.CZ_IPTV : (window.CZ_IPTV = []),
-            radio: Array.isArray(window.CZ_VIDEOS_RADIO) ? window.CZ_VIDEOS_RADIO : (window.CZ_VIDEOS_RADIO = [])
+            filmes: lista(db, 'filmes'),                  // TVzine → aba Filmes (DB.filmes)
+            series: lista(db, 'series'),                  // TVzine → aba Séries (DB.series)
+            iptv: global('CZ_IPTV'),
+            radio: global('CZ_VIDEOS_RADIO'),             // Radio Hub → Tuner
+            streams: global('CZ_M3U_STREAMS'),            // Radio Hub → Listas Stream
+            audio: global('CZ_AUDIO_FILES')               // Radio Hub → Mídia & Áudio
         };
+        // Home: categorias da nuvem viram fileiras (o app lista as fileiras por DB.categories)
+        if (Array.isArray(db.categories)) {
+            for (const c of Engine.manifest.categories) {
+                if ((c.destino || 'videos') === 'videos' && !db.categories.includes(c.nome)) db.categories.push(c.nome);
+            }
+        }
         const destaques = lista(db, 'destaques');
         for (const arr of [...Object.values(alvo), destaques]) removerNossos(arr);
 
@@ -685,16 +697,22 @@
             const k = alvo[cat.destino] ? cat.destino : 'videos';
             const destino = alvo[k];
             const set = jaTem.get(k);
+            let n = 0;
             for (const card of cards || []) {
                 if (set.has('i:' + card.id) || (card.url && set.has('u:' + card.url))) continue;
                 set.add('i:' + card.id);
-                if (k === 'iptv') {                               // apelidos que listas IPTV costumam usar
+                if (k !== 'videos' && k !== 'games') {            // apelidos que listas IPTV/rádio costumam usar
                     card.name = card.name || card.title;
                     card.logo = card.logo || card.thumb;
                     card.group = card.group || card.cat;
+                    if (card.tvgId && !card.tvg_id) card.tvg_id = card.tvgId;
+                    // Rádio: a tela filtra por país em "country" (vem do JSON, de "pais" ou do group-title do M3U)
+                    if ((k === 'radio' || k === 'streams') && !card.country) card.country = card.pais || card.cat;
                 }
                 destino.push(marcar(card));
+                n++;
             }
+            return n;
         };
 
         // 1) Primeiras páginas de cada categoria ANTES do "pronto" (abertura rápida)
@@ -721,6 +739,7 @@
         const cursor = new Map();
         for (const c of cats) cursor.set(c, usaCompat(c) ? { compat: true, n: 1, max: c.compatPages } : { compat: false, n: Math.min(c.pages, lim), max: c.pages });
         compatCtx = { geracao, somar, marcar, cursor, buscar };
+        completarDestinos(geracao);
 
         // 2) O RESTO do catálogo em segundo plano (como o motor antigo: tudo no window.DB)
         if (CFG.compatCompleto) {
@@ -730,6 +749,26 @@
                 else for (let n = Math.min(c.pages, lim); n < c.pages; n++) resto.push({ c, n });
             }
             if (resto.length) completarCompat(resto, somar, geracao, buscar);
+        }
+    }
+
+    /**
+     * TV, rádio e as abas VOD do TVzine trabalham com a lista INTEIRA (filtram por país,
+     * grupo, busca). Essas entram completas em segundo plano, como no motor antigo.
+     */
+    async function completarDestinos(geracao) {
+        const destinos = CFG.carregarCompleto || [];
+        if (!destinos.length) return;
+        const cats = Engine.manifest.categories.filter(c => destinos.includes(c.destino));
+        const feitos = new Set();
+        for (const c of cats) {
+            if (geracao !== compatGeracao) return;
+            try { await Engine.carregarCategoriaInteira(c.nome); } catch (e) { /* segue */ }
+        }
+        for (const c of cats) feitos.add(c.destino);
+        for (const d of feitos) {
+            log(`📡 Lista "${d}" completa`);
+            emit('cloud_engine_destino_completo', { destino: d });
         }
     }
 
@@ -770,6 +809,15 @@
             .filter(c => c.nome === nome || c.slug === nome).reduce((t, c) => t + (c.total || 0), 0);
     };
 
+    /** Nomes das categorias da nuvem que pertencem a um console de jogos ("snes", "megadrive"...). */
+    Engine.categoriasDoConsole = function (consoleId) {
+        const cats = Engine.manifest ? Engine.manifest.categories : [];
+        const nomes = new Set(cats.filter(c => c.destino === 'games' && c.console === consoleId).map(c => c.nome));
+        // catálogos gerados antes do campo "console": descobre pelos jogos já carregados
+        for (const g of ((window.DB && window.DB.games) || [])) if (g && g._cz && g.console === consoleId && g.cat) nomes.add(g.cat);
+        return [...nomes];
+    };
+
     const carregando = new Map();
     /**
      * Traz as próximas páginas da categoria para o window.DB.videos (formato antigo).
@@ -788,11 +836,10 @@
                 for (let i = 0; i < qtd && k.n < k.max; i++, k.n++) tarefas.push({ c, n: k.n, compat: k.compat });
             }
             if (!tarefas.length) return 0;
-            const antes = (window.DB.videos || []).length;
             const res = await Promise.all(tarefas.map(ctx.buscar));
             if (ctx !== compatCtx) return 0;                  // catálogo trocou no meio
-            res.forEach((cards, i) => ctx.somar(tarefas[i].c, cards));
-            const novos = (window.DB.videos || []).length - antes;
+            let novos = 0;
+            res.forEach((cards, i) => { novos += ctx.somar(tarefas[i].c, cards) || 0; });
             emit('cloud_engine_mais', { categoria: nome, novos, temMais: Engine.temMais(nome) });
             return novos;
         })().finally(() => carregando.delete(nome));
