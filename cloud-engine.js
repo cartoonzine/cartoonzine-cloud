@@ -1081,6 +1081,25 @@
         return Engine.manifest;
     }
 
+    // ==================================================================
+    // Limpeza única: o motor antigo gerava IDs quebrados como
+    // "({showId}_S){temporada.season}E3" (bug das barras nas template strings).
+    // Se o "continuar assistindo" guardou um desses, o card aponta para um episódio
+    // que não existe: o título some e o player volta para o início. Remove esses registros.
+    // ==================================================================
+    (function limparIdsDoMotorAntigo() {
+        try {
+            const quebrado = (v) => typeof v === 'string' && /[{}]/.test(v) && /\(|\)/.test(v);
+            const remover = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const k = localStorage.key(i);
+                if (k && k.startsWith('last_watched_') && quebrado(localStorage.getItem(k))) remover.push(k);
+            }
+            remover.forEach(k => localStorage.removeItem(k));
+            if (remover.length) log(`🧹 ${remover.length} registro(s) de "continuar assistindo" do motor antigo removido(s):`, remover.map(k => k.slice(13)).join(', '));
+        } catch (e) { /* localStorage indisponível */ }
+    })();
+
     window.CloudEngine = Engine;
     Engine.ready = carregarCore().then((c) => { Core = c; return iniciar(); }).catch((e) => {
         console.error('❌ [Cloud Engine] Falha fatal:', e);
