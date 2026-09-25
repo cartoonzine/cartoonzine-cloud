@@ -314,7 +314,11 @@
 
         const url = normUrl(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src);
         if (!url) return [];
-        const title = String(raw.title || raw.name || raw.nome || raw.tvgName || 'Sem nome').trim();
+        let title = String(raw.title || raw.name || raw.nome || raw.tvgName || 'Sem nome').trim();
+        // "Filme (2017)" -> título "Filme" + ano 2017 (junta com a versão sem ano no nome)
+        let anoDoTitulo;
+        const mAno = /^(.*\S)\s*[(\[](\d{4})[)\]]\s*$/.exec(title);
+        if (mAno && src.anoNoTitulo !== false) { title = mAno[1].trim(); anoDoTitulo = parseInt(mAno[2], 10); }
 
         // Tipo do item
         let categoryType;
@@ -331,7 +335,7 @@
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
             url,
             desc: raw.desc || raw.overview || raw.description,
-            year: raw.year ? parseInt(raw.year, 10) || undefined : undefined,
+            year: (raw.year ? parseInt(raw.year, 10) || undefined : undefined) || anoDoTitulo,
             genre: asGenre(raw.genre || raw.genres),
             cat: baseCat,
             categoryType,
@@ -339,7 +343,8 @@
             tvgId: raw.tvgId || raw.tvg_id,
             headers: raw.headers,
             destaque: raw.destaque ? true : undefined,
-            origem, _dest
+            origem, _dest,
+            _anoNoNome: anoDoTitulo ? true : undefined
         };
 
         // Episódio solto em lista M3U/JSON de VOD? ("Naruto S01E03")
@@ -382,6 +387,7 @@
             this.catDest = new Map();     // cat -> destino (videos|iptv|radio|games)
             this.catConsole = new Map();  // cat -> console (jogos)
             this.stats = { recebidos: 0, duplicados: 0, descartados: 0 };
+            this.anoNoNome = new Set();   // ids cujo link principal veio de um título "Filme (2017)"
         }
 
         _addCard(cat, id, type, dest, consoleId) {
@@ -402,7 +408,14 @@
                 // Duplicado: vira espelho (mirror) do original + herda campos faltantes
                 const orig = this.items.get(existingId);
                 this.stats.duplicados++;
-                if (item.url && item.url !== orig.url) {
+                // A versão com "(ano)" no nome costuma ter o link pior: se o original
+                // era essa e a nova não é, a nova passa a ser o link PRINCIPAL.
+                if (this.anoNoNome.has(orig.id) && !item._anoNoNome && item.url && item.url !== orig.url) {
+                    orig.mirrors = [orig.url, ...(orig.mirrors || []).filter(u => u !== item.url)].slice(0, 8);
+                    orig.url = item.url;
+                    this.anoNoNome.delete(orig.id);
+                    for (const k of ['thumb', 'bannerThumb', 'desc', 'previewVtt']) if (item[k] != null) orig[k] = item[k];
+                } else if (item.url && item.url !== orig.url) {
                     orig.mirrors = orig.mirrors || [];
                     if (!orig.mirrors.includes(item.url) && orig.mirrors.length < 8) orig.mirrors.push(item.url);
                 }
@@ -425,8 +438,10 @@
 
             const meta = item._seriesMeta;
             const dest = item._dest;
+            if (item._anoNoNome) this.anoNoNome.add(item.id);
             delete item._seriesMeta;
             delete item._dest;
+            delete item._anoNoNome;
             this.keyToId.set(item._key, item.id);
             delete item._key;
             this.items.set(item.id, item);
