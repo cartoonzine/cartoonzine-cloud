@@ -2,9 +2,9 @@
   "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
 
 // modo	No app	No relatório
-// "ativo"	As cópias viram um card, com o link da cópia como reserva	O que foi retirado e para qual card foi
-// "analisar"	Todos os filmes aparecem, nada é juntado	O que seria retirado se estivesse ativo
-// "desligado"	Sem filtro nenhum, como o motor antigo	Vazio
+// ativo - As cópias viram um card, com o link da cópia como reserva	O que foi retirado e para qual card foi
+// analisar -	Todos os filmes aparecem, nada é juntado	O que seria retirado se estivesse ativo
+// desligado -	Sem filtro nenhum, como o motor antigo	Vazio
   
     "deduplicacao": {
     "modo": "analisar",
