@@ -2,6 +2,13 @@
   "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
 
     "deduplicacao": {
+    "_como_usar": "Troque o valor de 'modo' abaixo e salve. O robô gera o catálogo de novo sozinho. Relatórios em catalog/analise/",
+    "_modo_ativo": "ativo → No app: as cópias viram um card, com o link da cópia como reserva. No relatório: o que foi retirado e para qual card foi.",
+    "_modo_analisar": "analisar → No app: todos os filmes aparecem, nada é juntado. No relatório: o que seria retirado se estivesse ativo.",
+    "_modo_desligado": "desligado → No app: sem filtro nenhum, como o motor antigo. No relatório: vazio.",
+    "_anoNoTitulo": "true = trata 'Filme (2017)' como 'Filme' do ano 2017 para achar cópias. false = compara o nome como veio.",
+    "_travaCapa": "true = nunca junta dois filmes com capas diferentes (evita juntar filmes distintos). false = junta só por título + ano.",
+
     "modo": "analisar",
     "anoNoTitulo": true,
     "travaCapa": true
