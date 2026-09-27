@@ -1,0 +1,18 @@
+{
+  "geradoEm": "2026-09-27T17:29:33.076Z",
+  "modo": "ativo",
+  "opcoes": {
+    "modo": "ativo",
+    "anoNoTitulo": true,
+    "travaCapa": true
+  },
+  "explicacao": "as cópias foram juntadas: cada uma virou LINK RESERVA do card que ficou (nada é apagado)",
+  "filmesNasFontes": 35496,
+  "cardsDeFilmesNoApp": 25272,
+  "retirados": 10170,
+  "porMotivo": {
+    "(ano) no nome": 10165,
+    "mesmo título e ano": 5
+  },
+  "separadosPelaTravaDaCapa": 2
+}
