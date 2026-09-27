@@ -1,17 +1,17 @@
 {
-  "geradoEm": "2026-09-27T17:29:33.076Z",
-  "modo": "ativo",
+  "geradoEm": "2026-09-27T17:37:23.153Z",
+  "modo": "analisar",
   "opcoes": {
-    "modo": "ativo",
+    "modo": "analisar",
     "anoNoTitulo": true,
     "travaCapa": true
   },
-  "explicacao": "as cópias foram juntadas: cada uma virou LINK RESERVA do card que ficou (nada é apagado)",
+  "explicacao": "nada foi juntado no app; os \"retirados\" mostram o que SERIA juntado se o modo fosse \"ativo\"",
   "filmesNasFontes": 35496,
-  "cardsDeFilmesNoApp": 25272,
-  "retirados": 10170,
+  "cardsDeFilmesNoApp": 35446,
+  "seriamRetirados": 10174,
   "porMotivo": {
-    "(ano) no nome": 10165,
+    "(ano) no nome": 10169,
     "mesmo título e ano": 5
   },
   "separadosPelaTravaDaCapa": 2
