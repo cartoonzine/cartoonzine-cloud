@@ -20,7 +20,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/filmes_saimo.json"
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/canais_saimo.json"
     },
     {
       "nome": "Séries Saimo",
