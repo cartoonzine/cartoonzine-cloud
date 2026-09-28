@@ -1,17 +1,1 @@
-[
- {
-  "titulo": "Rede TV!",
-  "comoCard": "RedeTV!",
-  "capas": [
-   "https://www.tvlogo.org/brazil/rede-tv-br.png",
-   "https://i.imgur.com/ZJgD38F.png"
-  ],
-  "links": [
-   "https://frostview.squareweb.app/relay/m/aHR0cDovL3BhbGRpLnBybzo4MC9saXZlL3RvbmluaG8wMi9DYjQ5ODAzNy83MjI5Ny5tM3U4.m3u8",
-   "https://frostview.squareweb.app/relay/m/aHR0cDovL3BhbGRpLnBybzo4MC9saXZlL3RvbmluaG8wMi9DYjQ5ODAzNy83MjI5Ny5tM3U4.m3u8"
-  ],
-  "ids": [
-   "VOD_3MYHU7M1WB"
-  ]
- }
-]
+[]
