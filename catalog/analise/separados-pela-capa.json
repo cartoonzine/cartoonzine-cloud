@@ -1,34 +1,17 @@
 [
  {
-  "titulo": "सिस्टम",
-  "ano": 2026,
-  "comoCard": "गांधारी (2026)",
+  "titulo": "Rede TV!",
+  "comoCard": "RedeTV!",
   "capas": [
-   "https://image.tmdb.org/t/p/w500/hCHei97aPYCCsh4vicz9X0wmdFV.jpg",
-   "https://image.tmdb.org/t/p/w500/ddSTqsxOoXs77xnKpP7XBPqiero.jpg"
+   "https://www.tvlogo.org/brazil/rede-tv-br.png",
+   "https://i.imgur.com/ZJgD38F.png"
   ],
   "links": [
-   "https://embedplayer2.xyz/cdn/hls/9c0db23bc0d91e331754eb6b7cf86cf9/master.txt",
-   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/387523.mp4"
+   "https://frostview.squareweb.app/relay/m/aHR0cDovL3BhbGRpLnBybzo4MC9saXZlL3RvbmluaG8wMi9DYjQ5ODAzNy83MjI5Ny5tM3U4.m3u8",
+   "https://frostview.squareweb.app/relay/m/aHR0cDovL3BhbGRpLnBybzo4MC9saXZlL3RvbmluaG8wMi9DYjQ5ODAzNy83MjI5Ny5tM3U4.m3u8"
   ],
   "ids": [
-   "VOD_1MMJRSA7S49"
-  ]
- },
- {
-  "titulo": "Se Beber, Não Case!",
-  "ano": 2009,
-  "comoCard": "Se Beber Nao Case (2009)",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/6Hi9g065cxrQc2TLh5zwmTOurvK.jpg",
-   "https://image.tmdb.org/t/p/w500/m0tQyMdp3fy5ooUOQkJMd1fQKBJ.jpg"
-  ],
-  "links": [
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1303180.mp4",
-   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/386348.mp4"
-  ],
-  "ids": [
-   "VOD_21Y202GEJXJ"
+   "VOD_3MYHU7M1WB"
   ]
  }
 ]
