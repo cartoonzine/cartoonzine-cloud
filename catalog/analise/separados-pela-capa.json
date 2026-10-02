@@ -64,22 +64,6 @@
   ]
  },
  {
-  "titulo": "Coração Errante",
-  "ano": 2021,
-  "comoCard": "Coracao Errante (2021)",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/HrxUSqq0nfGVzTL1LYpLjSmMyX.jpg",
-   "https://image.tmdb.org/t/p/w500/8CvelbX5L4Yl9na097PSqPMcpZa.jpg"
-  ],
-  "links": [
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1298880.mp4",
-   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/133033.mp4"
-  ],
-  "ids": [
-   "VOD_1QI9V5WRG3P"
-  ]
- },
- {
   "titulo": "Dentro (2023)",
   "ano": 2026,
   "comoCard": "Dentro",
@@ -112,6 +96,22 @@
   ]
  },
  {
+  "titulo": "Está Tudo Bem (2021)",
+  "ano": 2024,
+  "comoCard": "Está Tudo Bem",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/npvENlt5SBG0n4i7WpIUzKde7AP.jpg",
+   "https://image.tmdb.org/t/p/w500/inXPm6lN6VPJrkyOksygWJahSqL.jpg"
+  ],
+  "links": [
+   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/169709.mp4",
+   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1306347.mp4"
+  ],
+  "ids": [
+   "VOD_1P7QGD09K13"
+  ]
+ },
+ {
   "titulo": "Landline (2025)",
   "ano": 2017,
   "comoCard": "Landline",
@@ -128,19 +128,35 @@
   ]
  },
  {
-  "titulo": "Speed Racer (2008)",
-  "ano": 2008,
-  "comoCard": "Speed Racer",
+  "titulo": "Operação Fronteira (2008)",
+  "ano": 2019,
+  "comoCard": "Operação Fronteira",
   "capas": [
-   "https://image.tmdb.org/t/p/w500/arJV6ypZidAn4qiJXrvow3KbBqZ.jpg",
-   "https://image.tmdb.org/t/p/w500/agnG3mjMMrjVFw0FfCaK2xCVzAA.jpg"
+   "https://image.tmdb.org/t/p/w500/smz1j5GJtFm9PuBUYvQszVoGR4.jpg",
+   "https://image.tmdb.org/t/p/w500/2KfhMmTMNAj3NehyhrYtadDO7yc.jpg"
   ],
   "links": [
-   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/370932.mp4",
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1304724.mp4"
+   "https://embedplayer2.xyz/cdn/hls/33c6ef081e2051f47abaa6ee22a6044b/master.txt",
+   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1304345.mp4"
   ],
   "ids": [
-   "VOD_1HR1I6OXOU1"
+   "VOD_8WJH0G2U0"
+  ]
+ },
+ {
+  "titulo": "Operação Fronteira (2019)",
+  "ano": 2019,
+  "comoCard": "Operação Fronteira",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/smz1j5GJtFm9PuBUYvQszVoGR4.jpg",
+   "https://image.tmdb.org/t/p/w500/2KfhMmTMNAj3NehyhrYtadDO7yc.jpg"
+  ],
+  "links": [
+   "https://embedplayer2.xyz/cdn/hls/33c6ef081e2051f47abaa6ee22a6044b/master.txt",
+   "https://embedplayer2.xyz/cdn/hls/33c6ef081e2051f47abaa6ee22a6044b/master.txt"
+  ],
+  "ids": [
+   "VOD_8WJH0G2U0"
   ]
  }
 ]
