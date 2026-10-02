@@ -1,34 +1,18 @@
 [
  {
-  "titulo": "सिस्टम",
+  "titulo": "गांधारी (2026)",
   "ano": 2026,
-  "comoCard": "गांधारी (2026)",
+  "comoCard": "المهايطية",
   "capas": [
-   "https://image.tmdb.org/t/p/w500/hCHei97aPYCCsh4vicz9X0wmdFV.jpg",
-   "https://image.tmdb.org/t/p/w500/ddSTqsxOoXs77xnKpP7XBPqiero.jpg"
+   "https://image.tmdb.org/t/p/w500/5n4Po7mgGQKxGQav9tO4A390A6O.jpg",
+   "https://image.tmdb.org/t/p/w500/hCHei97aPYCCsh4vicz9X0wmdFV.jpg"
   ],
   "links": [
-   "https://embedplayer2.xyz/cdn/hls/6899d556cc9d9bbdfd97721b2d77bf7f/master.txt",
-   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/387523.mp4"
+   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/399308.mp4",
+   "https://embedplayer2.xyz/cdn/hls/6899d556cc9d9bbdfd97721b2d77bf7f/master.txt"
   ],
   "ids": [
    "VOD_1MMJRSA7S49"
-  ]
- },
- {
-  "titulo": "A Força da Mulher (2023)",
-  "ano": 2023,
-  "comoCard": "A Força da Mulher",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/8pyxBy0eWnCHUE5pKqninGs3c47.jpg",
-   "https://image.tmdb.org/t/p/w500/5WRU6bDpeZaoTw1i63gFqyvyJvs.jpg"
-  ],
-  "links": [
-   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/251966.mp4",
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1309531.mp4"
-  ],
-  "ids": [
-   "VOD_1C4NM9Z8Z49"
   ]
  },
  {
@@ -80,6 +64,22 @@
   ]
  },
  {
+  "titulo": "Coração Errante",
+  "ano": 2021,
+  "comoCard": "Coracao Errante (2021)",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/HrxUSqq0nfGVzTL1LYpLjSmMyX.jpg",
+   "https://image.tmdb.org/t/p/w500/8CvelbX5L4Yl9na097PSqPMcpZa.jpg"
+  ],
+  "links": [
+   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1298880.mp4",
+   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/133033.mp4"
+  ],
+  "ids": [
+   "VOD_1QI9V5WRG3P"
+  ]
+ },
+ {
   "titulo": "Dentro (2023)",
   "ano": 2026,
   "comoCard": "Dentro",
@@ -112,38 +112,6 @@
   ]
  },
  {
-  "titulo": "Flutuar (2019)",
-  "ano": 2019,
-  "comoCard": "Flutuar",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/uo0XfFnovYeQ27YyW6ayK5SM6w5.jpg",
-   "https://image.tmdb.org/t/p/w500/cweYrK30AExirAMewzTcZnV51D1.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55947.mp4",
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1313340.mp4"
-  ],
-  "ids": [
-   "VOD_2CBDKGJNLX9"
-  ]
- },
- {
-  "titulo": "Flutuar (2024)",
-  "ano": 2019,
-  "comoCard": "Flutuar",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/uo0XfFnovYeQ27YyW6ayK5SM6w5.jpg",
-   "https://image.tmdb.org/t/p/w500/cweYrK30AExirAMewzTcZnV51D1.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55947.mp4",
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1305292.mp4"
-  ],
-  "ids": [
-   "VOD_2CBDKGJNLX9"
-  ]
- },
- {
   "titulo": "Landline (2025)",
   "ano": 2017,
   "comoCard": "Landline",
@@ -157,6 +125,22 @@
   ],
   "ids": [
    "VOD_2199U1LANAP"
+  ]
+ },
+ {
+  "titulo": "Speed Racer (2008)",
+  "ano": 2008,
+  "comoCard": "Speed Racer",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/arJV6ypZidAn4qiJXrvow3KbBqZ.jpg",
+   "https://image.tmdb.org/t/p/w500/agnG3mjMMrjVFw0FfCaK2xCVzAA.jpg"
+  ],
+  "links": [
+   "http://tjtor8411.com:80/movie/Osiel123/Felicidade321/370932.mp4",
+   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1304724.mp4"
+  ],
+  "ids": [
+   "VOD_1HR1I6OXOU1"
   ]
  }
 ]
