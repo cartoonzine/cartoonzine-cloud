@@ -112,6 +112,38 @@
   ]
  },
  {
+  "titulo": "Flutuar (2019)",
+  "ano": 2019,
+  "comoCard": "Flutuar",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/uo0XfFnovYeQ27YyW6ayK5SM6w5.jpg",
+   "https://image.tmdb.org/t/p/w500/cweYrK30AExirAMewzTcZnV51D1.jpg"
+  ],
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55947.mp4",
+   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1313340.mp4"
+  ],
+  "ids": [
+   "VOD_2CBDKGJNLX9"
+  ]
+ },
+ {
+  "titulo": "Flutuar (2024)",
+  "ano": 2019,
+  "comoCard": "Flutuar",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/uo0XfFnovYeQ27YyW6ayK5SM6w5.jpg",
+   "https://image.tmdb.org/t/p/w500/cweYrK30AExirAMewzTcZnV51D1.jpg"
+  ],
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55947.mp4",
+   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1305292.mp4"
+  ],
+  "ids": [
+   "VOD_2CBDKGJNLX9"
+  ]
+ },
+ {
   "titulo": "Landline (2025)",
   "ano": 2017,
   "comoCard": "Landline",
@@ -125,38 +157,6 @@
   ],
   "ids": [
    "VOD_2199U1LANAP"
-  ]
- },
- {
-  "titulo": "Operação Fronteira (2008)",
-  "ano": 2019,
-  "comoCard": "Operação Fronteira",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/smz1j5GJtFm9PuBUYvQszVoGR4.jpg",
-   "https://image.tmdb.org/t/p/w500/2KfhMmTMNAj3NehyhrYtadDO7yc.jpg"
-  ],
-  "links": [
-   "https://embedplayer2.xyz/cdn/hls/33c6ef081e2051f47abaa6ee22a6044b/master.txt",
-   "http://proxy.nr3.xyz:80/movie/daniellytvc/danielly2396/1304345.mp4"
-  ],
-  "ids": [
-   "VOD_8WJH0G2U0"
-  ]
- },
- {
-  "titulo": "Operação Fronteira (2019)",
-  "ano": 2019,
-  "comoCard": "Operação Fronteira",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/smz1j5GJtFm9PuBUYvQszVoGR4.jpg",
-   "https://image.tmdb.org/t/p/w500/2KfhMmTMNAj3NehyhrYtadDO7yc.jpg"
-  ],
-  "links": [
-   "https://embedplayer2.xyz/cdn/hls/33c6ef081e2051f47abaa6ee22a6044b/master.txt",
-   "https://embedplayer2.xyz/cdn/hls/33c6ef081e2051f47abaa6ee22a6044b/master.txt"
-  ],
-  "ids": [
-   "VOD_8WJH0G2U0"
   ]
  }
 ]
