@@ -1,382 +1,889 @@
-#!/usr/bin/env node
 /**
- * build-catalog.mjs — "Fábrica" do catálogo do Cartoonzine
- *
- * Roda FORA do navegador (no seu PC ou no GitHub Actions), baixa todas as
- * fontes do sources.json, normaliza, remove duplicados, agrupa séries e gera
- * um catálogo estático FATIADO que o navegador lê aos pedaços:
- *
- *   catalog/
- *     manifest.json                 categorias, totais, destaques, versão
- *     cat/<categoria>/<n>.json      páginas de cards (ex.: 120 por página)
- *     series/<id>.json              temporadas + episódios de cada série
- *     items/<abc>.json              detalhe completo por ID (4096 fatias)
- *     search/<xx>.json              índice de busca por prefixo de 2 letras
- *
- * Uso:
- *   node tools/build-catalog.mjs --sources sources.json --out catalog
- *   node tools/build-catalog.mjs --check-streams --check-limit 5000
- *
- * Opções:
- *   --sources <arq>       manifesto de fontes (padrão: sources.json)
- *   --out <dir>           pasta de saída (padrão: catalog)
- *   --page-size <n>       cards por página (padrão: 120)
- *   --concurrency <n>     downloads simultâneos (padrão: 6)
- *   --timeout <ms>        timeout por download (padrão: 60000)
- *   --check-streams       testa se os links respondem (remove os mortos)
- *   --check-limit <n>     máximo de links testados por execução (padrão: 3000)
- *   --health <arq>        memória dos testes entre execuções (padrão: health-cache.json)
- *   --force               publica mesmo se o catálogo encolher mais de 50%
- *   --compat-episodios    gera também TODOS os episódios em lotes (só para o modo antigo
- *                         seriesComoEpisodios: true — ocupa bastante espaço)
+ * @fileoverview catalog-core.js — Núcleo compartilhado do Cartoonzine
+ * Roda IGUAL no navegador (window.CatalogCore) e no Node (require).
+ * Tudo que define "o que é um item" mora aqui: IDs estáveis, parsers
+ * M3U/JSON, normalização, deduplicação, agrupamento de séries e busca.
+ * Assim o pipeline de build e o modo legado do navegador nunca divergem.
  */
-import { createRequire } from 'node:module';
-import fs from 'node:fs/promises';
-import fss from 'node:fs';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+(function (root, factory) {
+    const api = factory();
+    // Sempre publica no global (window/self), MESMO que exista um "module"
+    // na página (Electron, NW.js, bundlers, outras libs) — antes isso fazia
+    // o núcleo "sumir" para o cloud-engine.js.
+    if (root) root.CatalogCore = api;
+    if (typeof module === 'object' && module && module.exports) module.exports = api;
+    // Avisa quem estiver esperando (cloud-engine.js carregado antes/async)
+    if (root && typeof root.dispatchEvent === 'function' && typeof Event === 'function') {
+        try { root.dispatchEvent(new Event('catalogcore:ready')); } catch (e) { /* ignore */ }
+    }
+})(typeof globalThis !== 'undefined' ? globalThis : typeof self !== 'undefined' ? self : this, function () {
+    'use strict';
 
-const require = createRequire(import.meta.url);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const Core = require(path.join(__dirname, '..', 'catalog-core.js'));
+    const PLACEHOLDER = './assets/img/loja-bg.jpg';
+    const DESC_CARD_MAX = 600;
 
-// ------------------------------------------------------------------ args
-function parseArgs(argv) {
-    const a = {
-        sources: 'sources.json', out: 'catalog', pageSize: 120, concurrency: 6,
-        timeout: 60000, checkStreams: false, checkLimit: 3000, health: 'health-cache.json',
-        checkTimeout: 8000, maxFails: 3
-    };
-    for (let i = 2; i < argv.length; i++) {
-        const k = argv[i], v = argv[i + 1];
-        switch (k) {
-            case '--sources': a.sources = v; i++; break;
-            case '--out': a.out = v; i++; break;
-            case '--page-size': a.pageSize = +v; i++; break;
-            case '--concurrency': a.concurrency = +v; i++; break;
-            case '--timeout': a.timeout = +v; i++; break;
-            case '--check-streams': a.checkStreams = true; break;
-            case '--check-limit': a.checkLimit = +v; i++; break;
-            case '--health': a.health = v; i++; break;
-            case '--force': a.force = true; break;
-            case '--compat-episodios': a.compatEpisodios = true; break;
-            default: console.warn('Opção desconhecida:', k);
+    // ------------------------------------------------------------------
+    // Hash e IDs estáveis
+    // ------------------------------------------------------------------
+    /** cyrb53: hash rápido de 53 bits, funciona com qualquer Unicode. */
+    function cyrb53(str, seed = 0) {
+        let h1 = 0xdeadbeef ^ seed, h2 = 0x41c6ce57 ^ seed;
+        for (let i = 0; i < str.length; i++) {
+            const ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
         }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return 4294967296 * (2097151 & h2) + (h1 >>> 0);
     }
-    return a;
-}
 
-const log = (...m) => console.log('[catalog]', ...m);
+    /** Mesmo conteúdo => mesmo ID, sempre (favoritos e "continuar assistindo" não quebram). */
+    function makeId(prefix, key) {
+        return `${prefix}_${cyrb53(String(key)).toString(36).toUpperCase()}`;
+    }
 
-// ------------------------------------------------------------------ utilidades
-function limiter(n) {
-    let active = 0; const q = [];
-    const next = () => {
-        if (active >= n || !q.length) return;
-        active++;
-        const { fn, res, rej } = q.shift();
-        fn().then(res, rej).finally(() => { active--; next(); });
-    };
-    return fn => new Promise((res, rej) => { q.push({ fn, res, rej }); next(); });
-}
+    /** Fatia de 3 caracteres hex usada para distribuir itens em arquivos (4096 fatias). */
+    function idShard(id) {
+        return (cyrb53(String(id), 7) & 0xfff).toString(16).padStart(3, '0');
+    }
 
-async function fetchRetry(url, { timeout, retries = 2, init = {} }) {
-    let lastErr;
-    for (let t = 0; t <= retries; t++) {
-        const ac = new AbortController();
-        const timer = setTimeout(() => ac.abort(), timeout);
-        try {
-            const r = await fetch(url, { ...init, signal: ac.signal, headers: { 'User-Agent': 'CartoonzineCatalogBot/2.0', ...(init.headers || {}) } });
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            return { r, done: () => clearTimeout(timer) };
-        } catch (e) {
-            clearTimeout(timer);
-            lastErr = e;
-            if (t < retries) await new Promise(ok => setTimeout(ok, 800 * 2 ** t));
+    // ------------------------------------------------------------------
+    // Texto
+    // ------------------------------------------------------------------
+    function normText(s) {
+        return String(s == null ? '' : s)
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    }
+
+    function slug(s) {
+        return normText(s).replace(/ /g, '-') || 'geral';
+    }
+
+    function normUrl(u) {
+        if (!u) return '';
+        return String(u).trim().replace(/#.*$/, '');
+    }
+
+    const STOP = new Set(['a', 'o', 'e', 'de', 'da', 'do', 'das', 'dos', 'the', 'of', 'and', 'em', 'hd', 'fhd', 'sd', '4k']);
+
+    /** Palavras pesquisáveis de um título (sem acento, sem stopwords). */
+    function searchTokens(title) {
+        const out = [];
+        for (const w of normText(title).split(' ')) {
+            if (w.length >= 2 && !STOP.has(w) && !out.includes(w)) out.push(w);
         }
+        return out;
     }
-    throw lastErr;
-}
 
-/** Lê uma fonte (URL http(s) ou arquivo local) chamando onChunk com texto. */
-async function readSource(url, opts, onChunk) {
-    if (!/^https?:\/\//i.test(url)) {
-        const stream = fss.createReadStream(path.resolve(url), { encoding: 'utf8', highWaterMark: 1 << 20 });
-        for await (const chunk of stream) onChunk(chunk);
-        return;
+    /** Chave do arquivo de busca: 2 primeiros caracteres da palavra. */
+    function searchShardKey(token) {
+        return normText(token).replace(/ /g, '').slice(0, 2).padEnd(2, '_');
     }
-    const { r, done } = await fetchRetry(url, opts);
-    try {
-        const decoder = new TextDecoder();
-        for await (const part of r.body) onChunk(decoder.decode(part, { stream: true }));
-        onChunk(decoder.decode());
-    } finally { done(); }
-}
 
-async function writeJSON(file, data) {
-    await fs.mkdir(path.dirname(file), { recursive: true });
-    await fs.writeFile(file, JSON.stringify(data));
-}
+    /** Verifica se todas as palavras da consulta casam (por prefixo) com o título. */
+    function matchesQuery(normTitle, queryTokens) {
+        const words = normTitle.split(' ');
+        return queryTokens.every(q => words.some(w => w.startsWith(q)));
+    }
 
-/** Escreve muitos arquivos com concorrência limitada. */
-async function writeMany(entries, conc = 64) {
-    const run = limiter(conc);
-    await Promise.all(entries.map(([f, d]) => run(() => writeJSON(f, d))));
-}
+    // ------------------------------------------------------------------
+    // Detecção de episódios em títulos ("Show S01E02", "Show T1E2", "Show 1x02")
+    // ------------------------------------------------------------------
+    const EP_RE = /^(.*?)[\s._\-–|:]*(?:[ST](\d{1,2})\s*[E](\d{1,4})|(\d{1,2})x(\d{1,3}))\b/i;
 
-// ------------------------------------------------------------------ ingestão
-async function ingest(builder, src, args, epgSet) {
-    const fmt = Core.sourceFormat(src);          // 'm3u' | 'json' | 'auto' (descobre pelo conteúdo)
-    const t0 = Date.now();
-    let n = 0;
-    const leitor = Core.createSourceReader(fmt,
-        raw => { n += builder.addRaw(raw, src); },
-        h => h.epg.forEach(u => epgSet.add(u))
-    );
-    await readSource(src.url, { timeout: args.timeout }, c => leitor.push(c));
-    leitor.end();
-    log(`✔ ${src.nome}: +${n} itens (${((Date.now() - t0) / 1000).toFixed(1)}s)`);
-    return n;
-}
+    function detectEpisode(title) {
+        const m = EP_RE.exec(String(title || ''));
+        if (!m) return null;
+        const serie = m[1].replace(/[\s._\-–|:]+$/, '').trim();
+        if (!serie) return null;
+        return {
+            serie,
+            season: parseInt(m[2] || m[4], 10),
+            episode: parseInt(m[3] || m[5], 10)
+        };
+    }
 
-// ------------------------------------------------------------------ saúde dos streams
-async function checkStreams(builder, args) {
-    let cache = {};
-    try { cache = JSON.parse(await fs.readFile(args.health, 'utf8')); } catch { /* primeira execução */ }
+    const VOD_EXT = /\.(mp4|mkv|avi|mov|webm|m4v)(\?|$)/i;
 
-    // Testa primeiro quem nunca foi testado, depois os mais antigos
-    const candidates = [...builder.items.values()]
-        .filter(it => /^https?:/i.test(it.url) && it.categoryType !== 'game')
-        .sort((a, b) => (cache[a.id]?.at || 0) - (cache[b.id]?.at || 0))
-        .slice(0, args.checkLimit);
+    // ------------------------------------------------------------------
+    // Parser M3U incremental (aceita pedaços de texto — serve p/ arquivos gigantes)
+    // ------------------------------------------------------------------
+    function createM3UParser(onEntry, onHeader) {
+        let buffer = '';
+        let cur = null;
+        let pendingOpts = {};
 
-    log(`🩺 Testando ${candidates.length} streams...`);
-    const run = limiter(Math.max(args.concurrency * 4, 16));
-    let ok = 0, bad = 0;
-    await Promise.all(candidates.map(it => run(async () => {
-        let alive = false;
-        for (const url of Core.streamCandidates(it)) {
-            try {
-                const { r, done } = await fetchRetry(url, {
-                    timeout: args.checkTimeout, retries: 0,
-                    init: { method: 'GET', headers: { Range: 'bytes=0-1023', ...(it.headers || {}) } }
-                });
-                done();
-                r.body?.cancel?.();
-                alive = true;
-                if (url !== it.url) { // espelho funcionou e o principal não: promove
-                    it.mirrors = [it.url, ...(it.mirrors || []).filter(u => u !== url)];
-                    it.url = url;
+        function parseAttrs(line) {
+            const attrs = {};
+            const re = /([\w-]+)="([^"]*)"/g;
+            let m;
+            while ((m = re.exec(line))) attrs[m[1].toLowerCase()] = m[2];
+            return attrs;
+        }
+
+        function handleLine(raw) {
+            const line = raw.trim();
+            if (!line) return;
+            if (line.startsWith('#EXTM3U')) {
+                const a = parseAttrs(line);
+                const epg = a['url-tvg'] || a['x-tvg-url'];
+                if (epg && onHeader) onHeader({ epg: epg.split(',').map(s => s.trim()).filter(Boolean) });
+                return;
+            }
+            if (line.startsWith('#EXTINF')) {
+                const attrs = parseAttrs(line);
+                // título = texto após a última vírgula que está FORA de aspas
+                let inQ = false, idx = -1;
+                for (let i = 0; i < line.length; i++) {
+                    if (line[i] === '"') inQ = !inQ;
+                    else if (line[i] === ',' && !inQ) idx = i;
                 }
-                break;
-            } catch { /* tenta o próximo espelho */ }
+                cur = {
+                    title: idx !== -1 ? line.slice(idx + 1).trim() : (attrs['tvg-name'] || ''),
+                    thumb: attrs['tvg-logo'] || '',
+                    group: attrs['group-title'] || '',
+                    tvgId: attrs['tvg-id'] || '',
+                    tvgName: attrs['tvg-name'] || ''
+                };
+                return;
+            }
+            if (line.startsWith('#EXTGRP:')) { if (cur) cur.group = cur.group || line.slice(8).trim(); return; }
+            if (line.startsWith('#EXTVLCOPT:')) {
+                const opt = line.slice(11);
+                const eq = opt.indexOf('=');
+                if (eq > 0) pendingOpts[opt.slice(0, eq).trim()] = opt.slice(eq + 1).trim();
+                return;
+            }
+            if (line.startsWith('#')) return;
+            // Qualquer linha não-comentário é URL (http, https, rtmp, rtsp, relativa...)
+            if (cur) {
+                cur.url = line;
+                const headers = {};
+                if (pendingOpts['http-user-agent']) headers['User-Agent'] = pendingOpts['http-user-agent'];
+                if (pendingOpts['http-referrer']) headers['Referer'] = pendingOpts['http-referrer'];
+                if (Object.keys(headers).length) cur.headers = headers;
+                if (!cur.title) cur.title = cur.tvgName || 'Sem nome';
+                onEntry(cur);
+            }
+            cur = null;
+            pendingOpts = {};
         }
-        const prev = cache[it.id] || { fails: 0 };
-        cache[it.id] = { at: Date.now(), fails: alive ? 0 : prev.fails + 1 };
-        alive ? ok++ : bad++;
-    })));
 
-    // Remove só quem falhou várias execuções seguidas (evita apagar por instabilidade)
-    const dead = new Set(Object.entries(cache)
-        .filter(([id, h]) => h.fails >= args.maxFails && builder.items.has(id))
-        .map(([id]) => id));
-    const removed = builder.remove(dead);
-    await fs.writeFile(args.health, JSON.stringify(cache));
-    log(`🩺 ok=${ok} falhou=${bad} removidos(≥${args.maxFails} falhas)=${removed}`);
-}
+        return {
+            push(chunk) {
+                buffer += chunk;
+                let start = 0, nl;
+                while ((nl = buffer.indexOf('\n', start)) !== -1) {
+                    handleLine(buffer.slice(start, nl));
+                    start = nl + 1;
+                }
+                buffer = buffer.slice(start);
+            },
+            end() {
+                if (buffer) handleLine(buffer);
+                buffer = '';
+            }
+        };
+    }
 
-// ------------------------------------------------------------------ saída
-async function emit(builder, args, epg, sourcesReport) {
-    const tmp = args.out + '.tmp-' + Date.now();
-    await fs.rm(tmp, { recursive: true, force: true });
-    const writes = [];
-    const categories = [];
-    const usedSlugs = new Set();
-    const destaques = [];
+    /**
+     * Leitor de fonte que DESCOBRE O FORMATO PELO CONTEÚDO: começa com "[" ou "{" → JSON;
+     * qualquer outra coisa (#EXTM3U, #EXTINF…) → M3U. Assim a mesma fonte continua funcionando
+     * se a lista mudar de M3U para JSON (ou o contrário) sem mexer no sources.json.
+     * @param {'m3u'|'json'|'auto'} fmt  formato esperado ('auto' = descobrir)
+     */
+    function createSourceReader(fmt, onEntry, onHeader) {
+        let modo = fmt === 'm3u' || fmt === 'json' ? fmt : null;
+        let m3u = null, texto = '';
+        const abrirM3U = () => { m3u = createM3UParser(onEntry, onHeader); };
+        if (modo === 'm3u') abrirM3U();
+        return {
+            push(chunk) {
+                if (!modo) {
+                    texto += chunk;
+                    const t = texto.replace(/^\uFEFF/, '').trimStart();
+                    if (!t) return;
+                    modo = (t[0] === '[' || t[0] === '{') ? 'json' : 'm3u';
+                    if (modo === 'm3u') { abrirM3U(); m3u.push(texto); texto = ''; }
+                    return;
+                }
+                if (modo === 'm3u') m3u.push(chunk); else texto += chunk;
+            },
+            end() {
+                if (modo === 'm3u') { if (m3u) m3u.end(); return; }
+                const t = texto.replace(/^\uFEFF/, '').trim();
+                texto = '';
+                if (!t) return;
+                // declarado JSON mas veio M3U (ou vice-versa): respeita o conteúdo
+                if (t[0] !== '[' && t[0] !== '{') { const p = createM3UParser(onEntry, onHeader); p.push(t); p.end(); return; }
+                extractList(JSON.parse(t)).forEach(onEntry);
+            }
+        };
+    }
+    /** Texto inteiro de uma fonte → lista de registros brutos (JSON ou M3U, descoberto pelo conteúdo). */
+    function parseSourceText(text, onHeader) {
+        const out = [];
+        const r = createSourceReader('auto', e => out.push(e), onHeader);
+        r.push(String(text || ''));
+        r.end();
+        return out;
+    }
 
-    // 1) Páginas por categoria
-    for (const cat of builder.categories()) {
-        let s = cat.slug, i = 2;
-        while (usedSlugs.has(s)) s = `${cat.slug}-${i++}`;
-        usedSlugs.add(s);
-        const ids = builder.catCards.get(cat.nome);
-        const pages = Math.ceil(ids.length / args.pageSize);
-        for (let p = 0; p < pages; p++) {
-            const cards = ids.slice(p * args.pageSize, (p + 1) * args.pageSize).map(id => builder.card(id, cat.nome));
-            for (const c of cards) if (c.destaque && destaques.length < 40) destaques.push(c);
-            writes.push([path.join(tmp, 'cat', s, `${p}.json`), cards]);
+    function parseM3U(text) {
+        const out = [];
+        let epg = [];
+        const p = createM3UParser(e => out.push(e), h => { epg = epg.concat(h.epg); });
+        p.push(text);
+        p.end();
+        return { entries: out, epg };
+    }
+
+    // ------------------------------------------------------------------
+    // Fontes: tipos do manifesto -> tipo de item
+    // ------------------------------------------------------------------
+    /** Formato do arquivo de uma fonte (json ou m3u). */
+    function sourceFormat(src) {
+        if (src.formato) return src.formato;                       // "m3u" | "json" | "auto" forçado no sources.json
+        if (/\.m3u8?(\?|$)/i.test(src.url || '')) return 'm3u';
+        if (/\.json(\?|$)/i.test(src.url || '')) return 'json';
+        // listas de canais / M3U sem extensão clara: descobre pelo conteúdo (a lista pode virar JSON)
+        if (src.tipo === 'vod_m3u' || src.tipo === 'tvzine_worker') return 'auto';
+        return 'json';
+    }
+
+    /** Para qual "prateleira" antiga do app a fonte vai (compatibilidade). */
+    function destinoDe(src) {
+        if (src.destino) return src.destino;
+        return { tvzine_worker: 'iptv', radio: 'radio', emulator_json: 'games' }[src.tipo] || 'videos';
+    }
+
+    function isUsableUrl(u) {
+        return !!u && !/SEU_USER|SEU_REPO/.test(u);
+    }
+
+    /** Extrai a lista de um JSON com formatos variados. */
+    function extractList(dados) {
+        if (Array.isArray(dados)) return dados;
+        if (!dados || typeof dados !== 'object') return [];
+        for (const k of ['data', 'items', 'results', 'videos', 'channels', 'games', 'roms', 'movies', 'series']) {
+            if (Array.isArray(dados[k])) return dados[k];
         }
-        const entry = { nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages };
-        if (cat.console) entry.console = cat.console;
-        // Formato do motor antigo: episódios "achatados" (um item por episódio) em lotes
-        if (cat.type === 'series' && args.compatEpisodios) {
-            const eps = [];
-            for (const id of ids) if (builder.series.has(id)) eps.push(...builder.compatEpisodes(id, cat.nome));
-            const LOTE = 5000;
-            entry.compatPages = Math.ceil(eps.length / LOTE);
-            entry.compatTotal = eps.length;
-            for (let p = 0; p < entry.compatPages; p++) {
-                writes.push([path.join(tmp, 'compat', s, `${p}.json`), eps.slice(p * LOTE, (p + 1) * LOTE)]);
+        const firstArr = Object.values(dados).find(Array.isArray);
+        return firstArr || [];
+    }
+
+    function clean(obj) {
+        for (const k of Object.keys(obj)) {
+            const v = obj[k];
+            if (v === undefined || v === null || v === '' || (Array.isArray(v) && !v.length)) delete obj[k];
+        }
+        return obj;
+    }
+
+    function asGenre(g) {
+        if (!g) return undefined;
+        if (Array.isArray(g)) return g.map(String).filter(Boolean);
+        return String(g).split(/[,/|]/).map(s => s.trim()).filter(Boolean);
+    }
+
+    // Campos que o normalize já trata; qualquer OUTRO campo do seu JSON
+    // (ex.: previewVtt, trailer, idade, elenco...) é mantido como veio.
+    const CAMPOS_CONHECIDOS = new Set(['title', 'name', 'nome', 'tvgName', 'thumb', 'posterUrl', 'poster', 'logo', 'image', 'cover',
+        'bannerThumb', 'backdropUrl', 'backdrop', 'url',
+        'desc', 'overview', 'description', 'year', 'genre', 'genres', 'cat', 'category', 'group', 'console',
+        'tvgId', 'tvg_id', 'headers', 'destaque', 'id', 'seasons', 'episodes', 'episode', 'season', 'number', 'still',
+        'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats',
+        'urls', 'links', 'streams', 'sources', 'fontes', 'categoria', 'grupo', 'genero', 'descricao', 'ano']);
+
+    function extras(raw) {
+        const out = {};
+        if (!raw || typeof raw !== 'object') return out;
+        for (const k of Object.keys(raw)) {
+            if (CAMPOS_CONHECIDOS.has(k) || k.startsWith('_')) continue;
+            const v = raw[k];
+            if (v === undefined || v === null || v === '') continue;
+            out[k] = v;
+        }
+        return out;
+    }
+
+    /**
+     * Converte um registro bruto (de JSON ou M3U) em 0..N itens normalizados.
+     * Séries com "seasons" viram N episódios (agrupados depois pelo builder).
+     */
+    function normalize(raw, src) {
+        const prefix = src.prefixoId || (src.tipo === 'emulator_json' ? 'GAME' : src.tipo === 'radio' ? 'RAD' : 'LIV');
+        const baseCat = src.targetCategory || raw.group || raw.category || raw.cat || raw.categoria || raw.grupo || src.nome || 'Geral';
+        const origem = src.nome;
+        const _dest = destinoDe(src);
+
+        // --- Série no formato {title, seasons:[{season, episodes:[...]}]} ---
+        if (Array.isArray(raw.seasons)) {
+            const serie = raw.title || raw.name || 'Série';
+            const seriesId = makeId(prefix, 'serie|' + normText(serie) + '|' + (raw.year || ''));
+            const meta = {
+                serie, seriesId,
+                thumb: raw.posterUrl || raw.thumb || raw.poster || raw.logo,
+                bannerThumb: raw.backdropUrl || raw.bannerThumb || raw.backdrop,
+                desc: raw.overview || raw.desc || raw.description,
+                year: raw.year, genre: asGenre(raw.genre || raw.genres),
+                extra: extras(raw), destaque: raw.destaque ? true : undefined
+            };
+            const out = [];
+            for (const temp of raw.seasons) {
+                const s = parseInt(temp.season ?? temp.number ?? 1, 10);
+                for (const ep of (temp.episodes || [])) {
+                    const e = parseInt(ep.episode ?? ep.number ?? out.length + 1, 10);
+                    const url = normUrl(ep.url || ep.streamUrl || ep.link);
+                    if (!url) continue;
+                    out.push(clean({
+                        ...extras(ep),
+                        id: makeId(prefix, `ep|${seriesId}|${s}|${e}`),
+                        _key: `ep|${seriesId}|${s}|${e}`,
+                        title: ep.title ? `${serie} - T${s}E${e} - ${ep.title}` : `${serie} - T${s}E${e}`,
+                        epTitle: ep.title,
+                        serie, seriesId, season: s, episode: e,
+                        thumb: ep.thumb || ep.still || meta.thumb,
+                        bannerThumb: meta.bannerThumb,
+                        url,
+                        desc: ep.overview || ep.desc || meta.desc,
+                        year: meta.year, genre: meta.genre,
+                        cat: baseCat, categoryType: 'episode',
+                        origem, _dest, _seriesMeta: meta
+                    }));
+                }
+            }
+            return out;
+        }
+
+        // Link principal + reservas. Aceita "url" único OU uma lista: "urls" / "links" / "streams" / "sources"
+        // (strings ou objetos {url}). O 1º link que presta vira o principal; os outros viram espelhos
+        // (o player tenta o próximo sozinho quando um cai, e o build com --check-streams promove o que responde).
+        const listaDeLinks = []
+            .concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || [])
+            .concat(...['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors'].map(k => Array.isArray(raw[k]) ? raw[k] : []))
+            .map(x => normUrl(typeof x === 'string' ? x : x && (x.url || x.link || x.src)))
+            .filter(Boolean);
+        const links = [...new Set(listaDeLinks)];
+        const url = links[0];
+        if (!url) return [];
+        let title = String(raw.title || raw.name || raw.nome || raw.tvgName || 'Sem nome').trim();
+        const espelhos = links.slice(1, 1 + (src.maxEspelhos || 40));
+        // "Filme (2017)" -> título "Filme" + ano 2017 (junta com a versão sem ano no nome)
+        let anoDoTitulo;
+        const mAno = /^(.*\S)\s*[(\[](\d{4})[)\]]\s*$/.exec(title);
+        if (mAno && src.anoNoTitulo !== false) { title = mAno[1].trim(); anoDoTitulo = parseInt(mAno[2], 10); }
+
+        // Tipo do item
+        let categoryType;
+        if (src.categoryType) categoryType = src.categoryType;
+        else if (src.tipo === 'emulator_json') categoryType = 'game';
+        else if (src.tipo === 'radio') categoryType = 'radio';
+        else if (src.tipo === 'vod_json') categoryType = 'vod';
+        else categoryType = VOD_EXT.test(url) ? 'vod' : 'live';
+
+        const item = {
+            ...extras(raw),
+            title,
+            thumb: raw.thumb || raw.posterUrl || raw.poster || raw.logo || raw.image || raw.cover,
+            bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
+            url,
+            mirrors: espelhos.length ? espelhos : undefined,
+            desc: raw.desc || raw.overview || raw.description || raw.descricao,
+            year: (raw.year || raw.ano ? parseInt(raw.year || raw.ano, 10) || undefined : undefined) || anoDoTitulo,
+            genre: asGenre(raw.genre || raw.genres || raw.genero),
+            cat: baseCat,
+            categoryType,
+            console: src.console || raw.console,
+            tvgId: raw.tvgId || raw.tvg_id,
+            headers: raw.headers,
+            destaque: raw.destaque ? true : undefined,
+            origem, _dest,
+            _anoNoNome: anoDoTitulo ? true : undefined
+        };
+
+        // Episódio solto em lista M3U/JSON de VOD? ("Naruto S01E03")
+        if (src.agruparSeries !== false && (categoryType === 'vod' || (categoryType === 'live' && VOD_EXT.test(url)))) {
+            const ep = detectEpisode(title);
+            if (ep) {
+                const seriesId = makeId(prefix, 'serie|' + normText(ep.serie) + '|');
+                Object.assign(item, {
+                    categoryType: 'episode', serie: ep.serie, seriesId,
+                    season: ep.season, episode: ep.episode,
+                    _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre }
+                });
+                item._key = `ep|${seriesId}|${ep.season}|${ep.episode}`;
             }
         }
-        categories.push(entry);
-    }
 
-    // 2) Séries
-    for (const sid of builder.series.keys()) {
-        writes.push([path.join(tmp, 'series', `${sid}.json`), builder.seriesDetail(sid)]);
-    }
-
-    // 3) Itens completos fatiados por hash do ID
-    const shards = new Map();
-    const put = (id, obj) => {
-        const k = Core.idShard(id);
-        if (!shards.has(k)) shards.set(k, {});
-        shards.get(k)[id] = obj;
-    };
-    for (const [id, it] of builder.items) put(id, it);
-    for (const sid of builder.series.keys()) put(sid, builder.seriesCard(sid));
-    for (const [k, obj] of shards) writes.push([path.join(tmp, 'items', `${k}.json`), obj]);
-
-    // 4) Índice de busca adaptativo: começa por prefixo de 2 letras e,
-    //    se a fatia passar de MAX_ROWS, subdivide em 3, 4... letras.
-    //    Formato compacto: [tituloNormalizado, id, titulo, thumb, cat, categoryType]
-    const MAX_ROWS = 3000, MAX_DEPTH = 6, MAX_CAP = 5000;
-    const allRows = [];
-    const rowTokens = [];
-    const addSearch = (card) => {
-        allRows.push([Core.normText(card.title), card.id, card.title, card.thumb, card.cat, card.categoryType]);
-        rowTokens.push(Core.searchTokens(card.title));
-    };
-    for (const it of builder.items.values()) if (it.categoryType !== 'episode') addSearch(it);
-    for (const sid of builder.series.keys()) addSearch(builder.seriesCard(sid));
-
-    const search = new Map();
-    // entries = [rowIndex, token]; divide recursivamente por prefixo
-    const bucketize = (entries, depth) => {
-        const groups = new Map();
-        for (const e of entries) {
-            const k = e[1].length >= depth ? e[1].slice(0, depth) : e[1].padEnd(depth, '_');
-            if (!groups.has(k)) groups.set(k, []);
-            groups.get(k).push(e);
+        // Chave de deduplicação: mesma obra de fontes diferentes vira UM item com espelhos
+        if (!item._key) {
+            if (categoryType === 'vod' && item.year) item._key = `vod|${normText(title)}|${item.year}`;
+            else if (categoryType === 'live' && item.tvgId) item._key = `live|${item.tvgId.toLowerCase()}`;
+            else if (categoryType === 'game') item._key = `game|${item.console || ''}|${normText(title)}`;
+            else item._key = `${categoryType}|${url}`;
         }
-        for (const [k, g] of groups) {
-            const uniq = [...new Set(g.map(e => e[0]))];
-            const canSplit = depth < MAX_DEPTH && !k.endsWith('_') && g.some(e => e[1].length > depth);
-            if (uniq.length > MAX_ROWS && canSplit) {
-                // palavras que terminam exatamente aqui ficam na fatia "k_"
-                const exact = g.filter(e => e[1].length === depth);
-                if (exact.length) search.set(k + '_', [...new Set(exact.map(e => e[0]))].map(i => allRows[i]));
-                bucketize(g.filter(e => e[1].length > depth), depth + 1);
+        item.id = raw.id && src.manterIdOriginal ? String(raw.id) : makeId(prefix, item._key);
+        return [clean(item)];
+    }
+
+    // ------------------------------------------------------------------
+    // CatalogBuilder: junta, deduplica, agrupa séries e organiza por categoria
+    // ------------------------------------------------------------------
+    class CatalogBuilder {
+        constructor(opts = {}) {
+            this.maxItems = opts.maxItems || Infinity;
+            this.items = new Map();       // id -> item completo
+            this.keyToId = new Map();     // _key -> id
+            this.series = new Map();      // seriesId -> {meta, cats:Set, episodes:[]}
+            this.catOrder = [];           // ordem de aparição das categorias
+            this.catCards = new Map();    // cat -> [ids de cards]
+            this.catType = new Map();     // cat -> tipo predominante
+            this.catDest = new Map();     // cat -> destino (videos|iptv|radio|games)
+            this.catConsole = new Map();  // cat -> console (jogos)
+            this.stats = { recebidos: 0, duplicados: 0, descartados: 0 };
+            this.anoNoNome = new Set();   // ids cujo link principal veio de um título "Filme (2017)"
+        }
+
+        _addCard(cat, id, type, dest, consoleId) {
+            if (consoleId && !this.catConsole.has(cat)) this.catConsole.set(cat, consoleId);
+            if (!this.catCards.has(cat)) {
+                this.catCards.set(cat, []);
+                this.catOrder.push(cat);
+                this.catType.set(cat, type);
+                this.catDest.set(cat, dest || 'videos');
+            }
+            this.catCards.get(cat).push(id);
+        }
+
+        add(item) {
+            this.stats.recebidos++;
+            const existingId = this.keyToId.get(item._key);
+            if (existingId) {
+                // Duplicado: vira espelho (mirror) do original + herda campos faltantes
+                const orig = this.items.get(existingId);
+                this.stats.duplicados++;
+                // A versão com "(ano)" no nome costuma ter o link pior: se o original
+                // era essa e a nova não é, a nova passa a ser o link PRINCIPAL.
+                if (this.anoNoNome.has(orig.id) && !item._anoNoNome && item.url && item.url !== orig.url) {
+                    orig.mirrors = [orig.url, ...(orig.mirrors || []).filter(u => u !== item.url)].slice(0, 8);
+                    orig.url = item.url;
+                    this.anoNoNome.delete(orig.id);
+                    for (const k of ['thumb', 'bannerThumb', 'desc', 'previewVtt']) if (item[k] != null) orig[k] = item[k];
+                } else if (item.url && item.url !== orig.url) {
+                    orig.mirrors = orig.mirrors || [];
+                    if (!orig.mirrors.includes(item.url) && orig.mirrors.length < 8) orig.mirrors.push(item.url);
+                }
+                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId']) {
+                    if (orig[k] == null && item[k] != null) orig[k] = item[k];
+                }
+                if (item.cat !== orig.cat && orig.categoryType !== 'episode') {
+                    orig.cats = orig.cats || [orig.cat];
+                    if (!orig.cats.includes(item.cat)) {
+                        orig.cats.push(item.cat);
+                        this._addCard(item.cat, orig.id, orig.categoryType, item._dest);
+                    }
+                }
+                return false;
+            }
+            if (this.items.size >= this.maxItems) { this.stats.descartados++; return false; }
+
+            // Colisão de hash (raríssima): desambigua
+            if (this.items.has(item.id)) item.id = item.id + '_' + this.items.size.toString(36);
+
+            const meta = item._seriesMeta;
+            const dest = item._dest;
+            if (item._anoNoNome) this.anoNoNome.add(item.id);
+            delete item._seriesMeta;
+            delete item._dest;
+            delete item._anoNoNome;
+            this.keyToId.set(item._key, item.id);
+            delete item._key;
+            this.items.set(item.id, item);
+
+            if (item.categoryType === 'episode') {
+                let s = this.series.get(item.seriesId);
+                if (!s) {
+                    s = { meta: clean(Object.assign({}, meta)), cats: new Set(), episodes: [] };
+                    this.series.set(item.seriesId, s);
+                }
+                s.episodes.push(item.id);
+                if (!s.cats.has(item.cat)) {
+                    s.cats.add(item.cat);
+                    this._addCard(item.cat, item.seriesId, 'series', dest);
+                }
             } else {
-                // Palavra comuníssima (ex.: "amor" em 40 mil títulos): guarda os títulos
-                // mais curtos (mais relevantes). Buscas com mais palavras usam a fatia
-                // da palavra mais rara, então continuam precisas.
-                let rows = uniq.map(i => allRows[i]);
-                if (rows.length > MAX_CAP) rows = rows.sort((a, b) => a[0].length - b[0].length).slice(0, MAX_CAP);
-                search.set(k, rows);
+                this._addCard(item.cat, item.id, item.categoryType, dest, item.console);
             }
+            return true;
         }
-    };
-    const entries = [];
-    rowTokens.forEach((tks, i) => { for (const t of tks) entries.push([i, t]); });
-    bucketize(entries, 2);
-    for (const [k, rows] of search) writes.push([path.join(tmp, 'search', `${k}.json`), rows]);
 
-    log(`💾 Gravando ${writes.length} arquivos...`);
-    await writeMany(writes);
+        addRaw(raw, src) {
+            let n = 0;
+            for (const it of normalize(raw, src)) if (this.add(it)) n++;
+            return n;
+        }
 
-    const totals = { itens: builder.items.size, series: builder.series.size, categorias: categories.length };
-    const byType = {};
-    for (const it of builder.items.values()) byType[it.categoryType] = (byType[it.categoryType] || 0) + 1;
-    totals.porTipo = byType;
+        /** Card de série (um por série, não um por episódio). */
+        seriesCard(seriesId, cat) {
+            const s = this.series.get(seriesId);
+            if (!s) return null;
+            const seasons = new Set();
+            for (const id of s.episodes) seasons.add(this.items.get(id).season);
+            return clean({
+                ...(s.meta.extra || {}),
+                id: seriesId, seriesId,
+                destaque: s.meta.destaque,
+                title: s.meta.serie,
+                thumb: s.meta.thumb || PLACEHOLDER,
+                bannerThumb: s.meta.bannerThumb || s.meta.thumb || PLACEHOLDER,
+                desc: s.meta.desc, year: s.meta.year, genre: s.meta.genre,
+                cat: cat || [...s.cats][0],
+                categoryType: 'series',
+                seasons: seasons.size,
+                episodes: s.episodes.length
+            });
+        }
 
-    const manifest = {
-        schema: 2,
-        version: Core.cyrb53(JSON.stringify(categories) + Date.now()).toString(36),
-        generatedAt: new Date().toISOString(),
-        pageSize: args.pageSize,
-        totals,
-        categories,
-        destaques,
-        epg: [...epg],
-        searchShards: [...search.keys()].sort(),
-        fontes: sourcesReport
-    };
-    await writeJSON(path.join(tmp, 'manifest.json'), manifest);
-
-    // Troca atômica: o site nunca vê um catálogo pela metade
-    const old = args.out + '.old-' + Date.now();
-    if (fss.existsSync(args.out)) await fs.rename(args.out, old);
-    await fs.rename(tmp, args.out);
-    await fs.rm(old, { recursive: true, force: true });
-    return manifest;
-}
-
-// ------------------------------------------------------------------ main
-async function main() {
-    const args = parseArgs(process.argv);
-    const t0 = Date.now();
-    const cfg = JSON.parse(await fs.readFile(args.sources, 'utf8'));
-    const sources = (Array.isArray(cfg) ? cfg : cfg.fontes || cfg.sources || []);
-    const builder = new Core.CatalogBuilder();
-    const epg = new Set();
-    const report = [];
-
-    // Fontes "aoVivo" ficam de fora: o navegador carrega essas direto (listas pequenas que mudam muito)
-    const usable = sources.filter(s => s.ativo !== false && s.aoVivo !== true && Core.isUsableUrl(s.url));
-    log(`Fontes: ${usable.length} ativas de ${sources.length} (sem URL/placeholder/aoVivo são ignoradas)`);
-
-    // Baixa em paralelo, mas ingere na ORDEM do manifesto (ordem das categorias estável).
-    // Fontes JSON ficam em memória até a vez delas; M3U são lidos em streaming na vez.
-    const run = limiter(args.concurrency);
-    const prefetched = usable.map(src => Core.sourceFormat(src) === 'json' && /^https?:/i.test(src.url)
-        ? run(async () => {
-            const { r, done } = await fetchRetry(src.url, { timeout: args.timeout });
-            try { return await r.text(); } finally { done(); }
-        }).catch(e => ({ error: e }))
-        : null);
-
-    for (let i = 0; i < usable.length; i++) {
-        const src = usable[i];
-        try {
-            let n;
-            if (prefetched[i]) {
-                const text = await prefetched[i];
-                if (text && text.error) throw text.error;
-                const before = builder.items.size;
-                for (const raw of Core.parseSourceText(text, h => h.epg.forEach(u => epg.add(u)))) builder.addRaw(raw, src);
-                n = builder.items.size - before;
-                log(`✔ ${src.nome}: +${n} itens`);
-            } else {
-                n = await ingest(builder, src, args, epg);
+        /** Detalhe completo da série: temporadas ordenadas com episódios. */
+        seriesDetail(seriesId) {
+            const s = this.series.get(seriesId);
+            if (!s) return null;
+            const bySeason = new Map();
+            for (const id of s.episodes) {
+                const ep = this.items.get(id);
+                if (!bySeason.has(ep.season)) bySeason.set(ep.season, []);
+                bySeason.get(ep.season).push(toFull(ep));
             }
-            report.push({ nome: src.nome, ok: true, itens: n });
-        } catch (e) {
-            log(`✖ ${src.nome}: ${e.message}`);
-            report.push({ nome: src.nome, ok: false, erro: String(e.message || e) });
+            const seasons = [...bySeason.keys()].sort((a, b) => a - b).map(n => ({
+                season: n,
+                episodes: bySeason.get(n).sort((a, b) => a.episode - b.episode)
+            }));
+            return Object.assign(this.seriesCard(seriesId), { seasons });
+        }
+
+        /**
+         * Episódios no FORMATO DO MOTOR ANTIGO (um item por episódio, com "serie"),
+         * para apps que montam a lista de episódios filtrando window.DB.videos.
+         */
+        compatEpisodes(seriesId, cat) {
+            const s = this.series.get(seriesId);
+            if (!s) return [];
+            const m = s.meta;
+            const genero = Array.isArray(m.genre) ? m.genre.join(', ') : m.genre;
+            const eps = s.episodes.map(id => this.items.get(id))
+                .sort((a, b) => a.season - b.season || a.episode - b.episode);
+            return eps.map(ep => {
+                const extra = {};
+                for (const k of Object.keys(ep)) if (!CAMPOS_CONHECIDOS.has(k) && k !== 'epTitle' && !k.startsWith('_')) extra[k] = ep[k];
+                return clean(Object.assign(extra, {
+                    id: ep.id,
+                    serie: m.serie,
+                    title: `${m.serie} - T${ep.season}E${ep.episode}`,
+                    epTitle: ep.epTitle,
+                    thumb: m.thumb || PLACEHOLDER,
+                    bannerThumb: m.bannerThumb || m.thumb || PLACEHOLDER,
+                    url: ep.url,
+                    mirrors: ep.mirrors,
+                    headers: ep.headers,
+                    desc: m.desc || 'Disponível sob demanda.',
+                    year: m.year,
+                    genre: genero,
+                    cat: cat || ep.cat,
+                    categoryType: 'vod',
+                    provider: 'legacy',
+                    seriesId, season: ep.season, episode: ep.episode,
+                    destaque: m.destaque
+                }));
+            });
+        }
+
+        /** Card enxuto p/ grades (descrição curta). */
+        card(id, cat) {
+            if (this.series.has(id)) return this.seriesCard(id, cat);
+            const it = this.items.get(id);
+            return it ? toCard(it, cat) : null;
+        }
+
+        categories() {
+            return this.catOrder.map(nome => ({
+                nome,
+                slug: slug(nome),
+                type: this.catType.get(nome),
+                destino: this.catDest.get(nome),
+                console: this.catConsole.get(nome),
+                total: this.catCards.get(nome).length
+            }));
+        }
+
+        /** Remove itens (ex.: streams mortos) e limpa categorias/séries. */
+        remove(ids) {
+            const dead = ids instanceof Set ? ids : new Set(ids);
+            if (!dead.size) return 0;
+            for (const id of dead) this.items.delete(id);
+            for (const [sid, s] of this.series) {
+                s.episodes = s.episodes.filter(id => !dead.has(id));
+                if (!s.episodes.length) { this.series.delete(sid); dead.add(sid); }
+            }
+            for (const [cat, list] of this.catCards) {
+                const f = list.filter(id => !dead.has(id));
+                if (f.length) this.catCards.set(cat, f);
+                else { this.catCards.delete(cat); this.catOrder = this.catOrder.filter(c => c !== cat); }
+            }
+            return dead.size;
         }
     }
 
-    // Trava de segurança: nunca troca um catálogo bom por um quebrado
-    if (usable.length && report.every(r => !r.ok)) {
-        log('✖ Todas as fontes falharam — catálogo anterior mantido.');
-        process.exit(1);
+    function toCard(it, cat) {
+        const c = Object.assign({}, it);
+        c.thumb = c.thumb || PLACEHOLDER;
+        c.bannerThumb = c.bannerThumb || c.thumb;
+        if (cat) c.cat = cat;
+        if (c.desc && c.desc.length > DESC_CARD_MAX) c.desc = c.desc.slice(0, DESC_CARD_MAX - 1) + '…';
+        delete c.cats;
+        return c;
     }
-    try {
-        const prev = JSON.parse(await fs.readFile(path.join(args.out, 'manifest.json'), 'utf8'));
-        if (!args.force && builder.items.size < prev.totals.itens * 0.5) {
-            log(`✖ Catálogo encolheu de ${prev.totals.itens} para ${builder.items.size} itens (>50%). Use --force se for intencional. Catálogo anterior mantido.`);
-            process.exit(1);
+
+    function toFull(it) {
+        const c = Object.assign({}, it);
+        c.thumb = c.thumb || PLACEHOLDER;
+        c.bannerThumb = c.bannerThumb || c.thumb;
+        return c;
+    }
+
+    /** URLs para o player tentar em ordem (failover automático). */
+    function streamCandidates(item) {
+        return [item.url].concat(item.mirrors || []).filter(Boolean);
+    }
+
+
+    // ------------------------------------------------------------------
+    // Busca: ranqueia linhas [tituloNorm, id, titulo, thumb, cat, tipo]
+    // ------------------------------------------------------------------
+    function rankSearch(rows, query, limit = 60) {
+        const qTokens = normText(query).split(' ').filter(Boolean);
+        if (!qTokens.length) return [];
+        const qFull = qTokens.join(' ');
+        const seen = new Set();
+        const hits = [];
+        for (const r of rows) {
+            if (seen.has(r[1]) || !matchesQuery(r[0], qTokens)) continue;
+            seen.add(r[1]);
+            // pontuação: título igual > começa com a busca > contém a frase > só palavras;
+            // desempate: mais palavras exatas > título mais curto
+            const score = r[0] === qFull ? 0 : r[0].startsWith(qFull) ? 1 : r[0].includes(qFull) ? 2 : 3;
+            const words = r[0].split(' ');
+            const exatas = qTokens.reduce((n, q) => n + (words.includes(q) ? 1 : 0), 0);
+            hits.push([score, -exatas, r[0].length, r]);
         }
-    } catch { /* sem catálogo anterior */ }
+        hits.sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2]);
+        return hits.slice(0, limit).map(([, , , r]) => ({
+            id: r[1], title: r[2], thumb: r[3], cat: r[4], categoryType: r[5]
+        }));
+    }
 
-    if (args.checkStreams) await checkStreams(builder, args);
+    function makeLimiter(n) {
+        let active = 0; const q = [];
+        const next = () => {
+            if (active >= n || !q.length) return;
+            active++;
+            const { fn, res, rej } = q.shift();
+            Promise.resolve().then(fn).then(res, rej).finally(() => { active--; next(); });
+        };
+        return fn => new Promise((res, rej) => { q.push({ fn, res, rej }); next(); });
+    }
 
-    const m = await emit(builder, args, epg, report);
-    log(`✅ Pronto em ${((Date.now() - t0) / 1000).toFixed(1)}s — ${m.totals.itens} itens, ${m.totals.series} séries, ${m.totals.categorias} categorias`);
-    log(`   duplicados mesclados: ${builder.stats.duplicados}`);
-    if (report.some(r => !r.ok)) process.exitCode = report.every(r => !r.ok) ? 1 : 0;
-}
+    async function fetchWithRetry(url, { timeoutMs = 20000, tentativas = 2, fetchFn, init = {} } = {}) {
+        const f = fetchFn || fetch;
+        let last;
+        for (let t = 0; t <= tentativas; t++) {
+            const ac = typeof AbortController !== 'undefined' ? new AbortController() : null;
+            const timer = ac ? setTimeout(() => ac.abort(), timeoutMs) : null;
+            try {
+                const r = await f(url, Object.assign({}, init, ac ? { signal: ac.signal } : {}));
+                if (!r.ok) {
+                    const err = new Error(`HTTP ${r.status} em ${url}`);
+                    err.status = r.status;
+                    throw err;
+                }
+                return { res: r, done: () => timer && clearTimeout(timer) };
+            } catch (e) {
+                if (timer) clearTimeout(timer);
+                last = e;
+                if (e.status === 404) break;             // não adianta insistir
+                if (t < tentativas) await new Promise(ok => setTimeout(ok, 600 * 2 ** t));
+            }
+        }
+        throw last;
+    }
 
-main().catch(e => { console.error(e); process.exit(1); });
+    /** Lê a resposta em pedaços (streaming) quando possível. */
+    async function readChunks(res, onChunk) {
+        if (res.body && typeof res.body.getReader === 'function') {
+            const reader = res.body.getReader();
+            const dec = new TextDecoder();
+            for (;;) {
+                const { done, value } = await reader.read();
+                if (done) break;
+                onChunk(dec.decode(value, { stream: true }));
+            }
+            onChunk(dec.decode());
+        } else {
+            onChunk(await res.text());
+        }
+    }
+
+    // ------------------------------------------------------------------
+    // LocalCatalog: catálogo montado AO VIVO a partir das fontes.
+    // Usado no modo legado (sem build) e para fontes marcadas "aoVivo".
+    // Expõe a mesma interface do catálogo estático (páginas, busca, séries).
+    // ------------------------------------------------------------------
+    class LocalCatalog {
+        constructor(opts = {}) {
+            this.pageSize = opts.pageSize || 120;
+            this.b = new CatalogBuilder({ maxItems: opts.maxItems });
+            this.epg = new Set();
+            this.fontes = [];
+            this._cats = null;
+            this._rows = null;
+        }
+
+        async ingest(fontes, opts = {}) {
+            const run = makeLimiter(opts.concorrencia || 6);
+            const usable = fontes.filter(s => s.ativo !== false && isUsableUrl(s.url));
+            const progress = opts.onProgress || (() => {});
+            let concluidas = 0;
+
+            // Baixa em paralelo (limitado); cada fonte é parseada assim que chega.
+            // A ORDEM das categorias segue o manifesto: fontes que chegam antes
+            // esperam a vez numa fila (os dados brutos ficam guardados).
+            const tarefas = usable.map(src => run(async () => {
+                const { res, done } = await fetchWithRetry(src.url, opts);
+                try {
+                    // M3U, JSON ou "auto" (descobre pelo conteúdo) — tudo pelo mesmo leitor
+                    const entries = [];
+                    const r = createSourceReader(sourceFormat(src), e => entries.push(e), h => h.epg.forEach(u => this.epg.add(u)));
+                    await readChunks(res, c => r.push(c));
+                    r.end();
+                    return entries;
+                } finally { done(); }
+            }));
+            tarefas.forEach(t => t.catch(() => {}));   // erros são tratados abaixo, na ordem
+
+            for (let i = 0; i < usable.length; i++) {
+                const src = usable[i];
+                try {
+                    const lista = await tarefas[i];
+                    let n = 0;
+                    for (const raw of lista) n += this.b.addRaw(raw, src);
+                    this.fontes.push({ nome: src.nome, ok: true, itens: n });
+                } catch (e) {
+                    this.fontes.push({ nome: src.nome, ok: false, erro: String(e && e.message || e) });
+                }
+                progress({ fonte: src.nome, concluidas: ++concluidas, total: usable.length, itens: this.b.items.size });
+            }
+            this._cats = null;
+            this._rows = null;
+            return this.manifest();
+        }
+
+        /** Adiciona itens já prontos (ex.: vindos de outro worker). */
+        addRawList(lista, src) {
+            let n = 0;
+            for (const raw of lista) n += this.b.addRaw(raw, src);
+            this._cats = null; this._rows = null;
+            return n;
+        }
+
+        _categories() {
+            if (this._cats) return this._cats;
+            const used = new Set();
+            this._cats = this.b.categories().map(c => {
+                let s = c.slug, i = 2;
+                while (used.has(s)) s = `${c.slug}-${i++}`;
+                used.add(s);
+                const extra = {};
+                if (c.type === 'series') {
+                    let eps = 0;
+                    for (const sid of this.b.catCards.get(c.nome) || []) { const se = this.b.series.get(sid); if (se) eps += se.episodes.length; }
+                    extra.compatPages = Math.ceil(eps / 5000);
+                    extra.compatTotal = eps;
+                }
+                return Object.assign(c, { slug: s, pages: Math.ceil(c.total / this.pageSize) }, extra);
+            });
+            this._bySlug = new Map(this._cats.map(c => [c.slug, c]));
+            return this._cats;
+        }
+
+        manifest() {
+            const categories = this._categories();
+            const destaques = [];
+            for (const it of this.b.items.values()) {
+                if (it.destaque) { destaques.push(this.b.card(it.id)); if (destaques.length >= 40) break; }
+            }
+            return {
+                schema: 2, version: 'local-' + this.b.items.size, generatedAt: new Date().toISOString(),
+                pageSize: this.pageSize,
+                totals: { itens: this.b.items.size, series: this.b.series.size, categorias: categories.length },
+                categories, destaques, epg: [...this.epg], fontes: this.fontes
+            };
+        }
+
+        page(slugOrName, n = 0) {
+            this._categories();
+            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
+            if (!cat) return [];
+            const ids = this.b.catCards.get(cat.nome) || [];
+            return ids.slice(n * this.pageSize, (n + 1) * this.pageSize).map(id => this.b.card(id, cat.nome));
+        }
+
+        /** Episódios de uma categoria de séries no formato antigo, em lotes. */
+        compatPage(slugOrName, n = 0, tamanho = 5000) {
+            this._categories();
+            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
+            if (!cat) return [];
+            if (!this._compat) this._compat = new Map();
+            if (!this._compat.has(cat.nome)) {
+                const all = [];
+                for (const sid of this.b.catCards.get(cat.nome) || []) if (this.b.series.has(sid)) all.push(...this.b.compatEpisodes(sid, cat.nome));
+                this._compat.set(cat.nome, all);
+            }
+            return this._compat.get(cat.nome).slice(n * tamanho, (n + 1) * tamanho);
+        }
+
+        item(id) {
+            if (this.b.series.has(id)) return this.b.seriesCard(id);
+            const it = this.b.items.get(id);
+            return it ? Object.assign({}, it) : null;
+        }
+
+        series(id) { return this.b.seriesDetail(id); }
+
+        search(q, limit) {
+            if (!this._rows) {
+                this._rows = [];
+                for (const it of this.b.items.values()) {
+                    if (it.categoryType !== 'episode') this._rows.push([normText(it.title), it.id, it.title, it.thumb || PLACEHOLDER, it.cat, it.categoryType]);
+                }
+                for (const sid of this.b.series.keys()) {
+                    const c = this.b.seriesCard(sid);
+                    this._rows.push([normText(c.title), c.id, c.title, c.thumb, c.cat, 'series']);
+                }
+            }
+            return rankSearch(this._rows, q, limit);
+        }
+    }
+
+    return {
+        VERSION: '2.0.0',
+        PLACEHOLDER,
+        cyrb53, makeId, idShard,
+        normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
+        detectEpisode, createM3UParser, parseM3U,
+        sourceFormat, isUsableUrl, extractList, normalize, createSourceReader, parseSourceText,
+        CatalogBuilder, streamCandidates, destinoDe,
+        rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
+    };
+});
