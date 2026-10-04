@@ -126,15 +126,23 @@ async function writeMany(entries, conc = 64) {
 
 // ------------------------------------------------------------------ ingestão
 async function ingest(builder, src, args, epgSet) {
-    const fmt = Core.sourceFormat(src);          // 'm3u' | 'json' | 'auto' (descobre pelo conteúdo)
+    const fmt = Core.sourceFormat(src);
     const t0 = Date.now();
     let n = 0;
-    const leitor = Core.createSourceReader(fmt,
-        raw => { n += builder.addRaw(raw, src); },
-        h => h.epg.forEach(u => epgSet.add(u))
-    );
-    await readSource(src.url, { timeout: args.timeout }, c => leitor.push(c));
-    leitor.end();
+    if (fmt === 'm3u') {
+        const parser = Core.createM3UParser(
+            raw => { n += builder.addRaw(raw, src); },
+            h => h.epg.forEach(u => epgSet.add(u))
+        );
+        await readSource(src.url, { timeout: args.timeout }, c => parser.push(c));
+        parser.end();
+    } else {
+        let text = '';
+        await readSource(src.url, { timeout: args.timeout }, c => { text += c; });
+        const lista = Core.extractList(JSON.parse(text));
+        text = null;
+        for (const raw of lista) n += builder.addRaw(raw, src);
+    }
     log(`✔ ${src.nome}: +${n} itens (${((Date.now() - t0) / 1000).toFixed(1)}s)`);
     return n;
 }
@@ -345,7 +353,7 @@ async function main() {
                 const text = await prefetched[i];
                 if (text && text.error) throw text.error;
                 const before = builder.items.size;
-                for (const raw of Core.parseSourceText(text, h => h.epg.forEach(u => epg.add(u)))) builder.addRaw(raw, src);
+                for (const raw of Core.extractList(JSON.parse(text))) builder.addRaw(raw, src);
                 n = builder.items.size - before;
                 log(`✔ ${src.nome}: +${n} itens`);
             } else {
