@@ -126,23 +126,15 @@ async function writeMany(entries, conc = 64) {
 
 // ------------------------------------------------------------------ ingestão
 async function ingest(builder, src, args, epgSet) {
-    const fmt = Core.sourceFormat(src);
+    const fmt = Core.sourceFormat(src);          // 'm3u' | 'json' | 'auto' (descobre pelo conteúdo)
     const t0 = Date.now();
     let n = 0;
-    if (fmt === 'm3u') {
-        const parser = Core.createM3UParser(
-            raw => { n += builder.addRaw(raw, src); },
-            h => h.epg.forEach(u => epgSet.add(u))
-        );
-        await readSource(src.url, { timeout: args.timeout }, c => parser.push(c));
-        parser.end();
-    } else {
-        let text = '';
-        await readSource(src.url, { timeout: args.timeout }, c => { text += c; });
-        const lista = Core.extractList(JSON.parse(text));
-        text = null;
-        for (const raw of lista) n += builder.addRaw(raw, src);
-    }
+    const leitor = Core.createSourceReader(fmt,
+        raw => { n += builder.addRaw(raw, src); },
+        h => h.epg.forEach(u => epgSet.add(u))
+    );
+    await readSource(src.url, { timeout: args.timeout }, c => leitor.push(c));
+    leitor.end();
     log(`✔ ${src.nome}: +${n} itens (${((Date.now() - t0) / 1000).toFixed(1)}s)`);
     return n;
 }
@@ -313,9 +305,6 @@ async function emit(builder, args, epg, sourcesReport) {
     };
     await writeJSON(path.join(tmp, 'manifest.json'), manifest);
 
-    // Pasta de ANÁLISE do filtro de cópias (catalog/analise/)
-    await escreverAnalise(builder, path.join(tmp, 'analise'), manifest.generatedAt);
-
     // Troca atômica: o site nunca vê um catálogo pela metade
     const old = args.out + '.old-' + Date.now();
     if (fss.existsSync(args.out)) await fs.rename(args.out, old);
@@ -324,68 +313,13 @@ async function emit(builder, args, epg, sourcesReport) {
     return manifest;
 }
 
-// ------------------------------------------------------------------ análise do filtro de cópias
-function csv(linhas, colunas) {
-    const esc = (v) => {
-        if (v == null) return '';
-        const t = String(v);
-        return /[";\n]/.test(t) ? '"' + t.replace(/"/g, '""') + '"' : t;
-    };
-    // ";" abre direto em colunas no Excel em português
-    return '﻿' + [colunas.map(c => c[0]).join(';'), ...linhas.map(l => colunas.map(c => esc(c[1](l))).join(';'))].join('\n');
-}
-
-async function escreverAnalise(builder, dir, geradoEm) {
-    await fs.mkdir(dir, { recursive: true });
-    const d = builder.dedup;
-    const retirados = builder.relatorio.juntados;
-    const separados = builder.relatorio.separados;
-    const ativos = [];
-    for (const it of builder.items.values()) {
-        if (it.categoryType !== 'vod') continue;
-        ativos.push({ id: it.id, titulo: it.title, ano: it.year || null, categoria: it.cat, link: it.url, reservas: (it.mirrors || []).length, capa: it.thumb || null, origem: it.origem });
-    }
-    ativos.sort((a, b) => String(a.titulo).localeCompare(String(b.titulo), 'pt'));
-    const porMotivo = {};
-    for (const r of retirados) porMotivo[r.motivo] = (porMotivo[r.motivo] || 0) + 1;
-    const resumo = {
-        geradoEm,
-        modo: d.modo,
-        opcoes: d,
-        explicacao: {
-            ativo: 'as cópias foram juntadas: cada uma virou LINK RESERVA do card que ficou (nada é apagado)',
-            analisar: 'nada foi juntado no app; os "retirados" mostram o que SERIA juntado se o modo fosse "ativo"',
-            desligado: 'sem filtro: todos os filmes aparecem como vieram da lista'
-        }[d.modo],
-        filmesNasFontes: builder.vodRecebidos,
-        cardsDeFilmesNoApp: ativos.length,
-        [d.modo === 'analisar' ? 'seriamRetirados' : 'retirados']: retirados.length,
-        porMotivo,
-        separadosPelaTravaDaCapa: separados.length
-    };
-    const cRet = [['titulo', r => r.titulo], ['ano', r => r.ano], ['motivo', r => r.motivo], ['link', r => r.link], ['origem', r => r.origem],
-        ['foi para (card)', r => (r.juntadoEm || r.seriaJuntadoEm).titulo], ['id do card', r => (r.juntadoEm || r.seriaJuntadoEm).id],
-        ['link principal do card', r => (r.juntadoEm || r.seriaJuntadoEm).linkPrincipal],
-        ['mesma capa?', r => (r.capa && (r.juntadoEm || r.seriaJuntadoEm).capa) ? (r.capa === (r.juntadoEm || r.seriaJuntadoEm).capa ? 'sim' : 'não') : '']];
-    const cAt = [['titulo', a => a.titulo], ['ano', a => a.ano], ['categoria', a => a.categoria], ['links reserva', a => a.reservas], ['link', a => a.link], ['id', a => a.id], ['origem', a => a.origem]];
-    await Promise.all([
-        fs.writeFile(path.join(dir, 'resumo.json'), JSON.stringify(resumo, null, 2)),
-        fs.writeFile(path.join(dir, 'filmes-retirados.json'), JSON.stringify(retirados, null, 1)),
-        fs.writeFile(path.join(dir, 'filmes-retirados.csv'), csv(retirados, cRet)),
-        fs.writeFile(path.join(dir, 'filmes-ativos.json'), JSON.stringify(ativos)),
-        fs.writeFile(path.join(dir, 'filmes-ativos.csv'), csv(ativos, cAt)),
-        fs.writeFile(path.join(dir, 'separados-pela-capa.json'), JSON.stringify(separados, null, 1))
-    ]);
-    log(`🔎 Filtro de cópias: modo "${d.modo}" — ${builder.vodRecebidos} filmes nas fontes → ${ativos.length} cards | ${d.modo === 'analisar' ? 'seriam retirados' : 'retirados'}: ${retirados.length} | separados pela capa: ${separados.length} (ver catalog/analise/)`);
-}
-
 // ------------------------------------------------------------------ main
 async function main() {
     const args = parseArgs(process.argv);
     const t0 = Date.now();
     const cfg = JSON.parse(await fs.readFile(args.sources, 'utf8'));
     const sources = (Array.isArray(cfg) ? cfg : cfg.fontes || cfg.sources || []);
-    const builder = new Core.CatalogBuilder({ deduplicacao: cfg.deduplicacao });
+    const builder = new Core.CatalogBuilder();
     const epg = new Set();
     const report = [];
 
@@ -411,7 +345,7 @@ async function main() {
                 const text = await prefetched[i];
                 if (text && text.error) throw text.error;
                 const before = builder.items.size;
-                for (const raw of Core.extractList(JSON.parse(text))) builder.addRaw(raw, src);
+                for (const raw of Core.parseSourceText(text, h => h.epg.forEach(u => epg.add(u)))) builder.addRaw(raw, src);
                 n = builder.items.size - before;
                 log(`✔ ${src.nome}: +${n} itens`);
             } else {
@@ -441,7 +375,7 @@ async function main() {
 
     const m = await emit(builder, args, epg, report);
     log(`✅ Pronto em ${((Date.now() - t0) / 1000).toFixed(1)}s — ${m.totals.itens} itens, ${m.totals.series} séries, ${m.totals.categorias} categorias`);
-    log(`   itens mesclados (filmes, canais, episódios): ${builder.stats.duplicados}`);
+    log(`   duplicados mesclados: ${builder.stats.duplicados}`);
     if (report.some(r => !r.ok)) process.exitCode = report.every(r => !r.ok) ? 1 : 0;
 }
 
