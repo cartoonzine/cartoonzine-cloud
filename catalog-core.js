@@ -188,49 +188,6 @@
         };
     }
 
-    /**
-     * Leitor de fonte que DESCOBRE O FORMATO PELO CONTEÚDO: começa com "[" ou "{" → JSON;
-     * qualquer outra coisa (#EXTM3U, #EXTINF…) → M3U. Assim a mesma fonte continua funcionando
-     * se a lista mudar de M3U para JSON (ou o contrário) sem mexer no sources.json.
-     * @param {'m3u'|'json'|'auto'} fmt  formato esperado ('auto' = descobrir)
-     */
-    function createSourceReader(fmt, onEntry, onHeader) {
-        let modo = fmt === 'm3u' || fmt === 'json' ? fmt : null;
-        let m3u = null, texto = '';
-        const abrirM3U = () => { m3u = createM3UParser(onEntry, onHeader); };
-        if (modo === 'm3u') abrirM3U();
-        return {
-            push(chunk) {
-                if (!modo) {
-                    texto += chunk;
-                    const t = texto.replace(/^\uFEFF/, '').trimStart();
-                    if (!t) return;
-                    modo = (t[0] === '[' || t[0] === '{') ? 'json' : 'm3u';
-                    if (modo === 'm3u') { abrirM3U(); m3u.push(texto); texto = ''; }
-                    return;
-                }
-                if (modo === 'm3u') m3u.push(chunk); else texto += chunk;
-            },
-            end() {
-                if (modo === 'm3u') { if (m3u) m3u.end(); return; }
-                const t = texto.replace(/^\uFEFF/, '').trim();
-                texto = '';
-                if (!t) return;
-                // declarado JSON mas veio M3U (ou vice-versa): respeita o conteúdo
-                if (t[0] !== '[' && t[0] !== '{') { const p = createM3UParser(onEntry, onHeader); p.push(t); p.end(); return; }
-                extractList(JSON.parse(t)).forEach(onEntry);
-            }
-        };
-    }
-    /** Texto inteiro de uma fonte → lista de registros brutos (JSON ou M3U, descoberto pelo conteúdo). */
-    function parseSourceText(text, onHeader) {
-        const out = [];
-        const r = createSourceReader('auto', e => out.push(e), onHeader);
-        r.push(String(text || ''));
-        r.end();
-        return out;
-    }
-
     function parseM3U(text) {
         const out = [];
         let epg = [];
@@ -245,11 +202,9 @@
     // ------------------------------------------------------------------
     /** Formato do arquivo de uma fonte (json ou m3u). */
     function sourceFormat(src) {
-        if (src.formato) return src.formato;                       // "m3u" | "json" | "auto" forçado no sources.json
+        if (src.formato) return src.formato;
+        if (src.tipo === 'vod_m3u' || src.tipo === 'tvzine_worker') return 'm3u';
         if (/\.m3u8?(\?|$)/i.test(src.url || '')) return 'm3u';
-        if (/\.json(\?|$)/i.test(src.url || '')) return 'json';
-        // listas de canais / M3U sem extensão clara: descobre pelo conteúdo (a lista pode virar JSON)
-        if (src.tipo === 'vod_m3u' || src.tipo === 'tvzine_worker') return 'auto';
         return 'json';
     }
 
@@ -294,8 +249,7 @@
         'bannerThumb', 'backdropUrl', 'backdrop', 'url',
         'desc', 'overview', 'description', 'year', 'genre', 'genres', 'cat', 'category', 'group', 'console',
         'tvgId', 'tvg_id', 'headers', 'destaque', 'id', 'seasons', 'episodes', 'episode', 'season', 'number', 'still',
-        'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats',
-        'urls', 'links', 'streams', 'sources', 'fontes', 'categoria', 'grupo', 'genero', 'descricao', 'ano']);
+        'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats']);
 
     function extras(raw) {
         const out = {};
@@ -315,7 +269,7 @@
      */
     function normalize(raw, src) {
         const prefix = src.prefixoId || (src.tipo === 'emulator_json' ? 'GAME' : src.tipo === 'radio' ? 'RAD' : 'LIV');
-        const baseCat = src.targetCategory || raw.group || raw.category || raw.cat || raw.categoria || raw.grupo || src.nome || 'Geral';
+        const baseCat = src.targetCategory || raw.group || raw.category || raw.cat || src.nome || 'Geral';
         const origem = src.nome;
         const _dest = destinoDe(src);
 
@@ -358,19 +312,9 @@
             return out;
         }
 
-        // Link principal + reservas. Aceita "url" único OU uma lista: "urls" / "links" / "streams" / "sources"
-        // (strings ou objetos {url}). O 1º link que presta vira o principal; os outros viram espelhos
-        // (o player tenta o próximo sozinho quando um cai, e o build com --check-streams promove o que responde).
-        const listaDeLinks = []
-            .concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || [])
-            .concat(...['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors'].map(k => Array.isArray(raw[k]) ? raw[k] : []))
-            .map(x => normUrl(typeof x === 'string' ? x : x && (x.url || x.link || x.src)))
-            .filter(Boolean);
-        const links = [...new Set(listaDeLinks)];
-        const url = links[0];
+        const url = normUrl(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src);
         if (!url) return [];
         let title = String(raw.title || raw.name || raw.nome || raw.tvgName || 'Sem nome').trim();
-        const espelhos = links.slice(1, 1 + (src.maxEspelhos || 40));
         // "Filme (2017)" -> título "Filme" + ano 2017 (junta com a versão sem ano no nome)
         let anoDoTitulo;
         const mAno = /^(.*\S)\s*[(\[](\d{4})[)\]]\s*$/.exec(title);
@@ -390,10 +334,9 @@
             thumb: raw.thumb || raw.posterUrl || raw.poster || raw.logo || raw.image || raw.cover,
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
             url,
-            mirrors: espelhos.length ? espelhos : undefined,
-            desc: raw.desc || raw.overview || raw.description || raw.descricao,
-            year: (raw.year || raw.ano ? parseInt(raw.year || raw.ano, 10) || undefined : undefined) || anoDoTitulo,
-            genre: asGenre(raw.genre || raw.genres || raw.genero),
+            desc: raw.desc || raw.overview || raw.description,
+            year: (raw.year ? parseInt(raw.year, 10) || undefined : undefined) || anoDoTitulo,
+            genre: asGenre(raw.genre || raw.genres),
             cat: baseCat,
             categoryType,
             console: src.console || raw.console,
@@ -762,12 +705,14 @@
             const tarefas = usable.map(src => run(async () => {
                 const { res, done } = await fetchWithRetry(src.url, opts);
                 try {
-                    // M3U, JSON ou "auto" (descobre pelo conteúdo) — tudo pelo mesmo leitor
-                    const entries = [];
-                    const r = createSourceReader(sourceFormat(src), e => entries.push(e), h => h.epg.forEach(u => this.epg.add(u)));
-                    await readChunks(res, c => r.push(c));
-                    r.end();
-                    return entries;
+                    if (sourceFormat(src) === 'm3u') {
+                        const entries = [];
+                        const p = createM3UParser(e => entries.push(e), h => h.epg.forEach(u => this.epg.add(u)));
+                        await readChunks(res, c => p.push(c));
+                        p.end();
+                        return entries;
+                    }
+                    return extractList(await res.json());
                 } finally { done(); }
             }));
             tarefas.forEach(t => t.catch(() => {}));   // erros são tratados abaixo, na ordem
@@ -882,7 +827,7 @@
         cyrb53, makeId, idShard,
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
-        sourceFormat, isUsableUrl, extractList, normalize, createSourceReader, parseSourceText,
+        sourceFormat, isUsableUrl, extractList, normalize,
         CatalogBuilder, streamCandidates, destinoDe,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };
