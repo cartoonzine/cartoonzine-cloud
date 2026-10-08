@@ -27,9 +27,11 @@
       "tipo": "vod_json",
       "prefixoId": "VOD_SER",
       "targetCategory": "Séries",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo_pt1.json"
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo_pt2.json"
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo_pt3.json"
+      "urls": [
+      "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo_pt1.json",
+      "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo_pt2.json",
+      "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/series_saimo_pt3.json"
+    ]
     },
     {
       "nome": "Adultos Saimo",
