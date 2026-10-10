@@ -9,7 +9,7 @@
     "_anoNoTitulo": "true = trata 'Filme (2017)' como 'Filme' do ano 2017 para achar cópias. false = compara o nome como veio.",
     "_travaCapa": "true = nunca junta dois filmes com capas diferentes (evita juntar filmes distintos). false = junta só por título + ano.",
 
-    "modo": "analisar",
+    "modo": "desligado",
     "anoNoTitulo": true,
     "travaCapa": true
   },
