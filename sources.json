@@ -45,7 +45,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": ""
+      "url": "https://raw.githubusercontent.com/ardvlmantovani-art/iptv-brasil-amantovani/refs/heads/main/listacompleta_working.m3u8"
     },
     {
       "nome": "Séries",
