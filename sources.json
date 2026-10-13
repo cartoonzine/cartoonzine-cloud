@@ -85,9 +85,7 @@
       "nome": "TVzine - Canais",
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
-      "url": [
-      "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u",
-      ]
+      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
     },
     {
       "nome": "TVzine - Filmes M3U",
