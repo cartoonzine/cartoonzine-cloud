@@ -427,7 +427,8 @@
             try {
                 const { res, done } = await Core.fetchWithRetry(CFG.sourcesUrl, fetchOpts);
                 try {
-                    const j = await res.json();
+                    const texto = await res.text();
+                    const j = Core.parseJSONTolerante ? Core.parseJSONTolerante(texto, 'sources.json') : JSON.parse(texto);
                     return Array.isArray(j) ? j : (j.fontes || j.sources || []);
                 } finally { done(); }
             } catch (e) {

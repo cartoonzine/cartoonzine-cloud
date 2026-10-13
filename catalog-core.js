@@ -263,6 +263,46 @@
         return !!u && !/SEU_USER|SEU_REPO/.test(u);
     }
 
+    /**
+     * JSON "perdoador" para arquivos editados à mão (sources.json):
+     * aceita vírgula sobrando antes de ] ou }, comentários (// linha e /* bloco *\/) e BOM.
+     * Links com "//" dentro de aspas não são tocados. Se ainda assim estiver
+     * quebrado, o erro diz a LINHA e a COLUNA para achar rápido.
+     */
+    function parseJSONTolerante(texto, nomeArquivo) {
+        const s = String(texto == null ? '' : texto).replace(/^\uFEFF/, '');
+        let out = '', i = 0, emString = false;
+        while (i < s.length) {
+            const ch = s[i];
+            if (emString) {
+                out += ch;
+                if (ch === '\\') { out += s[i + 1] || ''; i += 2; continue; }
+                if (ch === '"') emString = false;
+                i++; continue;
+            }
+            if (ch === '"') { emString = true; out += ch; i++; continue; }
+            if (ch === '/' && s[i + 1] === '/') { while (i < s.length && s[i] !== '\n') i++; continue; }
+            if (ch === '/' && s[i + 1] === '*') { const f = s.indexOf('*/', i + 2); i = f === -1 ? s.length : f + 2; continue; }
+            if (ch === ',') {
+                let j = i + 1;
+                while (j < s.length && /\s/.test(s[j])) j++;
+                if (s[j] === ']' || s[j] === '}') { i++; continue; }   // vírgula sobrando: ignora
+            }
+            out += ch; i++;
+        }
+        try {
+            return JSON.parse(out);
+        } catch (e) {
+            const m = /position (\d+)/.exec(e.message);
+            let onde = '';
+            if (m) {
+                const antes = out.slice(0, +m[1]).split('\n');
+                onde = ` (linha ${antes.length}, coluna ${antes[antes.length - 1].length + 1})`;
+            }
+            throw new Error(`${nomeArquivo || 'JSON'} está com erro de digitação${onde}: ${e.message}`);
+        }
+    }
+
     /** Extrai a lista de um JSON com formatos variados. */
     function extractList(dados) {
         if (Array.isArray(dados)) return dados;
@@ -992,7 +1032,7 @@
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
         sourceFormat, isUsableUrl, extractList, normalize, createSourceReader, parseSourceText,
-        CatalogBuilder, streamCandidates, destinoDe,
+        CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };
 });

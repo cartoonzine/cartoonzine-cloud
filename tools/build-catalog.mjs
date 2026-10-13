@@ -375,7 +375,7 @@ async function escreverAnalise(builder, dir, geradoEm) {
 async function main() {
     const args = parseArgs(process.argv);
     const t0 = Date.now();
-    const cfg = JSON.parse(await fs.readFile(args.sources, 'utf8'));
+    const cfg = Core.parseJSONTolerante(await fs.readFile(args.sources, 'utf8'), args.sources);
     // Uma fonte pode ter VÁRIAS listas: "url": "..." | "url": ["...", "..."] | "urls": ["...", "..."].
     // Cada link vira uma parte da mesma fonte (mesma categoria, prefixo e opções); o formato
     // (JSON ou M3U) é decidido por link, então dá para misturar .json e .m3u8 na mesma fonte.
