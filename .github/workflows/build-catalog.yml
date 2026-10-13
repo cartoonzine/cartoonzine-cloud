@@ -56,5 +56,13 @@ jobs:
             echo "Nada mudou."
           else
             git commit -m "catálogo: atualização automática"
-            git push
+            # Se alguém editou o repositório durante o build, a main andou:
+            # traz as mudanças (o robô só mexe em catalog/ e health-cache.json) e tenta de novo.
+            for tentativa in 1 2 3; do
+              git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0
+              git rebase --abort 2>/dev/null || true
+              echo "Push recusado (tentativa $tentativa), tentando de novo..."
+              sleep $((tentativa * 5))
+            done
+            exit 1
           fi
