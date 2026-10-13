@@ -86,8 +86,7 @@
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
       "url": [
-      "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u",
-      "https://raw.githubusercontent.com/ardvlmantovani-art/iptv-brasil-amantovani/refs/heads/main/listacompleta_working.m3u8"
+      "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
       ]
     },
     {
