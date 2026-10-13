@@ -20,7 +20,10 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/filmes_saimo.json"
+      "url": [ 
+      "https://raw.githubusercontent.com/cartoonzine/cartoonzine-sm-bridge/refs/heads/main/filmes_saimo.json",
+      "https://raw.githubusercontent.com/ardvlmantovani-art/iptv-brasil-amantovani/refs/heads/main/listacompleta_working.m3u8"
+    ]
     },
     {
       "nome": "Séries Saimo",
@@ -45,7 +48,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": "https://raw.githubusercontent.com/ardvlmantovani-art/iptv-brasil-amantovani/refs/heads/main/listacompleta_working.m3u8"
+      "url": ""
     },
     {
       "nome": "Séries",
