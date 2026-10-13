@@ -288,6 +288,13 @@
         return String(g).split(/[,/|]/).map(s => s.trim()).filter(Boolean);
     }
 
+    /** Duas capas reais (não placeholder) e diferentes? (ignora tamanho w500/original etc.) */
+    function capasDiferentes(a, b) {
+        if (!a || !b || a === PLACEHOLDER || b === PLACEHOLDER) return false;
+        const chave = (u) => String(u).replace(/^https?:\/\//, '').replace(/\/t\/p\/[^/]+\//, '/t/p/').split('?')[0];
+        return chave(a) !== chave(b);
+    }
+
     // Campos que o normalize já trata; qualquer OUTRO campo do seu JSON
     // (ex.: previewVtt, trailer, idade, elenco...) é mantido como veio.
     const CAMPOS_CONHECIDOS = new Set(['title', 'name', 'nome', 'tvgName', 'thumb', 'posterUrl', 'poster', 'logo', 'image', 'cover',
@@ -310,6 +317,25 @@
     }
 
     /**
+     * Todos os links de um registro, sem repetir: "url" único OU listas "urls" / "links" /
+     * "streams" / "sources" / "fontes" / "mirrors" (strings ou objetos {url, idioma}).
+     * Devolve [{url, idioma?}] na ordem: o 1º vira o principal, o resto vira reserva.
+     */
+    function linksDe(raw) {
+        const vistos = new Set(), out = [];
+        const add = (x) => {
+            const url = normUrl(typeof x === 'string' ? x : x && (x.url || x.link || x.src || x.streamUrl));
+            if (!url || vistos.has(url)) return;
+            vistos.add(url);
+            const idioma = x && typeof x === 'object' ? (x.idioma || x.lang || x.language || x.audio) : undefined;
+            out.push(idioma ? { url, idioma: String(idioma) } : { url });
+        };
+        [].concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || []).forEach(add);
+        for (const k of ['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors']) if (Array.isArray(raw[k])) raw[k].forEach(add);
+        return out;
+    }
+
+    /**
      * Converte um registro bruto (de JSON ou M3U) em 0..N itens normalizados.
      * Séries com "seasons" viram N episódios (agrupados depois pelo builder).
      */
@@ -321,14 +347,19 @@
 
         // --- Série no formato {title, seasons:[{season, episodes:[...]}]} ---
         if (Array.isArray(raw.seasons)) {
-            const serie = raw.title || raw.name || 'Série';
-            const seriesId = makeId(prefix, 'serie|' + normText(serie) + '|' + (raw.year || ''));
+            let serie = String(raw.title || raw.name || 'Série').trim();
+            // "Série (2020)" -> "Série" + ano 2020 (junta com a versão sem ano no nome)
+            let anoSerie;
+            const mS = /^(.*\S)\s*[(\[](\d{4})[)\]]\s*$/.exec(serie);
+            if (mS && src.anoNoTitulo !== false) { serie = mS[1].trim(); anoSerie = mS[2]; }
+            const anoChave = raw.year || anoSerie || '';
+            const seriesId = makeId(prefix, 'serie|' + normText(serie) + '|' + anoChave);
             const meta = {
                 serie, seriesId,
                 thumb: raw.posterUrl || raw.thumb || raw.poster || raw.logo,
                 bannerThumb: raw.backdropUrl || raw.bannerThumb || raw.backdrop,
                 desc: raw.overview || raw.desc || raw.description,
-                year: raw.year, genre: asGenre(raw.genre || raw.genres),
+                year: raw.year || anoSerie, genre: asGenre(raw.genre || raw.genres),
                 extra: extras(raw), destaque: raw.destaque ? true : undefined
             };
             const out = [];
@@ -336,18 +367,25 @@
                 const s = parseInt(temp.season ?? temp.number ?? 1, 10);
                 for (const ep of (temp.episodes || [])) {
                     const e = parseInt(ep.episode ?? ep.number ?? out.length + 1, 10);
-                    const url = normUrl(ep.url || ep.streamUrl || ep.link);
-                    if (!url) continue;
+                    // Episódio aceita "url" OU lista de links ("fontes": [{url, idioma:"dublado"}, ...])
+                    const lks = linksDe(ep);
+                    if (!lks.length) continue;
+                    const url = lks[0].url;
+                    const espelhosEp = lks.slice(1, 1 + (src.maxEspelhos || 40)).map(l => l.url);
+                    const idiomasEp = lks.some(l => l.idioma) ? lks : undefined;
                     out.push(clean({
                         ...extras(ep),
                         id: makeId(prefix, `ep|${seriesId}|${s}|${e}`),
                         _key: `ep|${seriesId}|${s}|${e}`,
+                        _anoNoNome: anoSerie ? true : undefined,
                         title: ep.title ? `${serie} - T${s}E${e} - ${ep.title}` : `${serie} - T${s}E${e}`,
                         epTitle: ep.title,
                         serie, seriesId, season: s, episode: e,
                         thumb: ep.thumb || ep.still || meta.thumb,
                         bannerThumb: meta.bannerThumb,
                         url,
+                        mirrors: espelhosEp.length ? espelhosEp : undefined,
+                        idiomas: idiomasEp,
                         desc: ep.overview || ep.desc || meta.desc,
                         year: meta.year, genre: meta.genre,
                         cat: baseCat, categoryType: 'episode',
@@ -361,12 +399,9 @@
         // Link principal + reservas. Aceita "url" único OU uma lista: "urls" / "links" / "streams" / "sources"
         // (strings ou objetos {url}). O 1º link que presta vira o principal; os outros viram espelhos
         // (o player tenta o próximo sozinho quando um cai, e o build com --check-streams promove o que responde).
-        const listaDeLinks = []
-            .concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || [])
-            .concat(...['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors'].map(k => Array.isArray(raw[k]) ? raw[k] : []))
-            .map(x => normUrl(typeof x === 'string' ? x : x && (x.url || x.link || x.src)))
-            .filter(Boolean);
-        const links = [...new Set(listaDeLinks)];
+        const lks = linksDe(raw);
+        const links = lks.map(l => l.url);
+        const idiomas = lks.some(l => l.idioma) ? lks : undefined;
         const url = links[0];
         if (!url) return [];
         let title = String(raw.title || raw.name || raw.nome || raw.tvgName || 'Sem nome').trim();
@@ -391,6 +426,7 @@
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
             url,
             mirrors: espelhos.length ? espelhos : undefined,
+            idiomas,
             desc: raw.desc || raw.overview || raw.description || raw.descricao,
             year: (raw.year || raw.ano ? parseInt(raw.year || raw.ano, 10) || undefined : undefined) || anoDoTitulo,
             genre: asGenre(raw.genre || raw.genres || raw.genero),
@@ -401,7 +437,8 @@
             headers: raw.headers,
             destaque: raw.destaque ? true : undefined,
             origem, _dest,
-            _anoNoNome: anoDoTitulo ? true : undefined
+            _anoNoNome: anoDoTitulo ? true : undefined,
+            _tituloOriginal: String(raw.title || raw.name || raw.nome || '').trim() || undefined
         };
 
         // Episódio solto em lista M3U/JSON de VOD? ("Naruto S01E03")
@@ -435,6 +472,16 @@
     class CatalogBuilder {
         constructor(opts = {}) {
             this.maxItems = opts.maxItems || Infinity;
+            // Filtro de cópias (sources.json → "deduplicacao"):
+            //   modo: 'ativo' (junta) | 'analisar' (não junta, só relata) | 'desligado' (sem filtro)
+            const d = opts.deduplicacao || {};
+            this.dedup = {
+                modo: ['ativo', 'analisar', 'desligado'].includes(d.modo) ? d.modo : 'ativo',
+                anoNoTitulo: d.anoNoTitulo !== false,
+                travaCapa: d.travaCapa !== false
+            };
+            this._sep = 0;
+            this.vodRecebidos = 0;
             this.items = new Map();       // id -> item completo
             this.keyToId = new Map();     // _key -> id
             this.series = new Map();      // seriesId -> {meta, cats:Set, episodes:[]}
@@ -445,6 +492,7 @@
             this.catConsole = new Map();  // cat -> console (jogos)
             this.stats = { recebidos: 0, duplicados: 0, descartados: 0 };
             this.anoNoNome = new Set();   // ids cujo link principal veio de um título "Filme (2017)"
+            this.relatorio = { juntados: [], separados: [] };   // conferência das junções (relatorio-duplicados.json)
         }
 
         _addCard(cat, id, type, dest, consoleId) {
@@ -460,11 +508,53 @@
 
         add(item) {
             this.stats.recebidos++;
-            const existingId = this.keyToId.get(item._key);
+            let existingId = this.keyToId.get(item._key);
+            if (item.categoryType === 'vod') this.vodRecebidos++;
+
+            // Trava pela capa: mesmo título + mesmo ano, mas capas DIFERENTES do TMDB
+            // = filmes diferentes (lista de origem com título/ano errado). Não junta.
+            if (existingId && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
+                const o = this.items.get(existingId);
+                if (o && capasDiferentes(o.thumb, item.thumb)) {
+                    this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
+                    item._key = item._key + '|capa:' + item.thumb;
+                    if (item._tituloOriginal) item.title = item._tituloOriginal;   // mantém "Filme (1990)" para distinguir
+                    item.id = item.id + '_' + cyrb53(item.thumb).toString(36).toUpperCase().slice(0, 6);
+                    existingId = this.keyToId.get(item._key);
+                }
+            }
+
+            // Modo "analisar"/"desligado": filmes nunca são juntados (cada um vira um card).
+            // Em "analisar", registra o que SERIA retirado, para comparar antes de ativar.
+            if (existingId && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
+                const o = this.items.get(existingId);
+                if (!o || item.url !== o.url) {
+                    this._sep++;
+                    item._key = item._key + '|sep:' + this._sep;
+                    item.id = item.id + '_' + this._sep.toString(36).toUpperCase();
+                    if (item._tituloOriginal) item.title = item._tituloOriginal;
+                    existingId = null;
+                    if (this.dedup.modo === 'analisar' && o) {
+                        // mesmo critério do modo "ativo": a versão SEM "(ano)" no nome fica como card
+                        const trocar = this.anoNoNome.has(o.id) && !item._anoNoNome;
+                        if (trocar) this._registrarRetirado(item, Object.assign({ _anoNoNome: true, _tituloOriginal: o.title }, o), true);
+                        else this._registrarRetirado(o, item, true);
+                    }
+                }
+            }
+            if (this.dedup.modo !== 'ativo' && item.categoryType === 'vod' && item._tituloOriginal) item.title = item._tituloOriginal;
+
             if (existingId) {
                 // Duplicado: vira espelho (mirror) do original + herda campos faltantes
                 const orig = this.items.get(existingId);
                 this.stats.duplicados++;
+                if (orig.categoryType === 'vod' && item.url !== orig.url) {
+                    const trocar = this.anoNoNome.has(orig.id) && !item._anoNoNome;
+                    // registra o resultado FINAL: se houver troca, quem vira reserva é a versão "(ano)"
+                    if (trocar) this._registrarRetirado(Object.assign({}, orig, { url: item.url }),
+                        { _anoNoNome: true, _tituloOriginal: orig.title + (orig.year ? ` (${orig.year})` : ''), year: orig.year, url: orig.url, thumb: orig.thumb, origem: orig.origem }, false);
+                    else this._registrarRetirado(orig, item, false);
+                }
                 // A versão com "(ano)" no nome costuma ter o link pior: se o original
                 // era essa e a nova não é, a nova passa a ser o link PRINCIPAL.
                 if (this.anoNoNome.has(orig.id) && !item._anoNoNome && item.url && item.url !== orig.url) {
@@ -499,6 +589,7 @@
             delete item._seriesMeta;
             delete item._dest;
             delete item._anoNoNome;
+            delete item._tituloOriginal;
             this.keyToId.set(item._key, item.id);
             delete item._key;
             this.items.set(item.id, item);
@@ -520,9 +611,27 @@
             return true;
         }
 
+        /** Registra uma cópia retirada (ou que SERIA retirada, no modo analisar). */
+        _registrarRetirado(orig, item, simulado) {
+            if (this.relatorio.juntados.length >= 50000) return;
+            const motivo = (item._anoNoNome || this.anoNoNome.has(orig.id)) ? '(ano) no nome' : 'mesmo título e ano';
+            this.relatorio.juntados.push({
+                titulo: item._tituloOriginal || item.title,
+                ano: item.year || null,
+                link: item.url,
+                capa: item.thumb || null,
+                origem: item.origem,
+                motivo,
+                [simulado ? 'seriaJuntadoEm' : 'juntadoEm']: { id: orig.id, titulo: orig.title, linkPrincipal: orig.url, capa: orig.thumb || null }
+            });
+        }
+
         addRaw(raw, src) {
             let n = 0;
-            for (const it of normalize(raw, src)) if (this.add(it)) n++;
+            // "desligado" também não tira o "(ano)" do nome (comportamento do motor antigo)
+            const anoNoTitulo = this.dedup.modo !== 'desligado' && this.dedup.anoNoTitulo;
+            const s = anoNoTitulo ? src : Object.assign({}, src, { anoNoTitulo: false });
+            for (const it of normalize(raw, s)) if (this.add(it)) n++;
             return n;
         }
 
