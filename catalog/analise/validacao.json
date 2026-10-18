@@ -1,0 +1,62 @@
+{
+  "geradoEm": "2026-10-18T20:00:09.635Z",
+  "modo": "relatorio",
+  "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
+  "cicloSuspeito": false,
+  "configuracao": {
+    "modo": "relatorio",
+    "manterReservas": true,
+    "semFonte": "marcar",
+    "falhasParaIndisponivel": 3,
+    "limiteRemocaoPorCiclo": 0.2,
+    "cicloSuspeitoAcimaDe": 0.6,
+    "pularTipos": [
+      "game"
+    ],
+    "apenasFontes": [
+      "Filmes Saimo",
+      "Séries Saimo",
+      "Adultos Saimo",
+      "TVzine - Canais (Saimo)"
+    ],
+    "prioridadeServidores": {},
+    "_como_usar": "Teste dos links a cada 6h. Relatórios em catalog/analise/validacao*.json. Detalhes em tools/validador/LEIAME.md",
+    "_modo_relatorio": "relatorio → No app: nada muda. No relatório: quais links funcionam, quais falharam e por quê. Comece por este.",
+    "_modo_otimizar": "otimizar → No app: a fonte que funciona vai para a frente e as outras viram reserva (nenhuma é apagada).",
+    "_modo_desligado": "desligado → não testa nada.",
+    "_apenasFontes": "Só as fontes desta lista são testadas. As outras ficam exatamente como vieram.",
+    "_semFonte": "marcar = item com TODAS as fontes falhando por 'falhasParaIndisponivel' ciclos seguidos recebe indisponivel:true | remover = sai do catálogo (nunca mais de 20% de uma vez).",
+    "concorrencia": 16,
+    "porHost": 2,
+    "timeoutMs": 8000,
+    "ttlOkHoras": 24,
+    "orcamentoMin": 20,
+    "limiteLinks": 3000
+  },
+  "links": {
+    "links": 0,
+    "testados": 0,
+    "doCache": 0,
+    "pulados": 0,
+    "ok": 0,
+    "falhou": 0,
+    "protegido": 0,
+    "naoVerificavel": 0,
+    "bloqueado": 0,
+    "novasTentativas": 0,
+    "porMotivo": {},
+    "porTipo": {},
+    "servidoresDesligados": [],
+    "motivoParada": null,
+    "duracaoS": 0
+  },
+  "itens": {
+    "avaliados": 0,
+    "ok": 0,
+    "semTeste": 0,
+    "principalTrocado": 0,
+    "indisponiveis": 0,
+    "removidos": 0,
+    "recuperados": 0
+  }
+}
