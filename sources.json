@@ -88,10 +88,10 @@
       "url": ""
     },
     {
-      "nome": "Desenhos 24 Horas",
+      "nome": "Desenhos 24H",
       "tipo": "vod_m3u",
       "prefixoId": "LIV_KID",
-      "targetCategory": "Desenhos 24 Horas",
+      "targetCategory": "Desenhos 24H",
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
     },
     {
