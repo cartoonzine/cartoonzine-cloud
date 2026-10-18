@@ -188,6 +188,197 @@
         };
     }
 
+    // ------------------------------------------------------------------
+    // Listas em Markdown (.md) → registros iguais aos do M3U/JSON
+    // Entende: tabelas (| Canal | Link | Logo | ...), listas (- [Nome](link)),
+    // títulos (## Desenhos → vira a categoria/grupo dos itens abaixo) e blocos
+    // ```m3u ... ``` com #EXTINF dentro.
+    // ------------------------------------------------------------------
+    const MD_COLUNAS = {
+        title: /^(canal|canais|nome|name|title|titulo|filme|serie|channel|programa|radio|jogo|game|video)$/,
+        url: /^(link|links|url|urls|stream|streams|m3u8?|endereco|src|assistir|play|player|fonte|fontes|servidor|ver|watch)$/,
+        thumb: /^(logo|logos|thumb|thumbnail|imagem|image|img|capa|poster|icone|icon|cover)$/,
+        bannerThumb: /^(banner|fundo|backdrop|bannerthumb)$/,
+        group: /^(grupo|group|categoria|category|cat|secao|pasta)$/,
+        genre: /^(genero|genre|generos|genres)$/,
+        tvgId: /^(epg|epgid|tvgid|tvg|idepg)$/,
+        idioma: /^(idioma|lingua|lang|language|audio|versao)$/,
+        year: /^(ano|year|lancamento)$/,
+        desc: /^(descricao|description|desc|sinopse|resumo|sobre)$/,
+        country: /^(pais|country|regiao)$/,
+        status: /^(status|situacao|estado|online)$/
+    };
+    const semAcento = (s) => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '');
+    const chaveColuna = (h) => {
+        const k = semAcento(mdTexto(h)).toLowerCase().replace(/[^a-z0-9]/g, '');
+        for (const [campo, re] of Object.entries(MD_COLUNAS)) if (re.test(k)) return campo;
+        return null;
+    };
+    const RE_URL = /(?:https?|rtmps?|rtsp|udp|rtp|mms|srt):\/\/[^\s<>()|"'`\]]+|magnet:\?[^\s<>|"'`]+/gi;
+    /** Imagens: ![alt](url) e <img src="url"> */
+    function mdImagens(cel) {
+        const out = [];
+        cel.replace(/!\[[^\]]*\]\(\s*<?([^)\s>]+)>?[^)]*\)/g, (_, u) => { out.push(u); return ''; });
+        cel.replace(/<img[^>]*\ssrc=["']([^"']+)["']/gi, (_, u) => { out.push(u); return ''; });
+        return out;
+    }
+    /** Links que NÃO são imagem: [texto](url), <url>, url solta */
+    function mdLinks(cel) {
+        const out = [];
+        let s = cel.replace(/!\[[^\]]*\]\([^)]*\)/g, ' ').replace(/<img[^>]*>/gi, ' ');
+        s = s.replace(/\[([^\]]*)\]\(\s*<?([^)\s>]+)>?[^)]*\)/g, (_, t, u) => { out.push({ url: u, texto: mdTexto(t) }); return ' '; });
+        s = s.replace(/<a[^>]*href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi, (_, u, t) => { out.push({ url: u, texto: mdTexto(t) }); return ' '; });
+        (s.match(RE_URL) || []).forEach(u => out.push({ url: u.replace(/[.,;:]+$/, ''), texto: '' }));
+        return out.filter(l => /^(https?|rtmps?|rtsp|udp|rtp|mms|srt):\/\/|^magnet:/i.test(l.url));
+    }
+    /** Texto limpo de uma célula (sem markdown, sem links soltos) */
+    function mdTexto(cel) {
+        return String(cel || '')
+            .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+            .replace(/<img[^>]*>/gi, '')
+            .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+            .replace(/<[^>]+>/g, '')
+            .replace(RE_URL, '')
+            .replace(/(\*\*|__|~~|`)/g, '')
+            .replace(/(^|\s)[*_](\S[^*_]*\S|\S)[*_](?=\s|$)/g, '$1$2')
+            .replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&')
+            .replace(/\s+/g, ' ').trim();
+    }
+    function mdCelulas(linha) {
+        let l = linha.trim();
+        if (l.startsWith('|')) l = l.slice(1);
+        if (l.endsWith('|') && !l.endsWith('\\|')) l = l.slice(0, -1);
+        // divide por | que não está escapado nem dentro de [..](..)
+        const cels = []; let atual = '', prof = 0;
+        for (let i = 0; i < l.length; i++) {
+            const c = l[i];
+            if (c === '\\' && l[i + 1] === '|') { atual += '|'; i++; continue; }
+            if (c === '[' || c === '(') prof++;
+            if ((c === ']' || c === ')') && prof > 0) prof--;
+            if (c === '|' && prof === 0) { cels.push(atual.trim()); atual = ''; continue; }
+            atual += c;
+        }
+        cels.push(atual.trim());
+        return cels;
+    }
+    const OFFLINE = /(❌|🔴|⛔|\boff(line)?\b|\bdown\b|\bmort[oa]\b|\bquebrad[oa]\b|\bfora do ar\b|\bindisponivel\b)/i;
+
+    /**
+     * Converte o texto de um .md em registros brutos (title, url, thumb, group...).
+     * @param {string} texto
+     * @param {Function} [onHeader]  recebe { epg: [...] } de blocos M3U embutidos
+     * @returns {object[]}
+     */
+    function parseMarkdown(texto, onHeader) {
+        const out = [];
+        const linhas = String(texto || '').replace(/^﻿/, '').split(/\r?\n/);
+        const secoes = [];                 // pilha de títulos: [{nivel, texto}]
+        // o título principal (# Lista X) só vira categoria se o arquivo não tiver subtítulos (##)
+        const temSub = linhas.some(l => /^\s*#{2,6}\s/.test(l));
+        const grupoAtual = () => { for (let k = secoes.length - 1; k >= 0; k--) if (secoes[k].nivel > 1 || !temSub) return secoes[k].texto; return ''; };
+        let cerca = null, blocoCod = [];   // ``` ... ```
+        let tabela = null;                 // { campos: [...] }
+
+        const emitir = (rec) => {
+            if (!rec.url) return;
+            if (!rec.title) rec.title = 'Sem nome';
+            if (!rec.group && grupoAtual()) rec.group = grupoAtual();
+            for (const k of Object.keys(rec)) if (rec[k] === '' || rec[k] == null) delete rec[k];
+            out.push(rec);
+        };
+
+        for (let i = 0; i < linhas.length; i++) {
+            const linha = linhas[i];
+            const t = linha.trim();
+
+            // blocos de código: só aproveita se for M3U
+            const mc = /^(```+|~~~+)/.exec(t);
+            if (mc) {
+                if (!cerca) { cerca = mc[1]; blocoCod = []; continue; }
+                if (t.startsWith(cerca)) {
+                    const cod = blocoCod.join('\n');
+                    if (/#EXTINF/i.test(cod)) {
+                        const p = createM3UParser(e => { if (!e.group && grupoAtual()) e.group = grupoAtual(); out.push(e); }, onHeader);
+                        p.push(cod); p.end();
+                    }
+                    cerca = null; blocoCod = [];
+                    continue;
+                }
+            }
+            if (cerca) { blocoCod.push(linha); continue; }
+
+            // títulos: # Nível → categoria dos itens seguintes
+            const mh = /^(#{1,6})\s+(.+?)\s*#*$/.exec(t);
+            if (mh && !/^#EXT/i.test(t)) {
+                const nivel = mh[1].length;
+                while (secoes.length && secoes[secoes.length - 1].nivel >= nivel) secoes.pop();
+                const txt = mdTexto(mh[2]).replace(/^[^\p{L}\p{N}]+/u, '').trim();
+                secoes.push({ nivel, texto: txt });
+                tabela = null;
+                continue;
+            }
+
+            // tabela: linha de cabeçalho seguida de |---|---|
+            if (t.includes('|') && !tabela && i + 1 < linhas.length && /^\s*\|?\s*:?-+:?\s*(\|\s*:?-+:?\s*)*\|?\s*$/.test(linhas[i + 1])) {
+                const cab = mdCelulas(t);
+                tabela = { campos: cab.map(chaveColuna) };
+                i++; // pula a linha |---|
+                continue;
+            }
+            if (tabela) {
+                if (!t.includes('|')) { tabela = null; if (!t) continue; }
+                else {
+                    const cels = mdCelulas(t);
+                    const rec = {};
+                    const links = [];
+                    let imagens = [];
+                    cels.forEach((cel, k) => {
+                        const campo = tabela.campos[k];
+                        const ls = mdLinks(cel), ims = mdImagens(cel);
+                        if (campo === 'url') { links.push(...ls.map(l => l.url)); if (!rec._textoLink && ls[0]) rec._textoLink = ls[0].texto; return; }
+                        if (campo === 'thumb' || campo === 'bannerThumb') { const u = ims[0] || (ls[0] && ls[0].url); if (u) rec[campo] = u; return; }
+                        if (campo === 'status') { if (OFFLINE.test(cel)) rec._offline = true; return; }
+                        if (campo) {
+                            const txt = mdTexto(cel);
+                            if (txt) rec[campo] = txt;
+                            if (campo === 'title' && ls[0] && !links.length) rec._linkDoTitulo = ls[0].url;
+                        }
+                        imagens = imagens.concat(ims);
+                    });
+                    if (!links.length && rec._linkDoTitulo) links.push(rec._linkDoTitulo);
+                    // sem coluna de link: pega o 1º link (não imagem) de qualquer célula
+                    if (!links.length) cels.forEach(c => mdLinks(c).forEach(l => links.push(l.url)));
+                    if (!rec.thumb && imagens[0]) rec.thumb = imagens[0];
+                    if (!rec.title && rec._textoLink) rec.title = rec._textoLink;
+                    const offline = rec._offline;
+                    delete rec._textoLink; delete rec._linkDoTitulo; delete rec._offline;
+                    if (offline || !links.length) continue;
+                    rec.url = links[0];
+                    if (links.length > 1) rec.urls = [...new Set(links.slice(1))];
+                    if (rec.year) rec.year = (String(rec.year).match(/\d{4}/) || [])[0];
+                    emitir(rec);
+                    continue;
+                }
+            }
+
+            // listas: "- [Nome](link)", "* Nome: link", "1. Nome - link"
+            const ml = /^\s*(?:[-*+]|\d+[.)])\s+(.*)$/.exec(linha);
+            if (ml) {
+                const corpo = ml[1].replace(/^\[[ xX]\]\s*/, '');
+                const ls = mdLinks(corpo);
+                if (!ls.length || OFFLINE.test(mdTexto(corpo))) continue;
+                const ims = mdImagens(corpo);
+                let titulo = ls[0].texto || mdTexto(corpo).replace(/[\s:–—-]+$/, '');
+                if (!titulo || /^(link|assistir|play|ver|aqui)$/i.test(titulo)) titulo = mdTexto(corpo).replace(/[\s:–—-]+$/, '') || titulo;
+                const rec = { title: titulo, url: ls[0].url };
+                if (ls.length > 1) rec.urls = [...new Set(ls.slice(1).map(l => l.url))];
+                if (ims[0]) rec.thumb = ims[0];
+                emitir(rec);
+            }
+        }
+        return out;
+    }
+
     /**
      * Leitor de fonte que DESCOBRE O FORMATO PELO CONTEÚDO: começa com "[" ou "{" → JSON;
      * qualquer outra coisa (#EXTM3U, #EXTINF…) → M3U. Assim a mesma fonte continua funcionando
@@ -195,7 +386,7 @@
      * @param {'m3u'|'json'|'auto'} fmt  formato esperado ('auto' = descobrir)
      */
     function createSourceReader(fmt, onEntry, onHeader) {
-        let modo = fmt === 'm3u' || fmt === 'json' ? fmt : null;
+        let modo = fmt === 'm3u' || fmt === 'json' || fmt === 'md' ? fmt : null;
         let m3u = null, texto = '';
         const abrirM3U = () => { m3u = createM3UParser(onEntry, onHeader); };
         if (modo === 'm3u') abrirM3U();
@@ -205,7 +396,8 @@
                     texto += chunk;
                     const t = texto.replace(/^\uFEFF/, '').trimStart();
                     if (!t) return;
-                    modo = (t[0] === '[' || t[0] === '{') ? 'json' : 'm3u';
+                    // Markdown: começa com tabela (|) ou título (# texto), mas não com #EXTM3U/#EXTINF
+                    modo = (t[0] === '[' || t[0] === '{') ? 'json' : (t[0] === '|' || /^(#{1,6}|[-*+]|\d+[.)])\s/.test(t)) ? 'md' : 'm3u';
                     if (modo === 'm3u') { abrirM3U(); m3u.push(texto); texto = ''; }
                     return;
                 }
@@ -216,9 +408,14 @@
                 const t = texto.replace(/^\uFEFF/, '').trim();
                 texto = '';
                 if (!t) return;
+                if (modo === 'md') { parseMarkdown(t, onHeader).forEach(onEntry); return; }
                 // declarado JSON mas veio M3U (ou vice-versa): respeita o conteúdo
+                if (t[0] === '|' || /^#{1,6}\s/.test(t)) { parseMarkdown(t, onHeader).forEach(onEntry); return; }
                 if (t[0] !== '[' && t[0] !== '{') { const p = createM3UParser(onEntry, onHeader); p.push(t); p.end(); return; }
-                extractList(JSON.parse(t)).forEach(onEntry);
+                let dados;
+                try { dados = JSON.parse(t); }
+                catch (e) { if (/\]\(/.test(t)) { parseMarkdown(t, onHeader).forEach(onEntry); return; } throw e; } // "[Nome](link)" = Markdown
+                extractList(dados).forEach(onEntry);
             }
         };
     }
@@ -248,6 +445,7 @@
         if (src.formato) return src.formato;                       // "m3u" | "json" | "auto" forçado no sources.json
         if (/\.m3u8?(\?|$)/i.test(src.url || '')) return 'm3u';
         if (/\.json(\?|$)/i.test(src.url || '')) return 'json';
+        if (/\.(md|markdown)(\?|$)/i.test(src.url || '')) return 'md';
         // listas de canais / M3U sem extensão clara: descobre pelo conteúdo (a lista pode virar JSON)
         if (src.tipo === 'vod_m3u' || src.tipo === 'tvzine_worker') return 'auto';
         return 'json';
@@ -1031,7 +1229,7 @@
         cyrb53, makeId, idShard,
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
-        sourceFormat, isUsableUrl, extractList, normalize, createSourceReader, parseSourceText,
+        sourceFormat, isUsableUrl, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
         CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };
