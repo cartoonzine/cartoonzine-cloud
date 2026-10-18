@@ -112,7 +112,7 @@
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
       "url": [
-      "https://raw.githubusercontent.com/Free-TV/IPTV/refs/heads/master/lists/venezuela.md",
+      "https://raw.githubusercontent.com/Free-TV/IPTV/refs/heads/master/playlists/playlist_venezuela.m3u8",
       "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
       ]
     },
