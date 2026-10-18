@@ -35,6 +35,7 @@ import fs from 'node:fs/promises';
 import fss from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validarCatalogo } from './validador/index.mjs';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -56,10 +57,11 @@ function parseArgs(argv) {
             case '--concurrency': a.concurrency = +v; i++; break;
             case '--timeout': a.timeout = +v; i++; break;
             case '--check-streams': a.checkStreams = true; break;
-            case '--check-limit': a.checkLimit = +v; i++; break;
+            case '--check-limit': a.checkLimit = +v; a.checkLimitDefinido = true; i++; break;
             case '--health': a.health = v; i++; break;
             case '--force': a.force = true; break;
             case '--compat-episodios': a.compatEpisodios = true; break;
+            case '--validar-tudo': a.validarTudo = true; break;
             default: console.warn('Opção desconhecida:', k);
         }
     }
@@ -186,7 +188,7 @@ async function checkStreams(builder, args) {
 }
 
 // ------------------------------------------------------------------ saída
-async function emit(builder, args, epg, sourcesReport) {
+async function emit(builder, args, epg, sourcesReport, validacao) {
     const tmp = args.out + '.tmp-' + Date.now();
     await fs.rm(tmp, { recursive: true, force: true });
     const writes = [];
@@ -303,10 +305,13 @@ async function emit(builder, args, epg, sourcesReport) {
         searchShards: [...search.keys()].sort(),
         fontes: sourcesReport
     };
+    // campo novo e opcional: diz ao app quando os links foram validados
+    if (validacao) manifest.validacao = { em: validacao.relatorio.geradoEm, modo: validacao.relatorio.modo, cicloSuspeito: validacao.relatorio.cicloSuspeito };
     await writeJSON(path.join(tmp, 'manifest.json'), manifest);
 
     // Pasta de ANÁLISE do filtro de cópias (catalog/analise/)
     await escreverAnalise(builder, path.join(tmp, 'analise'), manifest.generatedAt);
+    if (validacao) await validacao.gravarRelatorio(path.join(tmp, 'analise'));
 
     // Troca atômica: o site nunca vê um catálogo pela metade
     const old = args.out + '.old-' + Date.now();
@@ -438,9 +443,26 @@ async function main() {
         }
     } catch { /* sem catálogo anterior */ }
 
-    if (args.checkStreams) await checkStreams(builder, args);
+    // Validação dos links (tools/validador/). Interrupção = não publica nada (fica o catálogo anterior).
+    let validacao = null;
+    if (args.checkStreams) {
+        const ac = new AbortController();
+        const parar = () => { log('✋ Sinal de parada recebido — terminando o que está em andamento...'); ac.abort(); };
+        process.once('SIGTERM', parar); process.once('SIGINT', parar);
+        validacao = await validarCatalogo(builder, {
+            config: cfg.validacao, fontes: sources, health: args.health, sinal: ac.signal, log,
+            // SÓ para a suíte de testes (servidor falso em 127.0.0.1). Nunca ligado no workflow.
+            redesPermitidas: process.env.CZ_VALIDADOR_TESTE === '1' ? ['127.0.0.1/32'] : undefined,
+            sobrescrever: {
+                ...(args.checkLimitDefinido ? { limiteLinks: args.checkLimit } : {}),
+                ...(args.validarTudo ? { ttlOkHoras: 0, ttlNaoVerificavelHoras: 0 } : {})
+            }
+        });
+        if (ac.signal.aborted) { log('✖ Execução interrompida — catálogo anterior mantido, nada publicado.'); process.exit(1); }
+    }
 
-    const m = await emit(builder, args, epg, report);
+    const m = await emit(builder, args, epg, report, validacao);
+    if (validacao) await validacao.confirmar(); // cache só é gravado depois do catálogo novo publicado
     log(`✅ Pronto em ${((Date.now() - t0) / 1000).toFixed(1)}s — ${m.totals.itens} itens, ${m.totals.series} séries, ${m.totals.categorias} categorias`);
     log(`   itens mesclados (filmes, canais, episódios): ${builder.stats.duplicados}`);
     if (report.some(r => !r.ok)) process.exitCode = report.every(r => !r.ok) ? 1 : 0;

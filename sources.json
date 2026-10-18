@@ -14,6 +14,32 @@
     "travaCapa": true
   },
   
+  "validacao": {
+    "_como_usar": "Teste dos links a cada 6h. Relatórios em catalog/analise/validacao*.json. Detalhes em tools/validador/LEIAME.md",
+    "_modo_relatorio": "relatorio → No app: nada muda. No relatório: quais links funcionam, quais falharam e por quê. Comece por este.",
+    "_modo_otimizar": "otimizar → No app: a fonte que funciona vai para a frente e as outras viram reserva (nenhuma é apagada).",
+    "_modo_desligado": "desligado → não testa nada.",
+    "_apenasFontes": "Só as fontes desta lista são testadas. As outras ficam exatamente como vieram.",
+    "_semFonte": "marcar = item com TODAS as fontes falhando por 'falhasParaIndisponivel' ciclos seguidos recebe indisponivel:true | remover = sai do catálogo (nunca mais de 20% de uma vez).",
+
+    "modo": "relatorio",
+    "apenasFontes": [
+      "Filmes Saimo",
+      "Séries Saimo",
+      "Adultos Saimo",
+      "TVzine - Canais (Saimo)"
+    ],
+    "manterReservas": true,
+    "semFonte": "marcar",
+    "falhasParaIndisponivel": 3,
+    "concorrencia": 16,
+    "porHost": 2,
+    "timeoutMs": 8000,
+    "ttlOkHoras": 24,
+    "orcamentoMin": 20,
+    "prioridadeServidores": {}
+  },
+
   "fontes": [
     {
       "nome": "Filmes Saimo",
