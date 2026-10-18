@@ -6,6 +6,11 @@ on:
   schedule:
     - cron: "0 */6 * * *"      # a cada 6 horas
   workflow_dispatch:            # botão "Run workflow" manual
+    inputs:
+      forcar:
+        description: "Publicar mesmo se o catálogo encolher mais de 50% (use quando tirar listas de propósito)"
+        type: boolean
+        default: false
   push:
     paths:
       - sources.json
@@ -34,7 +39,7 @@ jobs:
         run: |
           node --max-old-space-size=6144 tools/build-catalog.mjs \
             --sources sources.json --out catalog \
-            --check-streams --check-limit 3000
+            --check-streams --check-limit 3000 ${{ inputs.forcar && '--force' || '' }}
 
       # Trava: se o script de build não gerou um manifest NOVO, o job falha (fica vermelho)
       # em vez de terminar em "Nada mudou." sem ninguém perceber.
