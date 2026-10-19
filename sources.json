@@ -92,7 +92,47 @@
       "tipo": "vod_m3u",
       "prefixoId": "LIV_KID",
       "targetCategory": "Desenhos 24H",
+      "grupos": ["Kids", "Infantil", "Anime", "Desenhos"],
+      "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
+    },
+    {
+      "nome": "Desenhos 24H · Español",
+      "tipo": "vod_m3u",
+      "prefixoId": "LIV_KID_ES",
+      "targetCategory": "Desenhos 24H",
+      "idioma": "es",
+      "grupos": ["Kids", "Infantil", "Niños", "Anime", "Animé"],
+      "generoDoGrupo": true,
+      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-MX.m3u"
+     },
+     {
+      "nome": "Desenhos 24H · English",
+      "tipo": "vod_m3u",
+      "prefixoId": "LIV_KID_EN",
+      "targetCategory": "Desenhos 24H",
+      "idioma": "en",
+      "grupos": ["Kids", "Children's", "Teen", "Anime"],
+      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-US.m3u"
+    },
+    {
+      "nome": "Desenhos 24H · Português Portugal",
+      "tipo": "vod_m3u",
+      "prefixoId": "LIV_KID_PT'PT",
+      "targetCategory": "Desenhos 24H",
+      "idioma": "pt'pt",
+      "grupos": ["Kids", "Infantil", "Anime", "Desenhos"],
+      "generoDoGrupo": true,
+      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u"
+    },
+    {
+      "nome": "YouToon · Português",
+      "tipo": "vod_json",
+      "categoryType": "live",
+      "prefixoId": "YTN_BR",
+      "targetCategory": "Desenhos 24H",
+      "idioma": "pt-BR",
+      "url": "https://…/youtoon/pt-BR.json"
     },
     {
       "nome": "Animes",
