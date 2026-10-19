@@ -568,7 +568,7 @@
             const idioma = x && typeof x === 'object' ? (x.idioma || x.lang || x.language || x.audio) : undefined;
             out.push(idioma ? { url, idioma: String(idioma) } : { url });
         };
-        [].concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || []).forEach(add);
+        [].concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || raw.youtube || []).forEach(add);
         for (const k of ['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors']) if (Array.isArray(raw[k])) raw[k].forEach(add);
         return out;
     }
@@ -577,7 +577,15 @@
      * Converte um registro bruto (de JSON ou M3U) em 0..N itens normalizados.
      * Séries com "seasons" viram N episódios (agrupados depois pelo builder).
      */
+    /** "grupos" da fonte: importa só os itens cujo group-title combina (sem acento, por trecho). */
+    function grupoAceito(raw, src) {
+        if (!Array.isArray(src.grupos) || !src.grupos.length) return true;
+        const g = normText(raw.group || raw.grupo || raw.category || raw.categoria || raw.cat || '');
+        return !!g && src.grupos.some(x => { const n = normText(x); return n && g.includes(n); });
+    }
+
     function normalize(raw, src) {
+        if (!grupoAceito(raw, src)) return [];
         const prefix = src.prefixoId || (src.tipo === 'emulator_json' ? 'GAME' : src.tipo === 'radio' ? 'RAD' : 'LIV');
         const baseCat = src.targetCategory || raw.group || raw.category || raw.cat || raw.categoria || raw.grupo || src.nome || 'Geral';
         const origem = src.nome;
@@ -667,9 +675,10 @@
             idiomas,
             desc: raw.desc || raw.overview || raw.description || raw.descricao,
             year: (raw.year || raw.ano ? parseInt(raw.year || raw.ano, 10) || undefined : undefined) || anoDoTitulo,
-            genre: asGenre(raw.genre || raw.genres || raw.genero),
+            genre: asGenre(raw.genre || raw.genres || raw.genero) || (src.generoDoGrupo && (raw.group || raw.grupo) ? asGenre(raw.group || raw.grupo) : undefined),
             cat: baseCat,
             categoryType,
+            idioma: raw.idioma || src.idioma,
             console: src.console || raw.console,
             tvgId: raw.tvgId || raw.tvg_id,
             headers: raw.headers,
@@ -695,10 +704,13 @@
 
         // Chave de deduplicação: mesma obra de fontes diferentes vira UM item com espelhos
         if (!item._key) {
+            // fonte com "idioma": o idioma entra na chave (o canal X do México não vira espelho do X do Brasil).
+            // Fonte sem "idioma" fica com a chave de sempre (IDs, favoritos e recentes não mudam).
+            const lang = src.idioma ? `${src.idioma}|` : '';
             if (categoryType === 'vod' && item.year) item._key = `vod|${normText(title)}|${item.year}`;
-            else if (categoryType === 'live' && item.tvgId) item._key = `live|${item.tvgId.toLowerCase()}`;
+            else if (categoryType === 'live' && item.tvgId) item._key = `live|${lang}${item.tvgId.toLowerCase()}`;
             else if (categoryType === 'game') item._key = `game|${item.console || ''}|${normText(title)}`;
-            else item._key = `${categoryType}|${url}`;
+            else item._key = `${categoryType}|${lang}${url}`;
         }
         item.id = raw.id && src.manterIdOriginal ? String(raw.id) : makeId(prefix, item._key);
         return [clean(item)];
