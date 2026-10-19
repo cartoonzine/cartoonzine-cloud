@@ -100,7 +100,7 @@
       "prefixoId": "LIV_KID",
       "targetCategory": "Desenhos 24H",
       "grupos": ["Kids", "Infantil", "Anime", "Desenhos", "Nick", "Soulth Park br"],
-      "incluir": ["", "Mr. Bean"],
+      "incluir": ["Mr. Bean"],
       "excluir": ["", ""],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
@@ -112,8 +112,8 @@
       "targetCategory": "Desenhos 24H",
       "idioma": "es",
       "grupos": ["Kids", "Infantil", "Niños", "Anime", "Animé", "Nick", "Soulth Park es"],
-      "incluir": ["", "Mr. Bean"],
-      "excluir": ["", ""],
+      "incluir": ["Mr. Bean"],
+      "excluir": [""],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-MX.m3u"
     },
@@ -124,8 +124,8 @@
       "targetCategory": "Desenhos 24H",
       "idioma": "en",
       "grupos": ["Kids", "Children's", "Teen", "Anime", "Nick", "Soulth Park en"],
-      "incluir": ["", "Mr. Bean"],
-      "excluir": ["", ""],
+      "incluir": ["Mr. Bean"],
+      "excluir": [""],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-US.m3u"
     },
@@ -137,8 +137,8 @@
       "targetCategory": "Desenhos 24H",
       "idioma": "pt-PT",
       "grupos": ["Kids", "Infantil", "Anime", "Desenhos", "Nick"],
-      "incluir": ["", "Mr. Bean"],
-      "excluir": ["", ""],
+      "incluir": ["Mr. Bean"],
+      "excluir": [""],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u"
     },
