@@ -71,7 +71,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": ""
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/filmes-torrent.json"
     },
     {
       "nome": "Séries",
