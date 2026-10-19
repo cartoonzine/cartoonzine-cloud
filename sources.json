@@ -89,7 +89,7 @@
     },
     {
       "nome": "Desenhos 24 Horas",
-      "tipo": "vod_m3u",
+      "tipo": "vod_json",
       "prefixoId": "LIV_KID",
       "targetCategory": "Desenhos 24 Horas",
       "url": ""
