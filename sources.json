@@ -118,7 +118,7 @@
     {
       "nome": "Desenhos 24H · Português Portugal",
       "tipo": "vod_m3u",
-      "prefixoId": "LIV_KID_PT'PT",
+      "prefixoId": "LIV_KID_PT",
       "targetCategory": "Desenhos 24H",
       "idioma": "pt'pt",
       "grupos": ["Kids", "Infantil", "Anime", "Desenhos"],
