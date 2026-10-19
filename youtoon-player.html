@@ -68,7 +68,7 @@
   document.head.appendChild(sc);
 
   // comandos da view (só da janela que abriu esta página)
-  var PODE = { mute: 1, unMute: 1, playVideo: 1, pauseVideo: 1, nextVideo: 1, previousVideo: 1, playVideoAt: 1, setShuffle: 1, seekTo: 1 };
+  var PODE = { mute: 1, unMute: 1, setVolume: 1, playVideo: 1, pauseVideo: 1, nextVideo: 1, previousVideo: 1, playVideoAt: 1, setShuffle: 1, seekTo: 1 };
   window.addEventListener('message', function (e) {
     if (e.source !== pai) return;
     var m = e.data;
