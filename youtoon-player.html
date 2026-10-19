@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>YouToon · ponte do player</title>
+<!--
+  YouToon (Desenhos 24H do Cartoonzine) — PONTE DO PLAYER DO YOUTUBE
+  O app abre do disco (file://), e o YouTube recusa tocar sem um site de verdade ("Erro 153").
+  Esta página fica no GitHub Pages (um site de verdade): ela abre o player do YouTube e
+  conversa com a view do Desenhos 24H por postMessage (comandos de ida, estado de volta).
+  Uso: youtoon-player.html?src=<link embed do youtube-nocookie>&id=<token>
+-->
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+</style>
+</head>
+<body>
+<script>
+(function () {
+  'use strict';
+  var q = new URLSearchParams(location.search);
+  var id = q.get('id') || '';
+  var pai = window.parent;
+  var player = null;
+
+  function enviar(ev, dados) {
+    var msg = { czyt: 1, id: id, ev: ev, dados: dados == null ? null : dados };
+    try {
+      if (player) {
+        var d = player.getVideoData ? player.getVideoData() : null;
+        var l = player.getPlaylist ? player.getPlaylist() : null;
+        msg.st = player.getPlayerState ? player.getPlayerState() : -1;
+        msg.titulo = (d && d.title) || '';
+        msg.n = l && l.length ? l.length : 0;
+      }
+    } catch (e) {}
+    try { pai.postMessage(msg, '*'); } catch (e) {}
+  }
+
+  // só aceita links de incorporação do próprio YouTube
+  var src = q.get('src') || '';
+  if (!/^https:\/\/www\.youtube(-nocookie)?\.com\/embed\//.test(src)) { enviar('erro', 2); return; }
+  var u = new URL(src);
+  u.searchParams.set('enablejsapi', '1');
+  u.searchParams.set('origin', location.origin);
+
+  var f = document.createElement('iframe');
+  f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+  f.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture');
+  f.setAttribute('title', 'YouToon');
+  f.src = u.toString();
+  document.body.appendChild(f);
+  enviar('carregou');
+
+  window.onYouTubeIframeAPIReady = function () {
+    player = new YT.Player(f, { events: {
+      onReady: function () { enviar('pronto'); },
+      onStateChange: function (e) { enviar('estado', e.data); },
+      onError: function (e) { enviar('erro', e.data); }
+    } });
+  };
+  var sc = document.createElement('script');
+  sc.src = 'https://www.youtube.com/iframe_api';
+  sc.onerror = function () { enviar('semapi'); };
+  document.head.appendChild(sc);
+
+  // comandos da view (só da janela que abriu esta página)
+  var PODE = { mute: 1, unMute: 1, playVideo: 1, pauseVideo: 1, nextVideo: 1, previousVideo: 1, playVideoAt: 1, setShuffle: 1, seekTo: 1 };
+  window.addEventListener('message', function (e) {
+    if (e.source !== pai) return;
+    var m = e.data;
+    if (!m || m.czytcmd == null || !PODE[m.czytcmd] || !player || !player[m.czytcmd]) return;
+    try { player[m.czytcmd].apply(player, Array.isArray(m.args) ? m.args : []); } catch (er) {}
+    setTimeout(function () { enviar('info'); }, 300);
+  });
+})();
+</script>
+</body>
+</html>
