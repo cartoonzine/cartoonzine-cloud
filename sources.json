@@ -149,8 +149,8 @@
       "prefixoId": "YTN_BR",
       "targetCategory": "Desenhos 24H",
       "idioma": "pt-BR",
-      "url": "https://…/youtoon/pt-BR.json"
-    },
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-cloud/main/listas-tube/youtoon/pt-BR.json"
+    }
     {
       "nome": "Animes",
       "tipo": "vod_m3u",
