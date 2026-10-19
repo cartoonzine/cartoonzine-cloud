@@ -149,7 +149,15 @@
       "prefixoId": "YTN_BR",
       "targetCategory": "Desenhos 24H",
       "idioma": "pt-BR",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-cloud/main/listas-tube/youtoon/pt-BR.json"
+      "url": 
+    { "nome": "YouToon · Português", "tipo": "vod_json", "categoryType": "live", "prefixoId": "YTN_BR", "targetCategory": "Desenhos 24H", "idioma": "pt-BR",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/pt-br.json" },
+    { "nome": "YouToon · Espanhol", "tipo": "vod_json", "categoryType": "live", "prefixoId": "YTN_ES", "targetCategory": "Desenhos 24H", "idioma": "es",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/es.json" },
+    { "nome": "YouToon · Inglês", "tipo": "vod_json", "categoryType": "live", "prefixoId": "YTN_EN", "targetCategory": "Desenhos 24H", "idioma": "en",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/en.json" },
+    { "nome": "YouToon · Português (Portugal)", "tipo": "vod_json", "categoryType": "live", "prefixoId": "YTN_PT", "targetCategory": "Desenhos 24H", "idioma": "pt-PT",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/pt-pt.json" }
     },
     {
       "nome": "Animes",
