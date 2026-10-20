@@ -77,10 +77,26 @@
   document.head.appendChild(sc);
 
   // comandos da view (só da janela que abriu esta página)
-  var PODE = { mute: 1, unMute: 1, setVolume: 1, playVideo: 1, pauseVideo: 1, nextVideo: 1, previousVideo: 1, playVideoAt: 1, setShuffle: 1, seekTo: 1 };
+  var PODE = { mute: 1, unMute: 1, setVolume: 1, playVideo: 1, pauseVideo: 1, nextVideo: 1, previousVideo: 1, playVideoAt: 1, setShuffle: 1, seekTo: 1,
+              loadModule: 1, unloadModule: 1, setOption: 1, setPlaybackRate: 1 };   // legendas e velocidade (painel Ajustes do YouToon)
+  // Ajustes do YouToon: quais legendas o vídeo tem, qual está ligada, tamanho e velocidades
+  function opcoes() {
+    var o = { faixas: [], faixa: null, tam: null, rates: [], rate: 1 };
+    var ler = function (f) { try { return f(); } catch (e) { return null; } };
+    o.faixas = ler(function () { return player.getOption('captions', 'tracklist'); }) || [];
+    o.faixa = ler(function () { return player.getOption('captions', 'track'); });
+    o.tam = ler(function () { return player.getOption('captions', 'fontSize'); });
+    o.rates = ler(function () { return player.getAvailablePlaybackRates(); }) || [];
+    o.rate = ler(function () { return player.getPlaybackRate(); }) || 1;
+    try { return JSON.parse(JSON.stringify(o)); } catch (e) { return { faixas: [], faixa: null, tam: null, rates: [], rate: 1 }; }
+  }
   window.addEventListener('message', function (e) {
     if (e.source !== pai) return;
     var m = e.data;
+    if (m && m.czytcmd === 'czOpcoes') {
+      if (player) try { pai.postMessage({ czyt: 1, id: id, ev: 'opcoes', dados: opcoes(), pedido: m.args && m.args[0] }, '*'); } catch (er) {}
+      return;
+    }
     if (!m || m.czytcmd == null || !PODE[m.czytcmd] || !player || !player[m.czytcmd]) return;
     try { player[m.czytcmd].apply(player, Array.isArray(m.args) ? m.args : []); } catch (er) {}
     setTimeout(function () { enviar('info'); }, 300);
