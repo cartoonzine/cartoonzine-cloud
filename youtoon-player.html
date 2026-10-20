@@ -25,6 +25,7 @@
   var id = q.get('id') || '';
   var pai = window.parent;
   var player = null;
+  var ultimaLista = '';
 
   function enviar(ev, dados) {
     var msg = { czyt: 1, id: id, ev: ev, dados: dados == null ? null : dados };
@@ -35,6 +36,14 @@
         msg.st = player.getPlayerState ? player.getPlayerState() : -1;
         msg.titulo = (d && d.title) || '';
         msg.n = l && l.length ? l.length : 0;
+        msg.i = player.getPlaylistIndex ? player.getPlaylistIndex() : -1;   // qual episódio da playlist está tocando
+        msg.vid = (d && d.video_id) || '';
+        // a lista de vídeos da playlist (para a aba Episódios): manda de novo só quando ela muda
+        var chave = l && l.length ? l.length + ':' + l[0] + ':' + l[l.length - 1] : '';
+        if (chave && chave !== ultimaLista) {
+          ultimaLista = chave;
+          try { pai.postMessage({ czyt: 1, id: id, ev: 'lista', dados: l.slice(0, 5000) }, '*'); } catch (e) {}
+        }
       }
     } catch (e) {}
     try { pai.postMessage(msg, '*'); } catch (e) {}
