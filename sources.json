@@ -204,8 +204,6 @@
       "prefixoId": "TV",
       "url": [
       "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
-      "https://raw.githubusercontent.com/OwnerPlugins/tv-garden-channel-list/refs/heads/main/tv/raw/countries/br.json",
-      "https://raw.githubusercontent.com/ardvlmantovani-art/iptv-brasil-amantovani/refs/heads/main/listacompleta_working.m3u8"
       ]
     },
     {
