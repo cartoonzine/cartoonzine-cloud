@@ -110,7 +110,7 @@
       "incluir": ["Mr. Bean"],
       "excluir": ["", ""],
       "generoDoGrupo": true,
-      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-BR.m3u"
+      "url": "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u"
     },
     {
       "nome": "Desenhos 24H · Español",
