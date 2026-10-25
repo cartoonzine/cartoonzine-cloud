@@ -79,7 +79,6 @@
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
       "url": [
-      "https://raw.githubusercontent.com/josemtocco/Internet-Archive/refs/heads/main/catalogo.json",
       "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u",
       "https://raw.githubusercontent.com/josemtocco/runtime-vod-m3u-Oreate/refs/heads/main/playlists/runtime_vod.m3u",
       "https://raw.githubusercontent.com/josemtocco/soplayfilmes/refs/heads/main/playlists/soplay_filmes.m3u"
