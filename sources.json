@@ -209,8 +209,8 @@
     "epg": [
     "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz",
     "https://exemplo.com/outro-guia.xml.gz"
-  ]
-    }
+    ]
+    },
     {
       "nome": "TVzine - Filmes M3U",
       "tipo": "tvzine_worker",
