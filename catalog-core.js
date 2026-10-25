@@ -147,6 +147,9 @@
                     tvgId: attrs['tvg-id'] || '',
                     tvgName: attrs['tvg-name'] || ''
                 };
+                // pistas de país/idioma (usadas pela aba Países do TVzine)
+                if (attrs['tvg-country']) cur.country = attrs['tvg-country'];
+                if (attrs['tvg-language']) cur.language = attrs['tvg-language'];
                 return;
             }
             if (line.startsWith('#EXTGRP:')) { if (cur) cur.group = cur.group || line.slice(8).trim(); return; }
@@ -441,6 +444,205 @@
     }
 
     // ------------------------------------------------------------------
+    // PAÍSES dos canais ao vivo (TVzine → aba "Países")
+    // Decide o país de cada canal UMA vez (no build e na leitura das listas do app).
+    // Vale a 1ª regra que responder:
+    //   1. fonte    → "pais": "br" no sources.json (ou na lista do usuário, nas Configurações)
+    //   2. canal    → tvg-country="BR;PT", coluna País, campo "pais" do item
+    //   3. tvg-id   → final do tvg-id no padrão iptv-org ("Globo.br", "Globo.br@SD")
+    //   4. lista    → código do país no endereço da lista (pluto_br.m3u, pluto-live-MX.m3u,
+    //                 countries/br.m3u, ?region=br)
+    //   5. grupo    → nome do grupo (bandeira 🇧🇷, "Brasil", "Brazil", "BR | Esportes"…)
+    //   6. idioma   → só idioma COM região: pt-BR → Brasil, es-MX → México ("pt" sozinho não decide)
+    //   7. domínio  → link do canal em domínio do país (.com.br, .com.ar…)
+    // Resultado: { paises: ['br'], via: 'lista' } (paises vazio = sem país: fica em Categorias/Global)
+    // ------------------------------------------------------------------
+    const Paises = (function () {
+        const NOMES = {
+            af: 'Afeganistão', za: 'África do Sul', al: 'Albânia', de: 'Alemanha', ad: 'Andorra', ao: 'Angola', ag: 'Antígua e Barbuda',
+            sa: 'Arábia Saudita', dz: 'Argélia', ar: 'Argentina', am: 'Armênia', au: 'Austrália', at: 'Áustria', az: 'Azerbaijão',
+            bs: 'Bahamas', bh: 'Bahrein', bd: 'Bangladesh', bb: 'Barbados', be: 'Bélgica', bz: 'Belize', bj: 'Benin', by: 'Bielorrússia',
+            bo: 'Bolívia', ba: 'Bósnia e Herzegovina', bw: 'Botsuana', br: 'Brasil', bn: 'Brunei', bg: 'Bulgária', bf: 'Burkina Faso',
+            bi: 'Burundi', bt: 'Butão', cv: 'Cabo Verde', cm: 'Camarões', kh: 'Camboja', ca: 'Canadá', qa: 'Catar', kz: 'Cazaquistão',
+            td: 'Chade', cl: 'Chile', cn: 'China', cy: 'Chipre', co: 'Colômbia', km: 'Comores', cg: 'Congo', kp: 'Coreia do Norte',
+            kr: 'Coreia do Sul', ci: 'Costa do Marfim', cr: 'Costa Rica', hr: 'Croácia', cu: 'Cuba', dk: 'Dinamarca', dj: 'Djibuti',
+            dm: 'Dominica', eg: 'Egito', sv: 'El Salvador', ae: 'Emirados Árabes Unidos', ec: 'Equador', er: 'Eritreia', sk: 'Eslováquia',
+            si: 'Eslovênia', es: 'Espanha', us: 'Estados Unidos', ee: 'Estônia', sz: 'Eswatini', et: 'Etiópia', fj: 'Fiji', ph: 'Filipinas',
+            fi: 'Finlândia', fr: 'França', ga: 'Gabão', gm: 'Gâmbia', gh: 'Gana', ge: 'Geórgia', gd: 'Granada', gr: 'Grécia',
+            gt: 'Guatemala', gy: 'Guiana', gn: 'Guiné', gq: 'Guiné Equatorial', gw: 'Guiné-Bissau', ht: 'Haiti', hn: 'Honduras',
+            hk: 'Hong Kong', hu: 'Hungria', ye: 'Iêmen', mh: 'Ilhas Marshall', sb: 'Ilhas Salomão', in: 'Índia', id: 'Indonésia',
+            ir: 'Irã', iq: 'Iraque', ie: 'Irlanda', is: 'Islândia', il: 'Israel', it: 'Itália', jm: 'Jamaica', jp: 'Japão',
+            jo: 'Jordânia', xk: 'Kosovo', ki: 'Kiribati', kw: 'Kuwait', la: 'Laos', ls: 'Lesoto', lv: 'Letônia', lb: 'Líbano',
+            lr: 'Libéria', ly: 'Líbia', li: 'Liechtenstein', lt: 'Lituânia', lu: 'Luxemburgo', mo: 'Macau', mk: 'Macedônia do Norte',
+            mg: 'Madagascar', my: 'Malásia', mw: 'Malawi', mv: 'Maldivas', ml: 'Mali', mt: 'Malta', ma: 'Marrocos', mu: 'Maurício',
+            mr: 'Mauritânia', mx: 'México', fm: 'Micronésia', mz: 'Moçambique', md: 'Moldávia', mc: 'Mônaco', mn: 'Mongólia',
+            me: 'Montenegro', mm: 'Mianmar', na: 'Namíbia', nr: 'Nauru', np: 'Nepal', ni: 'Nicarágua', ne: 'Níger', ng: 'Nigéria',
+            no: 'Noruega', nz: 'Nova Zelândia', om: 'Omã', nl: 'Países Baixos', pw: 'Palau', ps: 'Palestina', pa: 'Panamá',
+            pg: 'Papua-Nova Guiné', pk: 'Paquistão', py: 'Paraguai', pe: 'Peru', pl: 'Polônia', pr: 'Porto Rico', pt: 'Portugal',
+            ke: 'Quênia', kg: 'Quirguistão', gb: 'Reino Unido', cf: 'República Centro-Africana', cd: 'República Democrática do Congo',
+            do: 'República Dominicana', cz: 'República Tcheca', ro: 'Romênia', rw: 'Ruanda', ru: 'Rússia', ws: 'Samoa',
+            sm: 'San Marino', lc: 'Santa Lúcia', kn: 'São Cristóvão e Névis', st: 'São Tomé e Príncipe', vc: 'São Vicente e Granadinas',
+            sn: 'Senegal', sl: 'Serra Leoa', rs: 'Sérvia', sc: 'Seychelles', sg: 'Singapura', sy: 'Síria', so: 'Somália', lk: 'Sri Lanka',
+            sd: 'Sudão', ss: 'Sudão do Sul', se: 'Suécia', ch: 'Suíça', sr: 'Suriname', th: 'Tailândia', tw: 'Taiwan', tj: 'Tajiquistão',
+            tz: 'Tanzânia', tl: 'Timor-Leste', tg: 'Togo', to: 'Tonga', tt: 'Trinidad e Tobago', tn: 'Tunísia', tm: 'Turcomenistão',
+            tr: 'Turquia', tv: 'Tuvalu', ua: 'Ucrânia', ug: 'Uganda', uy: 'Uruguai', uz: 'Uzbequistão', vu: 'Vanuatu', va: 'Vaticano',
+            ve: 'Venezuela', vn: 'Vietnã', zm: 'Zâmbia', zw: 'Zimbábue'
+        };
+        // Nomes em outros idiomas e apelidos comuns em listas IPTV
+        const APELIDOS = {
+            brazil: 'br', brasile: 'br', bresil: 'br', brasilien: 'br', brasileiro: 'br', brasileira: 'br', brasileiros: 'br',
+            usa: 'us', 'united states': 'us', america: 'us', 'estados unidos': 'us', eua: 'us', eeuu: 'us', 'ee uu': 'us',
+            'etats unis': 'us', 'vereinigte staaten': 'us', 'stati uniti': 'us',
+            uk: 'gb', 'united kingdom': 'gb', 'great britain': 'gb', england: 'gb', britain: 'gb', 'reino unido': 'gb',
+            'royaume uni': 'gb', 'vereinigtes konigreich': 'gb', 'regno unito': 'gb', inglaterra: 'gb',
+            germany: 'de', deutschland: 'de', alemania: 'de', allemagne: 'de', germania: 'de',
+            spain: 'es', espana: 'es', espagne: 'es', spanien: 'es', spagna: 'es',
+            france: 'fr', francia: 'fr', frankreich: 'fr', italy: 'it', italia: 'it', italie: 'it',
+            mexico: 'mx', colombia: 'co', uruguay: 'uy', paraguay: 'py', ecuador: 'ec', bolivia: 'bo', canada: 'ca',
+            japan: 'jp', 'south korea': 'kr', korea: 'kr', coreia: 'kr', india: 'in', australia: 'au', 'new zealand': 'nz',
+            'south africa': 'za', russia: 'ru', switzerland: 'ch', suisse: 'ch', schweiz: 'ch', svizzera: 'ch',
+            sweden: 'se', norway: 'no', denmark: 'dk', finland: 'fi', poland: 'pl', ukraine: 'ua', greece: 'gr', turkey: 'tr',
+            belgium: 'be', belgique: 'be', austria: 'at', osterreich: 'at', netherlands: 'nl', holland: 'nl', holanda: 'nl',
+            'paises bajos': 'nl', china: 'cn', 'saudi arabia': 'sa', egypt: 'eg', venezuela: 've', chile: 'cl', peru: 'pe',
+            argentina: 'ar', cuba: 'cu', panama: 'pa', 'costa rica': 'cr', 'dominican republic': 'do', 'republica dominicana': 'do',
+            ireland: 'ie', iceland: 'is', 'czech republic': 'cz', czechia: 'cz', romania: 'ro', hungary: 'hu', bulgaria: 'bg',
+            croatia: 'hr', serbia: 'rs', slovakia: 'sk', slovenia: 'si', albania: 'al', morocco: 'ma', algeria: 'dz',
+            tunisia: 'tn', nigeria: 'ng', kenya: 'ke', ghana: 'gh', mozambique: 'mz', indonesia: 'id', philippines: 'ph',
+            thailand: 'th', vietnam: 'vn', malaysia: 'my', singapore: 'sg', pakistan: 'pk', iran: 'ir', iraq: 'iq',
+            uae: 'ae', 'united arab emirates': 'ae', emirados: 'ae', qatar: 'qa', lebanon: 'lb', jordan: 'jo', georgia: 'ge',
+            armenia: 'am', azerbaijan: 'az', kazakhstan: 'kz', 'puerto rico': 'pr', 'el salvador': 'sv', guatemala: 'gt',
+            honduras: 'hn', nicaragua: 'ni', 'hong kong': 'hk', taiwan: 'tw', israel: 'il', portugal: 'pt', 'portugal pt': 'pt'
+        };
+        const norm = (s) => String(s == null ? '' : s).normalize('NFD').replace(/[̀-ͯ]/g, '')
+            .toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+        const PELO_NOME = Object.create(null);
+        Object.keys(NOMES).forEach(c => { PELO_NOME[norm(NOMES[c])] = c; });
+        Object.keys(APELIDOS).forEach(a => { PELO_NOME[norm(a)] = APELIDOS[a]; });
+        // Siglas que em nomes de arquivo/grupo/domínio quase sempre NÃO são países
+        // (tv = Tuvalu, sd = Sudão, fm = Micronésia, me = Montenegro, co = Colômbia em ".co"…)
+        const DUVIDOSAS = new Set(['tv', 'sd', 'fm', 'am', 'me', 'co', 'cc', 'ws', 'to', 'la', 'nu', 'is', 'in', 'it', 'no', 'id', 'do', 'tl']);
+
+        /** "BR", "br", "Brasil", "Brazil", "UK" → 'br' / 'gb' (ou null) */
+        const codigo = (x) => {
+            const t = norm(x);
+            if (!t) return null;
+            if (t.length === 2) { if (t === 'uk') return 'gb'; return NOMES[t] ? t : null; }
+            return PELO_NOME[t] || null;
+        };
+        const lista = (v) => {
+            const partes = Array.isArray(v) ? v : String(v == null ? '' : v).split(/[;,|/]+/);
+            return [...new Set(partes.map(codigo).filter(Boolean))];
+        };
+        const bandeira = (s) => {
+            const ind = [...String(s || '')].filter(ch => { const cp = ch.codePointAt(0); return cp >= 0x1F1E6 && cp <= 0x1F1FF; });
+            if (ind.length < 2) return null;
+            const c = String.fromCharCode(ind[0].codePointAt(0) - 0x1F1E6 + 97) + String.fromCharCode(ind[1].codePointAt(0) - 0x1F1E6 + 97);
+            return c === 'uk' ? 'gb' : (NOMES[c] ? c : null);
+        };
+        // nomes que, no MEIO de um grupo, costumam ser outra coisa ("Latin America", estado da Geórgia…)
+        const NAO_PALAVRA = new Set(['america', 'georgia', 'jordan', 'turkey', 'chile', 'guinea']);
+        const siglaClara = (s) => { const c = String(s || '').toLowerCase(); return NOMES[c] && !DUVIDOSAS.has(c) ? c : (c === 'uk' ? 'gb' : null); };
+
+        /** Grupo → país: "🇧🇷 Esportes", "Brasil", "BR | Esportes", "Esportes [BR]", "Canais Brazil" */
+        const doGrupo = (g) => {
+            if (!g) return null;
+            const b = bandeira(g);
+            if (b) return b;
+            const limpo = String(g).replace(/[\u{1F000}-\u{1FAFF}\u{2600}-\u{27BF}\u{FE0F}]/gu, '').trim();
+            let m = /^([a-z]{2})\s*[-|:]\s*\S/i.exec(limpo);                 // "BR | Esportes", "PT: Notícias"
+            if (m && siglaClara(m[1])) return siglaClara(m[1]);
+            m = /\S\s*(?:[-|:]\s*|[\[(])([a-z]{2})[\])]?\s*$/i.exec(limpo);   // "Esportes | BR", "Esportes (BR)"
+            if (m && siglaClara(m[1])) return siglaClara(m[1]);
+            const t = norm(limpo.replace(/^[a-z]{2,3}\s*[-|:]\s*/i, '')) || norm(limpo);
+            if (PELO_NOME[t]) return PELO_NOME[t];
+            const t2 = norm(limpo);
+            if (PELO_NOME[t2]) return PELO_NOME[t2];
+            if (t2.length === 2 && siglaClara(t2)) return t2 === 'uk' ? 'gb' : t2;
+            // "Canais Brasil", "Brasil Esportes", "Brazil News": nome de país inteiro como palavra
+            const pal = t2.split(' ');
+            for (let n = Math.min(3, pal.length); n >= 1; n--) {
+                for (let i = 0; i + n <= pal.length; i++) {
+                    const pedaco = pal.slice(i, i + n).join(' ');
+                    if (pedaco.length > 3 && PELO_NOME[pedaco] && !NAO_PALAVRA.has(pedaco)) return PELO_NOME[pedaco];
+                }
+            }
+            return null;
+        };
+
+        /** Endereço da lista → país: pluto_br.m3u, pluto-live-MX.m3u, br.m3u8, countries/br.m3u, ?region=br */
+        const daUrl = (u) => {
+            if (!u) return null;
+            let s = String(u);
+            try { s = decodeURIComponent(s); } catch (e) { /* mantém */ }
+            let m = /[?&](?:region|country|pais|geo|cc)=([a-z]{2})\b/i.exec(s);
+            if (m && NOMES[m[1].toLowerCase()]) return m[1].toLowerCase();
+            const caminho = s.split(/[?#]/)[0];
+            m = /\/countries\/([a-z]{2})\.m3u8?$/i.exec(caminho);
+            if (m && NOMES[m[1].toLowerCase()]) return m[1].toLowerCase();
+            m = /(?:^|[\/_\-.])([a-z]{2})\.m3u8?$/i.exec(caminho);
+            if (m) return siglaClara(m[1]);
+            return null;
+        };
+
+        /** tvg-id do iptv-org: "Globo.br", "TVGlobo.br@SD" (só um ponto, sigla clara) */
+        const doTvgId = (id) => {
+            const m = /^[^.\s@]+\.([a-z]{2})(?:@[\w-]+)?$/i.exec(String(id || '').trim());
+            return m ? siglaClara(m[1]) : null;
+        };
+
+        /** "pt-BR", "es_MX", "Português (Brasil)", "Portuguese (Brazil)" → país da região */
+        const doIdioma = (v) => {
+            for (const p of String(v || '').split(/[;,|]+/)) {
+                const t = p.trim();
+                let m = /^[a-z]{2,3}[-_]([a-z]{2})$/i.exec(t);
+                if (m && NOMES[m[1].toLowerCase()]) return m[1].toLowerCase();
+                m = /\(([^)]+)\)\s*$/.exec(t);
+                if (m && codigo(m[1])) return codigo(m[1]);
+            }
+            return null;
+        };
+
+        /** link do canal num domínio de país: .com.br, .net.ar, .gov.pt ou terminado em .br */
+        const doDominio = (url) => {
+            const m = /^[a-z]+:\/\/([^\/:?#]+)/i.exec(String(url || ''));
+            if (!m) return null;
+            const h = m[1].toLowerCase();
+            let d = /\.(?:com|net|org|gov|gob|tv|edu)\.([a-z]{2})$/.exec(h);
+            if (d && NOMES[d[1]]) return d[1];
+            if (/\.br$/.test(h)) return 'br';
+            return null;
+        };
+
+        /**
+         * País(es) de um canal.
+         * canal: item (country/tvgCountry, pais, tvgId, group/cat, language/idioma, url)
+         * ctx:   { pais (manual da fonte), url (endereço da lista), idioma (idioma da fonte) }
+         */
+        const doCanal = (c, ctx) => {
+            c = c || {}; ctx = ctx || {};
+            const r = (paises, via) => ({ paises, via });
+            const manual = ctx.pais != null && ctx.pais !== '' && !/^auto$/i.test(String(ctx.pais)) ? lista(ctx.pais) : [];
+            if (manual.length) return r(manual, 'fonte');
+            const doItem = lista([].concat(c.country || [], c.tvgCountry || [], c['tvg-country'] || [], c.pais || [])
+                .flatMap(v => String(v).split(/[;,|/]+/)));
+            if (doItem.length) return r(doItem, 'canal');
+            const tid = doTvgId(c.tvgId || c.tvg_id || c['tvg-id']);
+            if (tid) return r([tid], 'tvg-id');
+            const url = daUrl(ctx.url);
+            if (url) return r([url], 'lista');
+            const g = doGrupo(c.group || c.grupo || c.cat);
+            if (g) return r([g], 'grupo');
+            const idi = doIdioma(c.language) || doIdioma(c.tvgLanguage) || doIdioma(c.idioma) || doIdioma(ctx.idioma);
+            if (idi) return r([idi], 'idioma');
+            const dom = doDominio(c.url);
+            if (dom) return r([dom], 'dominio');
+            return r([], null);
+        };
+
+        return { NOMES, codigo, lista, bandeira, doGrupo, daUrl, doTvgId, doIdioma, doDominio, doCanal, nome: (c) => NOMES[c] || null };
+    })();
+
+    // ------------------------------------------------------------------
     // Fontes: tipos do manifesto -> tipo de item
     // ------------------------------------------------------------------
     /** Formato do arquivo de uma fonte (json ou m3u). */
@@ -560,7 +762,8 @@
         'desc', 'overview', 'description', 'year', 'genre', 'genres', 'cat', 'category', 'group', 'console',
         'tvgId', 'tvg_id', 'headers', 'destaque', 'id', 'seasons', 'episodes', 'episode', 'season', 'number', 'still',
         'categoryType', 'provider', 'origem', 'mirrors', 'seriesId', 'serie', 'cats',
-        'urls', 'links', 'streams', 'sources', 'fontes', 'categoria', 'grupo', 'genero', 'descricao', 'ano']);
+        'urls', 'links', 'streams', 'sources', 'fontes', 'categoria', 'grupo', 'genero', 'descricao', 'ano',
+        'country', 'tvgCountry', 'language', 'tvgLanguage', 'pais', 'paises', 'paisVia']);
 
     function extras(raw) {
         const out = {};
@@ -723,6 +926,16 @@
             _tituloOriginal: String(raw.title || raw.name || raw.nome || '').trim() || undefined
         };
 
+        // País do canal ao vivo (aba Países do TVzine): decidido aqui, uma vez, pela escada de regras
+        if (categoryType === 'live') {
+            const pr = Paises.doCanal({
+                country: raw.country || raw.tvgCountry || raw['tvg-country'], pais: raw.pais || raw.paises,
+                tvgId: item.tvgId, group: raw.group || raw.grupo || raw.category || raw.categoria,
+                language: raw.language || raw.tvgLanguage, idioma: raw.idioma, url
+            }, { pais: src.pais, url: src.url, idioma: src.idioma });
+            if (pr.paises.length) { item.paises = pr.paises; item.paisVia = pr.via; }
+        }
+
         // Episódio solto em lista M3U/JSON de VOD? ("Naruto S01E03")
         if (src.agruparSeries !== false && (categoryType === 'vod' || (categoryType === 'live' && VOD_EXT.test(url)))) {
             const ep = detectEpisode(title);
@@ -853,6 +1066,11 @@
                 }
                 for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId']) {
                     if (orig[k] == null && item[k] != null) orig[k] = item[k];
+                }
+                // mesmo canal em listas de países diferentes: aparece nos dois países
+                if (item.paises && item.paises.length) {
+                    if (!orig.paises) { orig.paises = item.paises.slice(); orig.paisVia = item.paisVia; }
+                    else item.paises.forEach(p => { if (!orig.paises.includes(p)) orig.paises.push(p); });
                 }
                 if (item.cat !== orig.cat && orig.categoryType !== 'episode') {
                     orig.cats = orig.cats || [orig.cat];
@@ -1277,6 +1495,7 @@
         cyrb53, makeId, idShard,
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
+        Paises,
         sourceFormat, isUsableUrl, epgDasFontes, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
         CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog

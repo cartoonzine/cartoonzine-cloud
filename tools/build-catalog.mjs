@@ -451,6 +451,23 @@ async function main() {
         }
     }
 
+    // Países dos canais ao vivo (aba Países do TVzine): quantos e por qual regra
+    {
+        const porPais = {}, porRegra = {};
+        let aoVivo = 0, sem = 0;
+        for (const it of builder.items.values()) {
+            if (it.categoryType !== 'live') continue;
+            aoVivo++;
+            if (!it.paises || !it.paises.length) { sem++; continue; }
+            it.paises.forEach(p => { porPais[p] = (porPais[p] || 0) + 1; });
+            porRegra[it.paisVia] = (porRegra[it.paisVia] || 0) + 1;
+        }
+        if (aoVivo) {
+            const top = Object.entries(porPais).sort((a, b) => b[1] - a[1]).slice(0, 12).map(([p, n]) => `${p} ${n}`).join(', ');
+            log(`🌎 Países: ${aoVivo - sem}/${aoVivo} canais ao vivo com país${top ? ` (${top})` : ''} • regras: ${Object.entries(porRegra).map(([r, n]) => `${r} ${n}`).join(', ') || '—'}${sem ? ` • sem país: ${sem}` : ''}`);
+        }
+    }
+
     // Trava de segurança: nunca troca um catálogo bom por um quebrado
     if (usable.length && report.every(r => !r.ok)) {
         log('✖ Todas as fontes falharam — catálogo anterior mantido.');
