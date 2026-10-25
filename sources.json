@@ -78,7 +78,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": ""
+      "url": "https://raw.githubusercontent.com/josemtocco/Internet-Archive/refs/heads/main/catalogo.json"
     },
     {
       "nome": "Séries",
@@ -148,7 +148,6 @@
   "excluir": [],
   "generoDoGrupo": true,
   "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u",
-  "epg": "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz"
 },
     {
       "nome": "YouToon · Português",
@@ -200,14 +199,18 @@
       "url": ""
     },
     {
-      "nome": "TVzine - Canais",
-      "tipo": "tvzine_worker",
-      "prefixoId": "TV",
-      "url": 
-      "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
-      "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u",
-      "epg": "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz"
-    },
+     "nome": "TVzine - Canais",
+     "tipo": "tvzine_worker",
+     "prefixoId": "TV",
+     "url": [
+     "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
+     "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u"
+     ],
+    "epg": [
+    "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz",
+    "https://exemplo.com/outro-guia.xml.gz"
+  ]
+    }
     {
       "nome": "TVzine - Filmes M3U",
       "tipo": "tvzine_worker",
