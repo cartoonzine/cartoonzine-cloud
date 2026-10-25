@@ -206,6 +206,7 @@
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
       "url": [
+      "https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml",
       "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
       ]
     },
