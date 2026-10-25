@@ -138,7 +138,7 @@
     },
     {
   "nome": "Desenhos 24H · Português PT",
-  "ativo": false,
+  "ativo": true,
   "tipo": "vod_m3u",
   "prefixoId": "LIV_KID_PT",
   "targetCategory": "Desenhos 24H",
