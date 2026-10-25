@@ -27,6 +27,7 @@
  *   --check-limit <n>     máximo de links testados por execução (padrão: 3000)
  *   --health <arq>        memória dos testes entre execuções (padrão: health-cache.json)
  *   --force               publica mesmo se o catálogo encolher mais de 50%
+ *   --sem-epg             não prepara o guia (EPG) no build (o app volta a ler os XMLTV sozinho)
  *   --compat-episodios    gera também TODOS os episódios em lotes (só para o modo antigo
  *                         seriesComoEpisodios: true — ocupa bastante espaço)
  */
@@ -36,6 +37,7 @@ import fss from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validarCatalogo } from './validador/index.mjs';
+import { gerarEpgPronto } from './epg-pronto.mjs';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -62,6 +64,7 @@ function parseArgs(argv) {
             case '--force': a.force = true; break;
             case '--compat-episodios': a.compatEpisodios = true; break;
             case '--validar-tudo': a.validarTudo = true; break;
+            case '--sem-epg': a.semEpg = true; break;
             default: console.warn('Opção desconhecida:', k);
         }
     }
@@ -288,6 +291,15 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
     log(`💾 Gravando ${writes.length} arquivos...`);
     await writeMany(writes);
 
+    // 5) 📺 Guia de programação PRONTO (só os canais do catálogo, JSON pequeno — a TV não lê XMLTV)
+    let epgPronto = null;
+    if (!args.semEpg && epg.size) {
+        try {
+            const canais = [...builder.items.values()].filter(it => it.categoryType === 'live');
+            epgPronto = await gerarEpgPronto({ canais, urls: [...epg], dir: path.join(tmp, 'epg'), log, timeout: Math.max(args.timeout, 180000) });
+        } catch (e) { log(`✖ EPG pronto: ${e.message || e} — o app lê os guias sozinho`); }
+    }
+
     const totals = { itens: builder.items.size, series: builder.series.size, categorias: categories.length };
     const byType = {};
     for (const it of builder.items.values()) byType[it.categoryType] = (byType[it.categoryType] || 0) + 1;
@@ -302,6 +314,8 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
         categories,
         destaques,
         epg: [...epg],
+        // guia já preparado (o app usa este e só lê sozinho os XMLTV que não estão em "fontes")
+        ...(epgPronto && epgPronto.arquivo ? { epgPronto: { arquivo: epgPronto.arquivo, geradoEm: new Date().toISOString(), canais: epgPronto.canais, programas: epgPronto.programas, fontes: epgPronto.fontes } } : {}),
         searchShards: [...search.keys()].sort(),
         fontes: sourcesReport
     };
