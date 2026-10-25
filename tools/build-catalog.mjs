@@ -393,6 +393,13 @@ async function main() {
     });
     const builder = new Core.CatalogBuilder({ deduplicacao: cfg.deduplicacao });
     const epg = new Set();
+    // Guias (EPG/XMLTV) escritos na própria fonte: "epg": "https://…/guia.xml.gz" (ou uma lista).
+    // Entram no manifest.epg junto com os url-tvg das M3U — é dali que o TVzine baixa o guia.
+    const fontesCfg = Array.isArray(cfg) ? cfg : cfg.fontes || cfg.sources || [];
+    const epgFontes = typeof Core.epgDasFontes === 'function' ? Core.epgDasFontes(fontesCfg)
+        : fontesCfg.filter(f => f && f.ativo !== false).flatMap(f => [].concat(f.epg || [])).filter(u => /^https?:\/\//i.test(String(u).trim())).map(u => String(u).trim());
+    epgFontes.forEach(u => epg.add(u));
+    if (epgFontes.length) log(`📺 Guias (EPG) das fontes: ${epgFontes.length}`);
     const report = [];
 
     // Fontes "aoVivo" ficam de fora: o navegador carrega essas direto (listas pequenas que mudam muito)

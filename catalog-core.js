@@ -414,7 +414,10 @@
                 if (t[0] !== '[' && t[0] !== '{') { const p = createM3UParser(onEntry, onHeader); p.push(t); p.end(); return; }
                 let dados;
                 try { dados = JSON.parse(t); }
-                catch (e) { if (/\]\(/.test(t)) { parseMarkdown(t, onHeader).forEach(onEntry); return; } throw e; } // "[Nome](link)" = Markdown
+                catch (e) {
+                    if (/\]\(/.test(t)) { parseMarkdown(t, onHeader).forEach(onEntry); return; } // "[Nome](link)" = Markdown
+                    dados = parseJSONTolerante(t, 'lista');   // vírgula sobrando / comentários (listas editadas à mão)
+                }
                 extractList(dados).forEach(onEntry);
             }
         };
@@ -455,6 +458,23 @@
     function destinoDe(src) {
         if (src.destino) return src.destino;
         return { tvzine_worker: 'iptv', radio: 'radio', emulator_json: 'games' }[src.tipo] || 'videos';
+    }
+
+    /**
+     * Links de guia (EPG/XMLTV) declarados na própria fonte do sources.json:
+     *   "epg": "https://…/guia.xml.gz"   ou   "epg": ["https://…/a.xml.gz", "https://…/b.xml"]
+     * Só de fontes ligadas (ativo !== false). Vão para manifest.epg junto com os url-tvg das M3U.
+     */
+    function epgDasFontes(fontes) {
+        const out = [];
+        (fontes || []).forEach(src => {
+            if (!src || src.ativo === false) return;
+            [].concat(src.epg || src.epgUrl || src['url-tvg'] || []).forEach(u => {
+                const s = String(u || '').trim();
+                if (/^https?:\/\//i.test(s) && !out.includes(s)) out.push(s);
+            });
+        });
+        return out;
     }
 
     function isUsableUrl(u) {
@@ -577,11 +597,26 @@
      * Converte um registro bruto (de JSON ou M3U) em 0..N itens normalizados.
      * Séries com "seasons" viram N episódios (agrupados depois pelo builder).
      */
-    /** "grupos" da fonte: importa só os itens cujo group-title combina (sem acento, por trecho). */
+    /** algum dos termos aparece no texto? (sem acento, sem maiúsculas, por trecho) */
+    function contemAlgum(texto, termos) {
+        if (!Array.isArray(termos) || !termos.length) return false;
+        const t = normText(texto);
+        return !!t && termos.some(x => { const n = normText(x); return n && t.includes(n); });
+    }
+
+    /**
+     * Filtro da fonte, nesta ordem:
+     *   "excluir": nomes de canais que NUNCA entram (ex.: ["Kenan", "iCarly"])
+     *   "incluir": nomes de canais que entram MESMO fora dos "grupos" (ex.: ["Simpsons", "Mr. Bean"])
+     *   "grupos":  só entram os itens cujo group-title combina
+     * Tudo sem acento, sem maiúsculas e por trecho do nome.
+     */
     function grupoAceito(raw, src) {
+        const nome = raw.title || raw.name || raw.nome || raw.tvgName || '';
+        if (contemAlgum(nome, src.excluir)) return false;
+        if (contemAlgum(nome, src.incluir)) return true;
         if (!Array.isArray(src.grupos) || !src.grupos.length) return true;
-        const g = normText(raw.group || raw.grupo || raw.category || raw.categoria || raw.cat || '');
-        return !!g && src.grupos.some(x => { const n = normText(x); return n && g.includes(n); });
+        return contemAlgum(raw.group || raw.grupo || raw.category || raw.categoria || raw.cat || '', src.grupos);
     }
 
     function normalize(raw, src) {
@@ -1112,6 +1147,7 @@
         async ingest(fontes, opts = {}) {
             const run = makeLimiter(opts.concorrencia || 6);
             const usable = fontes.filter(s => s.ativo !== false && isUsableUrl(s.url));
+            epgDasFontes(fontes).forEach(u => this.epg.add(u));   // "epg" escrito na fonte do sources.json
             const progress = opts.onProgress || (() => {});
             let concluidas = 0;
 
@@ -1241,7 +1277,7 @@
         cyrb53, makeId, idShard,
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
-        sourceFormat, isUsableUrl, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
+        sourceFormat, isUsableUrl, epgDasFontes, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
         CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };
