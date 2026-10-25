@@ -137,21 +137,19 @@
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-US.m3u"
     },
     {
-      "nome": "Desenhos 24H · Português PT",
-      "ativo": false,
-      "tipo": "vod_m3u",
-      "prefixoId": "LIV_KID_PT",
-      "targetCategory": "Desenhos 24H",
-      "idioma": "pt-PT",
-      "grupos": ["Kids", "Infantil", "Anime", "Desenhos", "Nick"],
-      "incluir": ["Mr. Bean"],
-      "excluir": [""],
-      "generoDoGrupo": true,
-      "url": 
-      ["https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml",
-      "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u"
-      ]
-    },
+  "nome": "Desenhos 24H · Português PT",
+  "ativo": false,
+  "tipo": "vod_m3u",
+  "prefixoId": "LIV_KID_PT",
+  "targetCategory": "Desenhos 24H",
+  "idioma": "pt-PT",
+  "grupos": ["Kids", "Infantil", "Anime", "Desenhos", "Nick"],
+  "incluir": ["Mr. Bean"],
+  "excluir": [],
+  "generoDoGrupo": true,
+  "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u",
+  "epg": "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz"
+},
     {
       "nome": "YouToon · Português",
       "tipo": "vod_json",
@@ -205,9 +203,8 @@
       "nome": "TVzine - Canais",
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
-      "url": [
-      "https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml",
-      "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
+      "url": "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
+      "epg": "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz"
       ]
     },
     {
