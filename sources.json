@@ -110,8 +110,7 @@
       "incluir": ["Mr. Bean"],
       "excluir": ["", ""],
       "generoDoGrupo": true,
-      "url": "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
-      "epg": "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz"
+      "url": "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u"
     },
     {
       "nome": "Desenhos 24H · Español",
@@ -204,7 +203,9 @@
       "nome": "TVzine - Canais",
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
-      "url": "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
+      "url": 
+      "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
+      "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u",
       "epg": "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz"
     },
     {
