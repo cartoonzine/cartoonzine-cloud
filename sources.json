@@ -147,7 +147,10 @@
       "incluir": ["Mr. Bean"],
       "excluir": [""],
       "generoDoGrupo": true,
-      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u"
+      "url": 
+      ["https://raw.githubusercontent.com/matthuisman/i.mjh.nz/refs/heads/master/PlutoTV/all.xml",
+      "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u"
+      ]
     },
     {
       "nome": "YouToon · Português",
