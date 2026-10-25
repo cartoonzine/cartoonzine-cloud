@@ -194,7 +194,7 @@
       "tipo": "vod_m3u",
       "prefixoId": "LIV_ANI",
       "targetCategory": "Animes",
-      "url": ""
+      "url": "https://iptv-org.github.io/iptv/index.m3u"
     },
     {
       "nome": "TVzine - Canais (Saimo)",
