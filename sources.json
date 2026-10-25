@@ -78,7 +78,12 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": "https://raw.githubusercontent.com/josemtocco/Internet-Archive/refs/heads/main/catalogo.json"
+      "url": [
+      "https://raw.githubusercontent.com/josemtocco/Internet-Archive/refs/heads/main/catalogo.json",
+      "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u",
+      "https://raw.githubusercontent.com/josemtocco/runtime-vod-m3u-Oreate/refs/heads/main/playlists/runtime_vod.m3u",
+      "https://raw.githubusercontent.com/josemtocco/soplayfilmes/refs/heads/main/playlists/soplay_filmes.m3u"
+      ]
     },
     {
       "nome": "Séries",
@@ -204,7 +209,7 @@
      "prefixoId": "TV",
      "url": [
      "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
-     "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u"
+     "https://raw.githubusercontent.com/josemtocco/brasil-stream-catalog/refs/heads/main/canais.m3u"
      ],
     "epg": [
     "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz",
