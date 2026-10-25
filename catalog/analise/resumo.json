@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-10-25T20:22:35.121Z",
+  "geradoEm": "2026-10-25T21:52:45.960Z",
   "modo": "analisar",
   "opcoes": {
     "modo": "analisar",
@@ -7,9 +7,11 @@
     "travaCapa": true
   },
   "explicacao": "nada foi juntado no app; os \"retirados\" mostram o que SERIA juntado se o modo fosse \"ativo\"",
-  "filmesNasFontes": 59,
-  "cardsDeFilmesNoApp": 59,
-  "seriamRetirados": 0,
-  "porMotivo": {},
+  "filmesNasFontes": 132,
+  "cardsDeFilmesNoApp": 132,
+  "seriamRetirados": 1,
+  "porMotivo": {
+    "mesmo título e ano": 1
+  },
   "separadosPelaTravaDaCapa": 0
 }
