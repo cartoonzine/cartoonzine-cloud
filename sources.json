@@ -469,6 +469,24 @@
       "console": "3do",
       "targetCategory": "3DO",
       "url": ""
+    },
+    {
+      "nome": "Web Games · TV e PC",
+      "tipo": "emulator_json",
+      "prefixoId": "WEB",
+      "console": "web",
+      "targetCategory": "Web Games · TV e PC",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web.json",
+      "_studio": "jogos:web"
+    },
+    {
+      "nome": "Web Games · Só PC",
+      "tipo": "emulator_json",
+      "prefixoId": "WPC",
+      "console": "webpc",
+      "targetCategory": "Web Games · Só PC",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/webpc.json",
+      "_studio": "jogos:webpc"
     }
   ]
 }
