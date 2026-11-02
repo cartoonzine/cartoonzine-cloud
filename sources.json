@@ -2,9 +2,9 @@
   "_comentarioFontesDoStudio": "Sistemas novos criados no painel do Cartoonzine Studio (Jogos Web → + Novo sistema) entram sozinhos no catálogo por aqui: o build lê a lista que o Studio publica e acrescenta o que ainda não está em fontes.",
   "fontesDoStudio": [
     {
-      "nome": "Cartoonzine Studio · Jogos Web",
+      "nome": "Cartoonzine Studio · Jogos (retrô e web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/fontes-cloud.json",
-      "colecoes": ["jogos-web"]
+      "colecoes": ["jogos", "jogos-web"]
     }
   ],
   "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
