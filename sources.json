@@ -471,22 +471,283 @@
       "url": ""
     },
     {
-      "nome": "Web Games · TV e PC",
+      "nome": "Fangames",
       "tipo": "emulator_json",
-      "prefixoId": "WEB",
-      "console": "web",
-      "targetCategory": "Web Games · TV e PC",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web.json",
-      "_studio": "jogos:web"
+      "prefixoId": "FAN",
+      "console": "web-fangames",
+      "targetCategory": "Fangames",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-fangames.json",
+      "_studio": "jogos:web-fangames"
     },
     {
-      "nome": "Web Games · Só PC",
+      "nome": "Indie",
+      "tipo": "emulator_json",
+      "prefixoId": "IND",
+      "console": "web-indie",
+      "targetCategory": "Indie",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-indie.json",
+      "_studio": "jogos:web-indie"
+    },
+    {
+      "nome": "Remakes",
+      "tipo": "emulator_json",
+      "prefixoId": "RMK",
+      "console": "web-remakes",
+      "targetCategory": "Remakes",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-remakes.json",
+      "_studio": "jogos:web-remakes"
+    },
+    {
+      "nome": "PC",
       "tipo": "emulator_json",
       "prefixoId": "WPC",
-      "console": "webpc",
-      "targetCategory": "Web Games · Só PC",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/webpc.json",
-      "_studio": "jogos:webpc"
+      "console": "web-pc",
+      "targetCategory": "PC",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-pc.json",
+      "_studio": "jogos:web-pc"
+    },
+    {
+      "nome": "Nintendo 64 (Web)",
+      "tipo": "emulator_json",
+      "prefixoId": "WN64",
+      "console": "web-n64",
+      "targetCategory": "Nintendo 64 (Web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-n64.json",
+      "_studio": "jogos:web-n64"
+    },
+    {
+      "nome": "GameCube",
+      "tipo": "emulator_json",
+      "prefixoId": "GCN",
+      "console": "web-gamecube",
+      "targetCategory": "GameCube",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-gamecube.json",
+      "_studio": "jogos:web-gamecube"
+    },
+    {
+      "nome": "Wii",
+      "tipo": "emulator_json",
+      "prefixoId": "WII",
+      "console": "web-wii",
+      "targetCategory": "Wii",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-wii.json",
+      "_studio": "jogos:web-wii"
+    },
+    {
+      "nome": "Nintendo Switch",
+      "tipo": "emulator_json",
+      "prefixoId": "NSW",
+      "console": "web-switch",
+      "targetCategory": "Nintendo Switch",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-switch.json",
+      "_studio": "jogos:web-switch"
+    },
+    {
+      "nome": "Dreamcast",
+      "tipo": "emulator_json",
+      "prefixoId": "DC",
+      "console": "web-dreamcast",
+      "targetCategory": "Dreamcast",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-dreamcast.json",
+      "_studio": "jogos:web-dreamcast"
+    },
+    {
+      "nome": "DOS (Web)",
+      "tipo": "emulator_json",
+      "prefixoId": "WDOS",
+      "console": "web-dos",
+      "targetCategory": "DOS (Web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-dos.json",
+      "_studio": "jogos:web-dos"
+    },
+    {
+      "nome": "Windows",
+      "tipo": "emulator_json",
+      "prefixoId": "WIN",
+      "console": "web-windows",
+      "targetCategory": "Windows",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-windows.json",
+      "_studio": "jogos:web-windows"
+    },
+    {
+      "nome": "Xbox 360",
+      "tipo": "emulator_json",
+      "prefixoId": "X360",
+      "console": "web-xbox360",
+      "targetCategory": "Xbox 360",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xbox360.json",
+      "_studio": "jogos:web-xbox360"
+    },
+    {
+      "nome": "Xbox One",
+      "tipo": "emulator_json",
+      "prefixoId": "XONE",
+      "console": "web-xboxone",
+      "targetCategory": "Xbox One",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xboxone.json",
+      "_studio": "jogos:web-xboxone"
+    },
+    {
+      "nome": "Xbox Series X|S",
+      "tipo": "emulator_json",
+      "prefixoId": "XSX",
+      "console": "web-xboxseries",
+      "targetCategory": "Xbox Series X|S",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xboxseries.json",
+      "_studio": "jogos:web-xboxseries"
+    },
+    {
+      "nome": "Xbox",
+      "tipo": "emulator_json",
+      "prefixoId": "XBOX",
+      "console": "web-xbox",
+      "targetCategory": "Xbox",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xbox.json",
+      "_studio": "jogos:web-xbox"
+    },
+    {
+      "nome": "PlayStation (Web)",
+      "tipo": "emulator_json",
+      "prefixoId": "WPS1",
+      "console": "web-ps1",
+      "targetCategory": "PlayStation (Web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps1.json",
+      "_studio": "jogos:web-ps1"
+    },
+    {
+      "nome": "PlayStation 2",
+      "tipo": "emulator_json",
+      "prefixoId": "PS2",
+      "console": "web-ps2",
+      "targetCategory": "PlayStation 2",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps2.json",
+      "_studio": "jogos:web-ps2"
+    },
+    {
+      "nome": "PSP",
+      "tipo": "emulator_json",
+      "prefixoId": "PSP",
+      "console": "web-psp",
+      "targetCategory": "PSP",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-psp.json",
+      "_studio": "jogos:web-psp"
+    },
+    {
+      "nome": "PlayStation 4",
+      "tipo": "emulator_json",
+      "prefixoId": "PS4",
+      "console": "web-ps4",
+      "targetCategory": "PlayStation 4",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps4.json",
+      "_studio": "jogos:web-ps4"
+    },
+    {
+      "nome": "PlayStation 3",
+      "tipo": "emulator_json",
+      "prefixoId": "PS3",
+      "console": "web-ps3",
+      "targetCategory": "PlayStation 3",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps3.json",
+      "_studio": "jogos:web-ps3"
+    },
+    {
+      "nome": "Android",
+      "tipo": "emulator_json",
+      "prefixoId": "AND",
+      "console": "web-android",
+      "targetCategory": "Android",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-android.json",
+      "_studio": "jogos:web-android"
+    },
+    {
+      "nome": "iOS",
+      "tipo": "emulator_json",
+      "prefixoId": "IOS",
+      "console": "web-ios",
+      "targetCategory": "iOS",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ios.json",
+      "_studio": "jogos:web-ios"
+    },
+    {
+      "nome": "Arcade (Web)",
+      "tipo": "emulator_json",
+      "prefixoId": "WARC",
+      "console": "web-arcade",
+      "targetCategory": "Arcade (Web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-arcade.json",
+      "_studio": "jogos:web-arcade"
+    },
+    {
+      "nome": "Navegador (Web browser)",
+      "tipo": "emulator_json",
+      "prefixoId": "NAV",
+      "console": "web-navegador",
+      "targetCategory": "Navegador (Web browser)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-navegador.json",
+      "_studio": "jogos:web-navegador"
+    },
+    {
+      "nome": "Java",
+      "tipo": "emulator_json",
+      "prefixoId": "JAVA",
+      "console": "web-java",
+      "targetCategory": "Java",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-java.json",
+      "_studio": "jogos:web-java"
+    },
+    {
+      "nome": "Mobile",
+      "tipo": "emulator_json",
+      "prefixoId": "MOB",
+      "console": "web-mobile",
+      "targetCategory": "Mobile",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-mobile.json",
+      "_studio": "jogos:web-mobile"
+    },
+    {
+      "nome": "Tabletop",
+      "tipo": "emulator_json",
+      "prefixoId": "TAB",
+      "console": "web-tabletop",
+      "targetCategory": "Tabletop",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-tabletop.json",
+      "_studio": "jogos:web-tabletop"
+    },
+    {
+      "nome": "macOS",
+      "tipo": "emulator_json",
+      "prefixoId": "MAC",
+      "console": "web-macos",
+      "targetCategory": "macOS",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-macos.json",
+      "_studio": "jogos:web-macos"
+    },
+    {
+      "nome": "ZX Spectrum",
+      "tipo": "emulator_json",
+      "prefixoId": "ZX",
+      "console": "web-zxspectrum",
+      "targetCategory": "ZX Spectrum",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-zxspectrum.json",
+      "_studio": "jogos:web-zxspectrum"
+    },
+    {
+      "nome": "Neo Geo (Web)",
+      "tipo": "emulator_json",
+      "prefixoId": "WNEO",
+      "console": "web-neogeo",
+      "targetCategory": "Neo Geo (Web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-neogeo.json",
+      "_studio": "jogos:web-neogeo"
+    },
+    {
+      "nome": "Sem categoria (Web)",
+      "tipo": "emulator_json",
+      "prefixoId": "WOUT",
+      "console": "web-outros",
+      "targetCategory": "Sem categoria (Web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-outros.json",
+      "_studio": "jogos:web-outros"
     }
   ]
 }
