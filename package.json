@@ -1,0 +1,16 @@
+{
+  "name": "cartoonzine-studio",
+  "version": "1.1.0",
+  "private": true,
+  "description": "Estúdio de conteúdo do Cartoonzine: adiciona, organiza e publica os DBs que o cartoonzine-cloud lê.",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "painel": "node tools/painel.mjs",
+    "build": "node tools/build.mjs",
+    "sincronizar": "node tools/sincronizar.mjs",
+    "links": "node tools/verificar-links.mjs",
+    "completar": "node tools/completar.mjs",
+    "webports": "node tools/importar-webports.mjs",
+    "test": "node --test test/core.test.mjs"
+  }
+}
