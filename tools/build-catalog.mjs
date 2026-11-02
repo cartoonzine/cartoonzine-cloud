@@ -391,10 +391,49 @@ async function escreverAnalise(builder, dir, geradoEm) {
 }
 
 // ------------------------------------------------------------------ main
+/**
+ * "fontesDoStudio" (no topo do sources.json, fora de "fontes"): a lista de fontes que o Cartoonzine Studio
+ * publica sozinho (dist/fontes-cloud.json). Assim um sistema novo criado no painel do Studio
+ * (ex.: "Game Boy Advance" em Jogos Web) entra no catálogo sem ninguém editar este arquivo.
+ * Só entram as coleções de "colecoes" e só o que ainda não está em "fontes" (mesmo link = já existe).
+ * Se o Studio não responder, o catálogo segue só com as fontes deste arquivo.
+ *   "fontesDoStudio": [ { "nome": "Cartoonzine Studio · Jogos Web",
+ *     "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/fontes-cloud.json",
+ *     "colecoes": ["jogos-web"] } ]
+ * (fica fora de "fontes" de propósito: o app, no modo antigo, carrega "fontes" direto e não conhece este tipo)
+ */
+async function incluirFontesDoStudio(cfg) {
+    if (Array.isArray(cfg)) return;
+    const lista = cfg.fontes || cfg.sources || [];
+    const incs = [].concat(cfg.fontesDoStudio || []).filter(f => f && f.ativo !== false && /^https?:\/\//i.test(String(f.url || '')));
+    for (const inc of incs) {
+        try {
+            const r = await fetch(inc.url, { headers: { 'User-Agent': 'cartoonzine-cloud' }, signal: AbortSignal.timeout(30000) });
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            const doStudio = await r.json();
+            if (!Array.isArray(doStudio)) throw new Error('formato inesperado');
+            const links = new Set(lista.map(f => f && String(f.url || '')).filter(Boolean));
+            const colecoes = Array.isArray(inc.colecoes) && inc.colecoes.length ? new Set(inc.colecoes) : null;
+            let n = 0;
+            for (const f of doStudio) {
+                if (!f || typeof f !== 'object' || !f.url || links.has(f.url)) continue;
+                if (colecoes && !colecoes.has(f._colecao)) continue;
+                const { _colecao, ...fonte } = f;
+                lista.push(Object.assign(fonte, { _studio: _colecao + (fonte.console ? ':' + fonte.console : ''), _de: inc.nome || 'studio' }));
+                links.add(f.url); n++;
+            }
+            log(`🎛  ${inc.nome || 'Cartoonzine Studio'}: ${n} fonte(s) nova(s) vinda(s) do Studio`);
+        } catch (e) {
+            log(`⚠ ${inc.nome || 'Cartoonzine Studio'}: não deu para ler as fontes do Studio (${e.message}) — seguindo sem elas`);
+        }
+    }
+}
+
 async function main() {
     const args = parseArgs(process.argv);
     const t0 = Date.now();
     const cfg = Core.parseJSONTolerante(await fs.readFile(args.sources, 'utf8'), args.sources);
+    await incluirFontesDoStudio(cfg);
     // Uma fonte pode ter VÁRIAS listas: "url": "..." | "url": ["...", "..."] | "urls": ["...", "..."].
     // Cada link vira uma parte da mesma fonte (mesma categoria, prefixo e opções); o formato
     // (JSON ou M3U) é decidido por link, então dá para misturar .json e .m3u8 na mesma fonte.

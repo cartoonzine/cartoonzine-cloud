@@ -1,4 +1,12 @@
 {
+  "_comentarioFontesDoStudio": "Sistemas novos criados no painel do Cartoonzine Studio (Jogos Web → + Novo sistema) entram sozinhos no catálogo por aqui: o build lê a lista que o Studio publica e acrescenta o que ainda não está em fontes.",
+  "fontesDoStudio": [
+    {
+      "nome": "Cartoonzine Studio · Jogos (retrô e web)",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/fontes-cloud.json",
+      "colecoes": ["jogos", "jogos-web"]
+    }
+  ],
   "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
 
     "deduplicacao": {
@@ -477,7 +485,7 @@
       "console": "web-fangames",
       "targetCategory": "Fangames",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-fangames.json",
-      "_studio": "jogos:web-fangames"
+      "_studio": "jogos-web:web-fangames"
     },
     {
       "nome": "Indie",
@@ -486,7 +494,7 @@
       "console": "web-indie",
       "targetCategory": "Indie",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-indie.json",
-      "_studio": "jogos:web-indie"
+      "_studio": "jogos-web:web-indie"
     },
     {
       "nome": "Remakes",
@@ -495,7 +503,7 @@
       "console": "web-remakes",
       "targetCategory": "Remakes",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-remakes.json",
-      "_studio": "jogos:web-remakes"
+      "_studio": "jogos-web:web-remakes"
     },
     {
       "nome": "PC",
@@ -504,7 +512,7 @@
       "console": "web-pc",
       "targetCategory": "PC",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-pc.json",
-      "_studio": "jogos:web-pc"
+      "_studio": "jogos-web:web-pc"
     },
     {
       "nome": "Nintendo 64 (Web)",
@@ -513,7 +521,7 @@
       "console": "web-n64",
       "targetCategory": "Nintendo 64 (Web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-n64.json",
-      "_studio": "jogos:web-n64"
+      "_studio": "jogos-web:web-n64"
     },
     {
       "nome": "GameCube",
@@ -522,7 +530,7 @@
       "console": "web-gamecube",
       "targetCategory": "GameCube",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-gamecube.json",
-      "_studio": "jogos:web-gamecube"
+      "_studio": "jogos-web:web-gamecube"
     },
     {
       "nome": "Wii",
@@ -531,7 +539,7 @@
       "console": "web-wii",
       "targetCategory": "Wii",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-wii.json",
-      "_studio": "jogos:web-wii"
+      "_studio": "jogos-web:web-wii"
     },
     {
       "nome": "Nintendo Switch",
@@ -540,7 +548,7 @@
       "console": "web-switch",
       "targetCategory": "Nintendo Switch",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-switch.json",
-      "_studio": "jogos:web-switch"
+      "_studio": "jogos-web:web-switch"
     },
     {
       "nome": "Dreamcast",
@@ -549,7 +557,7 @@
       "console": "web-dreamcast",
       "targetCategory": "Dreamcast",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-dreamcast.json",
-      "_studio": "jogos:web-dreamcast"
+      "_studio": "jogos-web:web-dreamcast"
     },
     {
       "nome": "DOS (Web)",
@@ -558,7 +566,7 @@
       "console": "web-dos",
       "targetCategory": "DOS (Web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-dos.json",
-      "_studio": "jogos:web-dos"
+      "_studio": "jogos-web:web-dos"
     },
     {
       "nome": "Windows",
@@ -567,7 +575,7 @@
       "console": "web-windows",
       "targetCategory": "Windows",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-windows.json",
-      "_studio": "jogos:web-windows"
+      "_studio": "jogos-web:web-windows"
     },
     {
       "nome": "Xbox 360",
@@ -576,7 +584,7 @@
       "console": "web-xbox360",
       "targetCategory": "Xbox 360",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xbox360.json",
-      "_studio": "jogos:web-xbox360"
+      "_studio": "jogos-web:web-xbox360"
     },
     {
       "nome": "Xbox One",
@@ -585,7 +593,7 @@
       "console": "web-xboxone",
       "targetCategory": "Xbox One",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xboxone.json",
-      "_studio": "jogos:web-xboxone"
+      "_studio": "jogos-web:web-xboxone"
     },
     {
       "nome": "Xbox Series X|S",
@@ -594,7 +602,7 @@
       "console": "web-xboxseries",
       "targetCategory": "Xbox Series X|S",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xboxseries.json",
-      "_studio": "jogos:web-xboxseries"
+      "_studio": "jogos-web:web-xboxseries"
     },
     {
       "nome": "Xbox",
@@ -603,7 +611,7 @@
       "console": "web-xbox",
       "targetCategory": "Xbox",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xbox.json",
-      "_studio": "jogos:web-xbox"
+      "_studio": "jogos-web:web-xbox"
     },
     {
       "nome": "PlayStation (Web)",
@@ -612,7 +620,7 @@
       "console": "web-ps1",
       "targetCategory": "PlayStation (Web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps1.json",
-      "_studio": "jogos:web-ps1"
+      "_studio": "jogos-web:web-ps1"
     },
     {
       "nome": "PlayStation 2",
@@ -621,7 +629,7 @@
       "console": "web-ps2",
       "targetCategory": "PlayStation 2",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps2.json",
-      "_studio": "jogos:web-ps2"
+      "_studio": "jogos-web:web-ps2"
     },
     {
       "nome": "PSP",
@@ -630,7 +638,7 @@
       "console": "web-psp",
       "targetCategory": "PSP",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-psp.json",
-      "_studio": "jogos:web-psp"
+      "_studio": "jogos-web:web-psp"
     },
     {
       "nome": "PlayStation 4",
@@ -639,7 +647,7 @@
       "console": "web-ps4",
       "targetCategory": "PlayStation 4",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps4.json",
-      "_studio": "jogos:web-ps4"
+      "_studio": "jogos-web:web-ps4"
     },
     {
       "nome": "PlayStation 3",
@@ -648,7 +656,7 @@
       "console": "web-ps3",
       "targetCategory": "PlayStation 3",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps3.json",
-      "_studio": "jogos:web-ps3"
+      "_studio": "jogos-web:web-ps3"
     },
     {
       "nome": "Android",
@@ -657,7 +665,7 @@
       "console": "web-android",
       "targetCategory": "Android",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-android.json",
-      "_studio": "jogos:web-android"
+      "_studio": "jogos-web:web-android"
     },
     {
       "nome": "iOS",
@@ -666,7 +674,7 @@
       "console": "web-ios",
       "targetCategory": "iOS",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ios.json",
-      "_studio": "jogos:web-ios"
+      "_studio": "jogos-web:web-ios"
     },
     {
       "nome": "Arcade (Web)",
@@ -675,7 +683,7 @@
       "console": "web-arcade",
       "targetCategory": "Arcade (Web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-arcade.json",
-      "_studio": "jogos:web-arcade"
+      "_studio": "jogos-web:web-arcade"
     },
     {
       "nome": "Navegador (Web browser)",
@@ -684,7 +692,7 @@
       "console": "web-navegador",
       "targetCategory": "Navegador (Web browser)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-navegador.json",
-      "_studio": "jogos:web-navegador"
+      "_studio": "jogos-web:web-navegador"
     },
     {
       "nome": "Java",
@@ -693,7 +701,7 @@
       "console": "web-java",
       "targetCategory": "Java",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-java.json",
-      "_studio": "jogos:web-java"
+      "_studio": "jogos-web:web-java"
     },
     {
       "nome": "Mobile",
@@ -702,7 +710,7 @@
       "console": "web-mobile",
       "targetCategory": "Mobile",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-mobile.json",
-      "_studio": "jogos:web-mobile"
+      "_studio": "jogos-web:web-mobile"
     },
     {
       "nome": "Tabletop",
@@ -711,7 +719,7 @@
       "console": "web-tabletop",
       "targetCategory": "Tabletop",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-tabletop.json",
-      "_studio": "jogos:web-tabletop"
+      "_studio": "jogos-web:web-tabletop"
     },
     {
       "nome": "macOS",
@@ -720,7 +728,7 @@
       "console": "web-macos",
       "targetCategory": "macOS",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-macos.json",
-      "_studio": "jogos:web-macos"
+      "_studio": "jogos-web:web-macos"
     },
     {
       "nome": "ZX Spectrum",
@@ -729,7 +737,7 @@
       "console": "web-zxspectrum",
       "targetCategory": "ZX Spectrum",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-zxspectrum.json",
-      "_studio": "jogos:web-zxspectrum"
+      "_studio": "jogos-web:web-zxspectrum"
     },
     {
       "nome": "Neo Geo (Web)",
@@ -738,7 +746,7 @@
       "console": "web-neogeo",
       "targetCategory": "Neo Geo (Web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-neogeo.json",
-      "_studio": "jogos:web-neogeo"
+      "_studio": "jogos-web:web-neogeo"
     },
     {
       "nome": "Sem categoria (Web)",
@@ -747,7 +755,7 @@
       "console": "web-outros",
       "targetCategory": "Sem categoria (Web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-outros.json",
-      "_studio": "jogos:web-outros"
+      "_studio": "jogos-web:web-outros"
     }
   ]
 }
