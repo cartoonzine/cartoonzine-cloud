@@ -664,6 +664,7 @@
             games: lista(db, 'games'),
             filmes: lista(db, 'filmes'),                  // TVzine → aba Filmes (DB.filmes)
             series: lista(db, 'series'),                  // TVzine → aba Séries (DB.series)
+            livros: lista(db, 'livros'),                  // Bookzine → biblioteca (DB.livros)
             iptv: global('CZ_IPTV'),
             radio: global('CZ_VIDEOS_RADIO'),             // Radio Hub → Tuner
             streams: global('CZ_M3U_STREAMS'),            // Radio Hub → Listas Stream
