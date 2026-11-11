@@ -908,6 +908,9 @@
             title,
             thumb: raw.thumb || raw.posterUrl || raw.poster || raw.logo || raw.image || raw.cover,
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
+            // jogos: o LOGO PNG (nome do jogo em transparente) segue como "logo" — o banner e o CZ-HUD
+            // usam ele no lugar do título. (Nos canais "logo" é a imagem do card e já vira o thumb.)
+            logo: categoryType === 'game' && raw.logo && raw.logo !== (raw.thumb || raw.posterUrl || raw.poster) ? raw.logo : undefined,
             url,
             mirrors: espelhos.length ? espelhos : undefined,
             idiomas,
