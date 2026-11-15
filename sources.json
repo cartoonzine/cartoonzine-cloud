@@ -9,10 +9,10 @@
   ],
   "_comentarioListas": "Jeito simples de pôr listas de canais, filmes e séries: só cole os links abaixo (entre aspas, separados por vírgula). Serve M3U, JSON, Markdown e links de site sem extensão (ex.: https://canais-exemplo.pages.dev/) — o robô descobre o formato sozinho e, se o link abrir uma página, usa as listas que a página aponta. Link que traz filmes E séries juntos vai em \"filmesESeries\": os filmes ficam em Filmes e os episódios (\"Naruto S01E03\") viram série na prateleira de Séries. Para dar nome, guia (EPG) ou desligar um link: { \"url\": \"https://…\", \"nome\": \"Meus canais\", \"epg\": \"https://…/guia.xml.gz\", \"ativo\": false }.",
   "listas": {
-    "canais": ["https://canais-saimo.pages.dev/"],
+    "canais": ["https://canais-teste.pages.dev/"],
     "filmes": [],
     "series": [],
-    "filmesESeries": ["https://filmes-saimo.pages.dev/"]
+    "filmesESeries": ["https://filmes-teste.pages.dev/"]
   },
   "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
 
@@ -61,7 +61,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/filmes_sm.json"
+      "url": ""
     },
     {
       "nome": "Séries Saimo",
@@ -69,10 +69,10 @@
       "prefixoId": "VOD_SER",
       "targetCategory": "Séries",
       "urls": [
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt1.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt2.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt3.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/doramas_sm.json"
+      "",
+      "",
+      "",
+      ""
     ]
     },
     {
@@ -223,7 +223,6 @@
      "tipo": "tvzine_worker",
      "prefixoId": "TV",
      "url": [
-     "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/canais_sm.json",
      "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
      "https://raw.githubusercontent.com/josemtocco/brasil-stream-catalog/refs/heads/main/canais.m3u"
      ],
