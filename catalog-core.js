@@ -679,6 +679,80 @@
         return out;
     }
 
+    /**
+     * "listas" (no topo do sources.json, fora de "fontes"): o jeito simples de pôr listas de terceiros —
+     * só os links, separados por tipo. Cada link vira uma fonte comum (o formato M3U/JSON/Markdown é
+     * descoberto pelo conteúdo, então serve link sem extensão, tipo https://canais-exemplo.pages.dev/).
+     *   "listas": {
+     *     "canais": ["https://canais-exemplo.pages.dev/", { "url": "https://…/lista.m3u", "nome": "Meus canais", "epg": "https://…/guia.xml.gz" }],
+     *     "filmes": ["https://filmes-exemplo.pages.dev/"],
+     *     "series": ["https://…/series.m3u"]
+     *   }
+     * Um link que já está em "fontes" não é repetido. { "ativo": false } desliga um link sem apagar.
+     */
+    const MODELOS_LISTAS = {
+        canais: { tipo: 'tvzine_worker', prefixoId: 'LST_TV', rotulo: 'Canais' },
+        filmes: { tipo: 'tvzine_worker', prefixoId: 'LST_VOD', categoryType: 'vod', destino: 'filmes', agruparSeries: false, rotulo: 'Filmes' },
+        series: { tipo: 'tvzine_worker', prefixoId: 'LST_SER', categoryType: 'vod', destino: 'series', agruparSeries: false, rotulo: 'Séries' },
+        // filmes e séries na MESMA lista: episódios ("Naruto S01E03") viram card de série na prateleira de séries
+        filmesESeries: { tipo: 'tvzine_worker', prefixoId: 'LST_MIX', categoryType: 'vod', destino: 'filmes', separarSeries: true, rotulo: 'Filmes e séries' }
+    };
+    const ALIAS_LISTAS = { canal: 'canais', tv: 'canais', iptv: 'canais', live: 'canais', filme: 'filmes', movies: 'filmes', vod: 'filmes', serie: 'series', 'séries': 'series', tvshows: 'series', filmeseseries: 'filmesESeries', 'filmes-e-series': 'filmesESeries', filmes_series: 'filmesESeries', 'filmes e séries': 'filmesESeries', 'filmes e series': 'filmesESeries', misto: 'filmesESeries' };
+    function fontesDasListas(listas, fontesExistentes) {
+        if (!listas || typeof listas !== 'object' || Array.isArray(listas)) return [];
+        const ja = new Set((fontesExistentes || []).flatMap(f => [].concat((f && f.url) || [], (f && f.urls) || [])).map(u => String((u && u.url) || u || '').trim()).filter(Boolean));
+        const out = [];
+        Object.keys(listas).forEach(chave => {
+            if (chave[0] === '_') return;
+            const tipo = MODELOS_LISTAS[chave] ? chave : ALIAS_LISTAS[String(chave).toLowerCase().trim()];
+            const modelo = MODELOS_LISTAS[tipo];
+            if (!modelo) return;
+            [].concat(listas[chave] || []).forEach((it, k) => {
+                const o = typeof it === 'string' ? { url: it } : (it && typeof it === 'object' ? it : null);
+                if (!o || o.ativo === false) return;
+                const url = String(o.url || '').trim();
+                if (!/^https?:\/\//i.test(url) || ja.has(url)) return;
+                ja.add(url);
+                let host = url; try { host = new URL(url).hostname; } catch (e) { /* */ }
+                const { rotulo, ...base } = modelo;
+                const fonte = Object.assign({}, base, {
+                    nome: o.nome || `Listas · ${rotulo} · ${host}`,
+                    prefixoId: base.prefixoId + '_' + (k + 1),
+                    url, _deListas: tipo
+                });
+                ['epg', 'targetCategory', 'idioma', 'grupos', 'incluir', 'excluir', 'formato', 'agruparSeries', 'prefixoId'].forEach(c => { if (o[c] !== undefined) fonte[c] = o[c]; });
+                out.push(fonte);
+            });
+        });
+        return out;
+    }
+
+    /** O link abriu uma PÁGINA (HTML) em vez da lista? (comum em sites *.pages.dev / *.github.io) */
+    function pareceHtml(texto) {
+        return /^\s*(<!doctype html|<html|<head|<body|<meta|<script|<div|<!--)/i.test(String(texto || '').replace(/^﻿/, '').slice(0, 512));
+    }
+    /**
+     * Listas que uma página HTML aponta: links .m3u / .json / .txt / .md (href, src, ou soltos no texto/JS).
+     * .m3u8 fica de fora de propósito: numa página quase sempre é UM canal (HLS), não uma lista.
+     */
+    function linksDeListaNoHtml(html, base) {
+        const s = String(html || ''), out = [];
+        const re = /(?:href|src|data-url|data-lista)\s*=\s*["']([^"'#]+)["']|["'`](https?:\/\/[^"'`\s]+|\.{0,2}\/?[\w\-./%]+)["'`]/gi;
+        let m;
+        while ((m = re.exec(s))) {
+            const bruto = (m[1] || m[2] || '').trim();
+            if (!/\.(m3u|json|txt|md)(\?[^"'\s]*)?$/i.test(bruto)) continue;
+            if (/(manifest|package|tsconfig|site\.webmanifest|_redirects|robots)\b[^/]*$/i.test(bruto)) continue;
+            let abs; try { abs = new URL(bruto, base).toString(); } catch (e) { continue; }
+            if (!/^https?:/i.test(abs) || out.includes(abs)) continue;
+            out.push(abs);
+        }
+        return out;
+    }
+
+    /** Lista mista (filmes + séries): a categoria das séries ganha "Séries · " (o app separa prateleira por categoria) */
+    function catDeSerie(cat) { const c = String(cat || 'Geral'); return /s[ée]ries?/i.test(c) ? c : 'Séries · ' + c; }
+
     function isUsableUrl(u) {
         return !!u && !/SEU_USER|SEU_REPO/.test(u);
     }
@@ -872,8 +946,8 @@
                         idiomas: idiomasEp,
                         desc: ep.overview || ep.desc || meta.desc,
                         year: meta.year, genre: meta.genre,
-                        cat: baseCat, categoryType: 'episode',
-                        origem, _dest, _seriesMeta: meta
+                        cat: src.separarSeries ? catDeSerie(baseCat) : baseCat, categoryType: 'episode',
+                        origem, _dest: src.separarSeries ? 'series' : _dest, _seriesMeta: meta
                     }));
                 }
             }
@@ -950,6 +1024,7 @@
                     _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre }
                 });
                 item._key = `ep|${seriesId}|${ep.season}|${ep.episode}`;
+                if (src.separarSeries) { item.cat = catDeSerie(item.cat); item._dest = 'series'; }   // lista mista: vai para Séries
             }
         }
 
@@ -1499,7 +1574,7 @@
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
         Paises,
-        sourceFormat, isUsableUrl, epgDasFontes, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
+        sourceFormat, isUsableUrl, epgDasFontes, fontesDasListas, pareceHtml, linksDeListaNoHtml, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
         CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };

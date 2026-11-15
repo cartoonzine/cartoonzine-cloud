@@ -429,11 +429,43 @@ async function incluirFontesDoStudio(cfg) {
     }
 }
 
+/**
+ * "listas" do sources.json (canais / filmes / series: só os links) → fontes comuns no fim de "fontes".
+ * Depois, todo link SEM extensão de lista (ex.: https://filmes-exemplo.pages.dev/) é espiado: se abrir uma
+ * página HTML em vez da lista, as listas que a página aponta (.m3u/.json/.txt/.md) entram no lugar dela.
+ */
+async function incluirListas(cfg, args) {
+    if (Array.isArray(cfg)) return;
+    const lista = cfg.fontes || cfg.sources || (cfg.fontes = []);
+    const novas = Core.fontesDasListas(cfg.listas, lista);
+    if (novas.length) { lista.push(...novas); log(`🔗 Listas: ${novas.length} link(s) de canais/filmes/séries vindos de "listas"`); }
+    const semExtensao = (u) => /^https?:\/\//i.test(u) && !/\.(m3u8?|json|txt|md|markdown|xml|gz)(\?|#|$)/i.test(u);
+    for (const src of lista) {
+        if (!src || src.ativo === false || src.aoVivo === true) continue;
+        const links = [].concat(src.url || [], src.urls || []).map(u => String((u && u.url) || u || '').trim()).filter(Boolean);
+        if (!links.some(semExtensao)) continue;
+        const final = [];
+        for (const u of links) {
+            if (!semExtensao(u)) { final.push(u); continue; }
+            try {
+                const { r, done } = await fetchRetry(u, { timeout: args.timeout, retries: 1 });
+                let texto; try { texto = await r.text(); } finally { done(); }
+                if (!Core.pareceHtml(texto)) { final.push(u); continue; }
+                const achadas = Core.linksDeListaNoHtml(texto, r.url || u);
+                if (achadas.length) { final.push(...achadas); log(`🔎 ${src.nome || u}: a página aponta ${achadas.length} lista(s)`); }
+                else log(`⚠ ${src.nome || u}: o link abre uma página, não uma lista — sem .m3u/.json nela (fonte ignorada)`);
+            } catch (e) { final.push(u); }   // fora do ar agora: segue como estava (o relatório mostra o erro)
+        }
+        if (final.join('\n') !== links.join('\n')) { src.url = final.length > 1 ? final : (final[0] || ''); delete src.urls; }
+    }
+}
+
 async function main() {
     const args = parseArgs(process.argv);
     const t0 = Date.now();
     const cfg = Core.parseJSONTolerante(await fs.readFile(args.sources, 'utf8'), args.sources);
     await incluirFontesDoStudio(cfg);
+    await incluirListas(cfg, args);
     // Uma fonte pode ter VÁRIAS listas: "url": "..." | "url": ["...", "..."] | "urls": ["...", "..."].
     // Cada link vira uma parte da mesma fonte (mesma categoria, prefixo e opções); o formato
     // (JSON ou M3U) é decidido por link, então dá para misturar .json e .m3u8 na mesma fonte.
