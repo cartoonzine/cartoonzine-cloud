@@ -102,7 +102,8 @@ No topo do `sources.json`, o bloco `listas` recebe só os links — sem preenche
 
 O formato (M3U, JSON ou Markdown) é descoberto pelo conteúdo, então links de site sem extensão (Cloudflare Pages,
 GitHub Pages…) funcionam. Se o link abrir uma página HTML em vez da lista, o robô usa as listas que a página aponta
-(`.m3u`, `.json`, `.txt`, `.md`). Link repetido de `fontes` é ignorado; `"ativo": false` desliga sem apagar.
+(`.m3u`, `.json`, `.txt`, `.md`). Link com filmes **e** séries juntos vai em `"filmesESeries"`: os filmes ficam em Filmes e os episódios
+(`Naruto S01E03`) viram um card de série em "Séries · <grupo>", na prateleira de Séries. Link repetido de `fontes` é ignorado; `"ativo": false` desliga sem apagar.
 Teste: `node --test test/listas/listas.test.mjs`.
 
 ## O que o motor faz sozinho
