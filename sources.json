@@ -61,7 +61,7 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": ""
+      "url": "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/filmes_sm.json"
     },
     {
       "nome": "Séries Saimo",
@@ -69,9 +69,10 @@
       "prefixoId": "VOD_SER",
       "targetCategory": "Séries",
       "urls": [
-      "",
-      "",
-      ""
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt1.json",
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt2.json",
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt3.json",
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/doramas_sm.json"
     ]
     },
     {
@@ -222,6 +223,7 @@
      "tipo": "tvzine_worker",
      "prefixoId": "TV",
      "url": [
+     "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/canais_sm.json",
      "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
      "https://raw.githubusercontent.com/josemtocco/brasil-stream-catalog/refs/heads/main/canais.m3u"
      ],
