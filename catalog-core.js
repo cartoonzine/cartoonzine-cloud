@@ -872,6 +872,13 @@
         'urls', 'links', 'streams', 'sources', 'fontes', 'categoria', 'grupo', 'genero', 'descricao', 'ano',
         'country', 'tvgCountry', 'language', 'tvgLanguage', 'pais', 'paises', 'paisVia']);
 
+    /** Logo PNG do título de filme/série: "logo" ou "bannerlogo" (Studio/DB antigo) — se não for a própria capa */
+    function logoDoTitulo(raw) {
+        const l = raw.logo || raw.bannerlogo || raw.bannerLogo;
+        const capa = raw.posterUrl || raw.thumb || raw.poster;
+        return l && typeof l === 'string' && l !== capa ? l : undefined;
+    }
+
     function extras(raw) {
         const out = {};
         if (!raw || typeof raw !== 'object') return out;
@@ -951,7 +958,8 @@
                 bannerThumb: raw.backdropUrl || raw.bannerThumb || raw.backdrop,
                 desc: raw.overview || raw.desc || raw.description,
                 year: raw.year || anoSerie, genre: asGenre(raw.genre || raw.genres),
-                extra: extras(raw), destaque: raw.destaque ? true : undefined
+                extra: extras(raw), destaque: raw.destaque ? true : undefined,
+                logo: logoDoTitulo(raw)                     // séries: o PNG do título (CZ-HUD e banner)
             };
             const out = [];
             for (const temp of raw.seasons) {
@@ -1017,7 +1025,8 @@
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
             // jogos: o LOGO PNG (nome do jogo em transparente) segue como "logo" — o banner e o CZ-HUD
             // usam ele no lugar do título. (Nos canais "logo" é a imagem do card e já vira o thumb.)
-            logo: categoryType === 'game' && raw.logo && raw.logo !== (raw.thumb || raw.posterUrl || raw.poster) ? raw.logo : undefined,
+            logo: categoryType === 'game' ? (raw.logo && raw.logo !== (raw.thumb || raw.posterUrl || raw.poster) ? raw.logo : undefined)
+                : categoryType === 'vod' ? logoDoTitulo(raw) : undefined,   // filmes: o PNG do título (CZ-HUD e banner)
             url,
             mirrors: espelhos.length ? espelhos : undefined,
             idiomas,
@@ -1175,7 +1184,7 @@
                     orig.mirrors = orig.mirrors || [];
                     if (!orig.mirrors.includes(item.url) && orig.mirrors.length < 8) orig.mirrors.push(item.url);
                 }
-                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId']) {
+                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId', 'logo']) {
                     if (orig[k] == null && item[k] != null) orig[k] = item[k];
                 }
                 // mesmo canal em listas de países diferentes: aparece nos dois países —
@@ -1265,6 +1274,7 @@
                 thumb: s.meta.thumb || PLACEHOLDER,
                 bannerThumb: s.meta.bannerThumb || s.meta.thumb || PLACEHOLDER,
                 desc: s.meta.desc, year: s.meta.year, genre: s.meta.genre,
+                logo: s.meta.logo,
                 cat: cat || [...s.cats][0],
                 categoryType: 'series',
                 seasons: seasons.size,
