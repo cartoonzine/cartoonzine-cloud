@@ -106,6 +106,21 @@ GitHub Pages…) funcionam. Se o link abrir uma página HTML em vez da lista, o 
 (`Naruto S01E03`) viram um card de série em "Séries · <grupo>", na prateleira de Séries. Link repetido de `fontes` é ignorado; `"ativo": false` desliga sem apagar.
 Teste: `node --test test/listas/listas.test.mjs`.
 
+### Listas de um país só (`sources-idioma.json`)
+
+Ao lado do `sources.json`, o `sources-idioma.json` tem um bloco para cada país (todos já listados, vazios), com as
+mesmas chaves das `listas`: `canais`, `filmes`, `series`, `filmesESeries`. Use para listas que têm **só** conteúdo
+daquele país/idioma:
+
+- os **canais** aparecem só naquele país no seletor de países do TVzine — se o mesmo canal vier também numa lista
+  misturada (mesmo tvg-id ou mesmo link), vale o país da lista do país;
+- eles **ensinam** o país às listas misturadas: canal sem país (ia para "Internacional") ou com país só pelo domínio/
+  idioma, com o mesmo tvg-id ou o mesmo nome (sem HD/FHD/4K e [tags]), ganha o país. Nome que existe em dois países
+  diferentes não ensina nada (ambíguo);
+- **filmes e séries** levam o `idioma` do bloco.
+
+Teste: `node --test test/listas/paises.test.mjs`.
+
 ## O que o motor faz sozinho
 
 - **IDs estáveis** (mesmo item = mesmo ID sempre) → favoritos e "continuar assistindo" não se perdem.

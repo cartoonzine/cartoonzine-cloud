@@ -698,7 +698,8 @@
         filmesESeries: { tipo: 'tvzine_worker', prefixoId: 'LST_MIX', categoryType: 'vod', destino: 'filmes', separarSeries: true, rotulo: 'Filmes e séries' }
     };
     const ALIAS_LISTAS = { canal: 'canais', tv: 'canais', iptv: 'canais', live: 'canais', filme: 'filmes', movies: 'filmes', vod: 'filmes', serie: 'series', 'séries': 'series', tvshows: 'series', filmeseseries: 'filmesESeries', 'filmes-e-series': 'filmesESeries', filmes_series: 'filmesESeries', 'filmes e séries': 'filmesESeries', 'filmes e series': 'filmesESeries', misto: 'filmesESeries' };
-    function fontesDasListas(listas, fontesExistentes) {
+    function fontesDasListas(listas, fontesExistentes, extra) {
+        extra = extra || {};
         if (!listas || typeof listas !== 'object' || Array.isArray(listas)) return [];
         const ja = new Set((fontesExistentes || []).flatMap(f => [].concat((f && f.url) || [], (f && f.urls) || [])).map(u => String((u && u.url) || u || '').trim()).filter(Boolean));
         const out = [];
@@ -716,15 +717,47 @@
                 let host = url; try { host = new URL(url).hostname; } catch (e) { /* */ }
                 const { rotulo, ...base } = modelo;
                 const fonte = Object.assign({}, base, {
-                    nome: o.nome || `Listas · ${rotulo} · ${host}`,
-                    prefixoId: base.prefixoId + '_' + (k + 1),
+                    nome: o.nome || `Listas${extra.rotulo ? ' · ' + extra.rotulo : ''} · ${rotulo} · ${host}`,
+                    prefixoId: base.prefixoId + (extra.sufixo ? '_' + extra.sufixo : '') + '_' + (k + 1),
                     url, _deListas: tipo
                 });
+                // lista de UM país (sources-idioma.json): canais vão só para o país; filmes/séries levam o idioma.
+                // (o canal NÃO leva "idioma": assim ele junta com o mesmo canal vindo de outras listas)
+                if (extra.pais) { if (tipo === 'canais') { fonte.pais = extra.pais; fonte.paisExclusivo = true; } else if (extra.idioma) fonte.idioma = extra.idioma; }
                 ['epg', 'targetCategory', 'idioma', 'grupos', 'incluir', 'excluir', 'formato', 'agruparSeries', 'prefixoId'].forEach(c => { if (o[c] !== undefined) fonte[c] = o[c]; });
                 out.push(fonte);
             });
         });
         return out;
+    }
+
+    /**
+     * sources-idioma.json → fontes. Um bloco por país, com as mesmas chaves do "listas":
+     *   { "paises": { "br": { "pais": "Brasil", "idioma": "pt-BR", "canais": [ … ], "filmes": [ … ], … } } }
+     * Canais dessas listas ficam SÓ naquele país (vencem as listas mistas) e ensinam o país às listas sem país.
+     */
+    function fontesPorPais(cfgIdioma, fontesExistentes) {
+        const blocos = cfgIdioma && (cfgIdioma.paises || cfgIdioma);
+        if (!blocos || typeof blocos !== 'object' || Array.isArray(blocos)) return [];
+        const out = [];
+        Object.keys(blocos).forEach(chave => {
+            if (chave[0] === '_') return;
+            const b = blocos[chave];
+            if (!b || typeof b !== 'object' || b.ativo === false) return;
+            const cod = Paises.lista(chave)[0] || Paises.lista(b.pais || '')[0];
+            if (!cod) return;
+            const { pais, idioma, ativo, ...listas } = b;
+            out.push(...fontesDasListas(listas, (fontesExistentes || []).concat(out), { pais: cod, idioma, rotulo: Paises.nome(cod) || cod.toUpperCase(), sufixo: cod.toUpperCase() }));
+        });
+        return out;
+    }
+
+    /** Nome do canal para comparar listas diferentes: sem acento, qualidade (HD/FHD/4K…) nem [tags]/(tags). */
+    function chaveNomeCanal(t) {
+        const n = normText(String(t || '').replace(/[\[(][^\])]*[\])]/g, ' '))
+            .replace(/\b(hd|fhd|uhd|sd|hq|4k|8k|h265|hevc|\d{3,4}p|backup|alt|ao vivo|live|24h|24 horas|tv)\b/g, ' ')
+            .replace(/\s+/g, ' ').trim();
+        return n.length >= 3 ? n : '';
     }
 
     /** O link abriu uma PÁGINA (HTML) em vez da lista? (comum em sites *.pages.dev / *.github.io) */
@@ -1145,10 +1178,12 @@
                 for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId']) {
                     if (orig[k] == null && item[k] != null) orig[k] = item[k];
                 }
-                // mesmo canal em listas de países diferentes: aparece nos dois países
+                // mesmo canal em listas de países diferentes: aparece nos dois países —
+                // MAS a lista de um país (sources-idioma.json / "pais" na fonte) manda: vence o país adivinhado
                 if (item.paises && item.paises.length) {
-                    if (!orig.paises) { orig.paises = item.paises.slice(); orig.paisVia = item.paisVia; }
-                    else item.paises.forEach(p => { if (!orig.paises.includes(p)) orig.paises.push(p); });
+                    const forte = (v) => v === 'fonte';
+                    if (!orig.paises || !orig.paises.length || (forte(item.paisVia) && !forte(orig.paisVia))) { orig.paises = item.paises.slice(); orig.paisVia = item.paisVia; }
+                    else if (forte(item.paisVia) === forte(orig.paisVia)) item.paises.forEach(p => { if (!orig.paises.includes(p)) orig.paises.push(p); });
                 }
                 if (item.cat !== orig.cat && orig.categoryType !== 'episode') {
                     orig.cats = orig.cats || [orig.cat];
@@ -1309,6 +1344,37 @@
         }
 
         /** Remove itens (ex.: streams mortos) e limpa categorias/séries. */
+        /**
+         * Os canais das listas de país (via "fonte") ensinam o país aos canais de listas mistas que ficaram
+         * sem país (iriam para "Internacional") ou com país só pelo domínio: mesmo tvg-id ou mesmo nome → mesmo país.
+         * Nome que aparece em países diferentes (ex.: "Disney Channel" BR e PT) é ambíguo e não ensina nada.
+         * @returns {number} quantos canais ganharam país
+         */
+        aprenderPaises() {
+            const porTvg = new Map(), porNome = new Map();
+            const guardar = (mapa, k, paises) => {
+                if (!k) return;
+                const ant = mapa.get(k);
+                if (ant === undefined) mapa.set(k, paises.join(','));
+                else if (ant !== paises.join(',')) mapa.set(k, null);              // ambíguo
+            };
+            for (const it of this.items.values()) {
+                if (it.categoryType !== 'live' || it.paisVia !== 'fonte' || !it.paises || !it.paises.length) continue;
+                guardar(porTvg, it.tvgId && String(it.tvgId).toLowerCase(), it.paises);
+                guardar(porNome, chaveNomeCanal(it.title), it.paises);
+            }
+            if (!porTvg.size && !porNome.size) return 0;
+            let n = 0;
+            for (const it of this.items.values()) {
+                if (it.categoryType !== 'live') continue;
+                if (it.paises && it.paises.length && !['dominio', 'idioma'].includes(it.paisVia)) continue;
+                const p = (it.tvgId && porTvg.get(String(it.tvgId).toLowerCase())) || porNome.get(chaveNomeCanal(it.title));
+                if (!p) continue;
+                it.paises = p.split(','); it.paisVia = 'aprendido'; n++;
+            }
+            return n;
+        }
+
         remove(ids) {
             const dead = ids instanceof Set ? ids : new Set(ids);
             if (!dead.size) return 0;
@@ -1574,7 +1640,7 @@
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
         Paises,
-        sourceFormat, isUsableUrl, epgDasFontes, fontesDasListas, pareceHtml, linksDeListaNoHtml, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
+        sourceFormat, isUsableUrl, epgDasFontes, fontesDasListas, fontesPorPais, chaveNomeCanal, pareceHtml, linksDeListaNoHtml, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
         CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };

@@ -16,8 +16,10 @@ on:
         type: boolean
         default: false
   push:
+    branches: [main]            # só no main: em branch de PR o robô commitava o catálogo e dava conflito
     paths:
       - sources.json
+      - sources-idioma.json
       - catalog-core.js
       - tools/build-catalog.mjs
       - tools/validador/**

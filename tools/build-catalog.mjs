@@ -54,6 +54,7 @@ function parseArgs(argv) {
         const k = argv[i], v = argv[i + 1];
         switch (k) {
             case '--sources': a.sources = v; i++; break;
+            case '--sources-idioma': a.sourcesIdioma = v; i++; break;
             case '--out': a.out = v; i++; break;
             case '--page-size': a.pageSize = +v; i++; break;
             case '--concurrency': a.concurrency = +v; i++; break;
@@ -439,6 +440,12 @@ async function incluirListas(cfg, args) {
     const lista = cfg.fontes || cfg.sources || (cfg.fontes = []);
     const novas = Core.fontesDasListas(cfg.listas, lista);
     if (novas.length) { lista.push(...novas); log(`🔗 Listas: ${novas.length} link(s) de canais/filmes/séries vindos de "listas"`); }
+    // sources-idioma.json (ao lado do sources.json): listas de UM país — os canais ficam só naquele país
+    const arqIdioma = args.sourcesIdioma || path.join(path.dirname(args.sources), 'sources-idioma.json');
+    let cfgIdioma = null;
+    try { cfgIdioma = Core.parseJSONTolerante(await fs.readFile(arqIdioma, 'utf8'), arqIdioma); } catch (e) { if (e.code !== 'ENOENT') log(`⚠ ${arqIdioma}: ${e.message} — seguindo sem ele`); }
+    const doPais = cfgIdioma ? Core.fontesPorPais(cfgIdioma, lista) : [];
+    if (doPais.length) { lista.push(...doPais); log(`🌎 Listas por país: ${doPais.length} link(s) em ${new Set(doPais.map(f => f.pais || f.idioma)).size} país(es)`); }
     const semExtensao = (u) => /^https?:\/\//i.test(u) && !/\.(m3u8?|json|txt|md|markdown|xml|gz)(\?|#|$)/i.test(u);
     for (const src of lista) {
         if (!src || src.ativo === false || src.aoVivo === true) continue;
@@ -520,6 +527,12 @@ async function main() {
             log(`✖ ${src.nome}${src._parte ? ` [${src._parte}]` : ''}: ${e.message}`);
             report.push({ nome: src.nome, parte: src._parte, ok: false, erro: String(e.message || e) });
         }
+    }
+
+    // Listas de país (sources-idioma.json) ensinam o país aos mesmos canais vindos de listas mistas
+    if (typeof builder.aprenderPaises === 'function') {
+        const aprendidos = builder.aprenderPaises();
+        if (aprendidos) log(`🎓 ${aprendidos} canal(is) de listas mistas ganharam o país pelas listas de país (mesmo tvg-id ou nome)`);
     }
 
     // Países dos canais ao vivo (aba Países do TVzine): quantos e por qual regra
