@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-15T22:24:54.841Z",
+  "geradoEm": "2026-11-16T04:54:39.002Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -34,38 +34,39 @@
     "limiteLinks": 3000
   },
   "links": {
-    "links": 317827,
-    "testados": 2883,
-    "doCache": 1330,
-    "pulados": 313614,
-    "ok": 1286,
-    "falhou": 1597,
+    "links": 320705,
+    "testados": 2916,
+    "doCache": 2381,
+    "pulados": 315408,
+    "ok": 2770,
+    "falhou": 146,
     "protegido": 0,
     "naoVerificavel": 0,
     "bloqueado": 0,
-    "novasTentativas": 2,
+    "novasTentativas": 4,
     "porMotivo": {
-      "http_403": 2,
-      "http_404": 1570,
-      "playlist_grande_demais": 20,
-      "timeout": 4,
-      "playlist_malformada": 1
+      "http_403": 38,
+      "tls": 1,
+      "playlist_grande_demais": 83,
+      "http_404": 4,
+      "playlist_malformada": 14,
+      "timeout": 6
     },
     "porTipo": {
-      "generico": 1572,
-      "arquivo": 991,
-      "hls": 320
+      "arquivo": 1962,
+      "hls": 919,
+      "generico": 35
     },
     "servidoresDesligados": [
       "aponteiecair.lat"
     ],
     "motivoParada": null,
-    "duracaoS": 425.7
+    "duracaoS": 910.8
   },
   "itens": {
-    "avaliados": 39282,
-    "ok": 1767,
-    "semTeste": 37108,
+    "avaliados": 241789,
+    "ok": 2422,
+    "semTeste": 239352,
     "principalTrocado": 0,
     "indisponiveis": 0,
     "removidos": 0,
