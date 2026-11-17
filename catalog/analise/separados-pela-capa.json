@@ -1,85 +1,5 @@
 [
  {
-  "titulo": "东极岛",
-  "ano": 2025,
-  "comoCard": "المهايطية",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/nfbO00NKXSzBIzcN3KbUMdPT1EU.jpg",
-   "https://image.tmdb.org/t/p/w500/srqflGIWm1qRHsBQSjdIHWF4E4N.jpg"
-  ],
-  "links": [
-   "http://45.172.0.116:8085/hd8/2026/01/Ricos-Sem-Dinheiro-2026/master.m3u8",
-   "https://embedplayer2.xyz/cdn/hls/85d3c8782b3e02a7ff9e61fea6f48690/master.txt?format=m3u8"
-  ],
-  "ids": [
-   "VOD_23DTEXOZQB4"
-  ]
- },
- {
-  "titulo": "Maria",
-  "ano": 2024,
-  "comoCard": "Maria",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/bvwkLv20GrNIU7WSjCcpJVKxFUc.jpg",
-   "https://image.tmdb.org/t/p/w500/3xzxA0ZXo2DwImpS7DNSHkuTiTI.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38517.mp4",
-   "http://corruptx.org:80/movie/3llohwk4g9/kwf099q30o/2462917.mp4"
-  ],
-  "ids": [
-   "VOD_35B6W7O4CQ"
-  ]
- },
- {
-  "titulo": "Operação de Risco",
-  "ano": 2023,
-  "comoCard": "Operação de Risco",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/fLxXvMcpsK8fGKguP3wZ7Urb2ao.jpg",
-   "https://image.tmdb.org/t/p/w500/jc9EMUNJaQHXDJVfHxKjuvfiWrB.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6282.mp4",
-   "http://45.172.0.116:8085/hd1/2023/operacao-de-risco-2023/master.m3u8"
-  ],
-  "ids": [
-   "VOD_1FY6887UCAI"
-  ]
- },
- {
-  "titulo": "Os Lobos",
-  "ano": 2020,
-  "comoCard": "Os Lobos",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/24YfssouUUH1sqQtTbBeWZme3AP.jpg",
-   "https://image.tmdb.org/t/p/w500/7XRbBZXuTHD01SkUqwM42KbLul4.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/56681.mp4",
-   "https://embedplayer2.xyz/cdn/hls/8dbaf14353fc0b8b18b6eb025783e8f3/master.txt?format=m3u8"
-  ],
-  "ids": [
-   "VOD_YSP67ZYXDQ"
-  ]
- },
- {
-  "titulo": "Pinóquio",
-  "ano": 2026,
-  "comoCard": "Pinóquio",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/wgO649swkzsI58q3ikpxYNvkwv7.jpg",
-   "https://image.tmdb.org/t/p/w500/hZ6N6lvCbXsRYfy13nZ26AeZIz0.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58086.mp4",
-   "http://45.172.0.116:8085/hd8/2026/Pinoquio.2026/master.m3u8"
-  ],
-  "ids": [
-   "VOD_1DDPRGHPYCG"
-  ]
- },
- {
   "titulo": "Sempre Vitoriosos",
   "ano": 2023,
   "comoCard": "Sempre Vitoriosos",
@@ -88,7 +8,7 @@
    "https://media.themoviedb.org/t/p/w220_and_h330_face/rKJvZkOtswkIdwBlLUGRbUo1YEt.jpg"
   ],
   "links": [
-   "http://45.172.0.116:8085/hd3/2023/01/Sempre.Vitoriosos.2023/master.m3u8",
+   "https://nixplay.lat/movie/saimo-vods/221097/1187759.mp4",
    "https:www.banner-fixo-capa-teste-cz.com"
   ],
   "ids": [
