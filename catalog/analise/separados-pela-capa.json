@@ -16,35 +16,19 @@
   ]
  },
  {
-  "titulo": "O Olho",
-  "ano": 2023,
-  "comoCard": "O Olho",
+  "titulo": "Maria",
+  "ano": 2024,
+  "comoCard": "Maria",
   "capas": [
-   "https://image.tmdb.org/t/p/w500/ktb5egYVRpotb08uBw74MDjzrIw.jpg",
-   "https://image.tmdb.org/t/p/w500/uYSr1XGDDv40BPoh91zx3b0g1iB.jpg"
+   "https://image.tmdb.org/t/p/w500/bvwkLv20GrNIU7WSjCcpJVKxFUc.jpg",
+   "https://image.tmdb.org/t/p/w500/3xzxA0ZXo2DwImpS7DNSHkuTiTI.jpg"
   ],
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53565.mp4",
-   "http://45.172.0.116:8085/hd8/2023/O.Olho.2023.1080p/master.m3u8"
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38517.mp4",
+   "http://corruptx.org:80/movie/3llohwk4g9/kwf099q30o/2462917.mp4"
   ],
   "ids": [
-   "VOD_10VD4US6UHW"
-  ]
- },
- {
-  "titulo": "O Preço de Um Sonho",
-  "ano": 2023,
-  "comoCard": "O Preço de Um Sonho",
-  "capas": [
-   "https://image.tmdb.org/t/p/w500/ZfhL01y0YJHk7rqszqG6wvvYWX.jpg",
-   "https://image.tmdb.org/t/p/w500/u76Yi9DF5g1EpsImugBFufphJww.jpg"
-  ],
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/29566.mp4",
-   "http://45.172.0.116:8085/hd4/2022/O.Preco.de.Um.Sonho.2022/master.m3u8"
-  ],
-  "ids": [
-   "VOD_1LV6UOE737S"
+   "VOD_35B6W7O4CQ"
   ]
  },
  {
@@ -61,6 +45,22 @@
   ],
   "ids": [
    "VOD_1FY6887UCAI"
+  ]
+ },
+ {
+  "titulo": "Os Lobos",
+  "ano": 2020,
+  "comoCard": "Os Lobos",
+  "capas": [
+   "https://image.tmdb.org/t/p/w500/24YfssouUUH1sqQtTbBeWZme3AP.jpg",
+   "https://image.tmdb.org/t/p/w500/7XRbBZXuTHD01SkUqwM42KbLul4.jpg"
+  ],
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/56681.mp4",
+   "https://embedplayer2.xyz/cdn/hls/8dbaf14353fc0b8b18b6eb025783e8f3/master.txt?format=m3u8"
+  ],
+  "ids": [
+   "VOD_YSP67ZYXDQ"
   ]
  },
  {
