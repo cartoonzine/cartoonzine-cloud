@@ -72,3 +72,13 @@ test('listas: build completo com um "site" que abre a M3U direto e outro que abr
     assert.equal(ser.destino, 'series'); assert.equal(ser.total, 1);
     assert.equal(fil.destino, 'filmes'); assert.equal(fil.total, 1);
 });
+
+test('lista JSON com "epg" no topo (DB do Studio) entrega os guias como o url-tvg da M3U', async () => {
+    const guias = [];
+    const lidos = [];
+    const r = (C.createSourceReader || (C.CatalogCore || {}).createSourceReader)('auto', e => lidos.push(e), h => guias.push(...h.epg));
+    r.push(JSON.stringify({ epg: ['https://g.exemplo.com/br.xml.gz'], channels: [{ title: 'Globo', url: 'https://s.exemplo.com/g.m3u8', tvgId: 'Globo.br' }] }));
+    r.end();
+    assert.deepEqual(guias, ['https://g.exemplo.com/br.xml.gz']);
+    assert.equal(lidos.length, 1);
+});
