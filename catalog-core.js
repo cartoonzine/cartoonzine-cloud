@@ -421,6 +421,11 @@
                     if (/\]\(/.test(t)) { parseMarkdown(t, onHeader).forEach(onEntry); return; } // "[Nome](link)" = Markdown
                     dados = parseJSONTolerante(t, 'lista');   // vírgula sobrando / comentários (listas editadas à mão)
                 }
+                // lista JSON com guia no topo (DBs do Studio: { "epg": ["https://…/guia.xml.gz"], "channels": [...] })
+                if (onHeader && dados && !Array.isArray(dados)) {
+                    const g = [].concat(dados.epg || dados['url-tvg'] || []).flatMap(u => String(u || '').split(',')).map(u => u.trim()).filter(u => /^https?:\/\//i.test(u));
+                    if (g.length) onHeader({ epg: g });
+                }
                 extractList(dados).forEach(onEntry);
             }
         };
