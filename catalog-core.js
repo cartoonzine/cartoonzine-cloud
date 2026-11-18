@@ -448,6 +448,17 @@
         return { entries: out, epg };
     }
 
+    /** "movie/603" do item (tmdbId + tmdbTipo, ou o formato antigo "movie/603" no tmdbId). '' = sem código. */
+    function chaveTmdb(it) {
+        const id = it && it.tmdbId;
+        if (id == null || id === '') return '';
+        const m = /^(movie|tv)\/(\d+)$/.exec(String(id));
+        if (m) return m[1] + '/' + m[2];
+        const tipo = /^(movie|tv)$/.test(it.tmdbTipo || '') ? it.tmdbTipo : 'movie';
+        return /^\d+$/.test(String(id)) ? tipo + '/' + id : '';
+    }
+    const rankQualidade = (q) => ({ SD: 1, HD: 2, FHD: 3, '4K': 4 })[String(q || '').toUpperCase()] || 0;
+
     // ------------------------------------------------------------------
     // PAÍSES dos canais ao vivo (TVzine → aba "Países")
     // Decide o país de cada canal UMA vez (no build e na leitura das listas do app).
@@ -905,10 +916,20 @@
         const vistos = new Set(), out = [];
         const add = (x) => {
             const url = normUrl(typeof x === 'string' ? x : x && (x.url || x.link || x.src || x.streamUrl));
-            if (!url || vistos.has(url)) return;
-            vistos.add(url);
+            if (!url) return;
             const idioma = x && typeof x === 'object' ? (x.idioma || x.lang || x.language || x.audio) : undefined;
-            out.push(idioma ? { url, idioma: String(idioma) } : { url });
+            const qualidade = x && typeof x === 'object' ? (x.qualidade || x.quality) : undefined;
+            if (vistos.has(url)) {                 // "url" + o mesmo link em "fontes" com idioma/qualidade: completa
+                const ja = out.find(o => o.url === url);
+                if (ja && idioma && !ja.idioma) ja.idioma = String(idioma);
+                if (ja && qualidade && !ja.qualidade) ja.qualidade = String(qualidade).toUpperCase();
+                return;
+            }
+            vistos.add(url);
+            const o = { url };
+            if (idioma) o.idioma = String(idioma);
+            if (qualidade) o.qualidade = String(qualidade).toUpperCase();
+            out.push(o);
         };
         [].concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || raw.youtube || []).forEach(add);
         for (const k of ['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors']) if (Array.isArray(raw[k])) raw[k].forEach(add);
@@ -1075,6 +1096,15 @@
             }
         }
 
+        // busca fina (Filtros+): áudios e a melhor qualidade pelas "fontes" {url, idioma, qualidade}, se a lista não disse
+        if (categoryType === 'vod' && lks.length) {
+            if (!Array.isArray(item.audios) || !item.audios.length) {
+                const a = new Set();
+                lks.forEach(l => { const t = normText(l.idioma || ''); if (/dual/.test(t)) { a.add('dublado'); a.add('legendado'); } else if (/dub|portugu|pt br/.test(t)) a.add('dublado'); else if (/leg|sub/.test(t)) a.add('legendado'); else if (/orig/.test(t)) a.add('original'); });
+                if (a.size) item.audios = [...a];
+            }
+            if (!item.qualidadeMax) { const q = lks.map(l => l.qualidade).filter(Boolean).sort((x, y) => rankQualidade(y) - rankQualidade(x))[0]; if (q && rankQualidade(q)) item.qualidadeMax = q; }
+        }
         // Chave de deduplicação: mesma obra de fontes diferentes vira UM item com espelhos
         if (!item._key) {
             // fonte com "idioma": o idioma entra na chave (o canal X do México não vira espelho do X do Brasil).
@@ -1107,6 +1137,7 @@
             this.vodRecebidos = 0;
             this.items = new Map();       // id -> item completo
             this.keyToId = new Map();     // _key -> id
+            this.tmdbToId = new Map();    // "movie/603" -> id  (mesma obra com nomes diferentes vira UM card)
             this.series = new Map();      // seriesId -> {meta, cats:Set, episodes:[]}
             this.catOrder = [];           // ordem de aparição das categorias
             this.catCards = new Map();    // cat -> [ids de cards]
@@ -1132,11 +1163,16 @@
         add(item) {
             this.stats.recebidos++;
             let existingId = this.keyToId.get(item._key);
+            // filme com código do TMDB: "Matrix" e "The Matrix (1999)" são o mesmo card. O id continua o de antes
+            // (vem da chave de sempre), então favoritos e "continuar assistindo" não mudam.
+            const tk = item.categoryType === 'vod' ? chaveTmdb(item) : '';
+            if (!existingId && tk && this.tmdbToId.has(tk)) existingId = this.tmdbToId.get(tk);
+            const mesmaObra = !!(tk && existingId && this.tmdbToId.get(tk) === existingId);
             if (item.categoryType === 'vod') this.vodRecebidos++;
 
             // Trava pela capa: mesmo título + mesmo ano, mas capas DIFERENTES do TMDB
             // = filmes diferentes (lista de origem com título/ano errado). Não junta.
-            if (existingId && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
+            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
                 const o = this.items.get(existingId);
                 if (o && capasDiferentes(o.thumb, item.thumb)) {
                     this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
@@ -1149,7 +1185,7 @@
 
             // Modo "analisar"/"desligado": filmes nunca são juntados (cada um vira um card).
             // Em "analisar", registra o que SERIA retirado, para comparar antes de ativar.
-            if (existingId && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
+            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
                 const o = this.items.get(existingId);
                 if (!o || item.url !== o.url) {
                     this._sep++;
@@ -1189,9 +1225,13 @@
                     orig.mirrors = orig.mirrors || [];
                     if (!orig.mirrors.includes(item.url) && orig.mirrors.length < 8) orig.mirrors.push(item.url);
                 }
-                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId', 'logo']) {
+                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId', 'logo', 'tmdbId', 'tmdbTipo', 'imdbId', 'rating', 'age', 'popularity', 'runtime']) {
                     if (orig[k] == null && item[k] != null) orig[k] = item[k];
                 }
+                // busca fina: o card fica com TODOS os áudios e a MELHOR qualidade das cópias
+                if (Array.isArray(item.audios) && item.audios.length) orig.audios = [...new Set((orig.audios || []).concat(item.audios))];
+                if (item.qualidadeMax && rankQualidade(item.qualidadeMax) > rankQualidade(orig.qualidadeMax)) orig.qualidadeMax = item.qualidadeMax;
+                if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, orig.id);
                 // mesmo canal em listas de países diferentes: aparece nos dois países —
                 // MAS a lista de um país (sources-idioma.json / "pais" na fonte) manda: vence o país adivinhado
                 if (item.paises && item.paises.length) {
@@ -1221,6 +1261,7 @@
             delete item._anoNoNome;
             delete item._tituloOriginal;
             this.keyToId.set(item._key, item.id);
+            if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, item.id);
             delete item._key;
             this.items.set(item.id, item);
 
