@@ -294,20 +294,6 @@
   }
  },
  {
-  "titulo": "A Lista",
-  "ano": 2023,
-  "link": "https://nixplay.lat/movie/saimo-vods/221097/1268976.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/1XbbdPIgwqWksNXYOWvAb3tvpuZ.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_FT4FMYH0MQ",
-   "titulo": "A Lista",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2750197.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/1XbbdPIgwqWksNXYOWvAb3tvpuZ.jpg"
-  }
- },
- {
   "titulo": "A Maldição",
   "ano": 2022,
   "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21058.mp4",
@@ -882,6 +868,20 @@
   }
  },
  {
+  "titulo": "Armadilha Mortal",
+  "ano": 2025,
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1338972.mp4",
+  "capa": "https://image.tmdb.org/t/p/w500/yW7oEJQxPaTCZRD4y4vhMg4EC57.jpg",
+  "origem": "Filmes Saimo",
+  "motivo": "mesmo título e ano",
+  "seriaJuntadoEm": {
+   "id": "VOD_CJ4B8VQDTY",
+   "titulo": "Armadilha Mortal",
+   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2751139.mp4",
+   "capa": "https://image.tmdb.org/t/p/w500/yW7oEJQxPaTCZRD4y4vhMg4EC57.jpg"
+  }
+ },
+ {
   "titulo": "As Panteras",
   "ano": 2019,
   "link": "https://nixplay.lat/movie/saimo-vods/221097/458897.mp4",
@@ -963,34 +963,6 @@
    "titulo": "Audrey",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2759666.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/xjYlzaZcq48ZjNlItFGacIudm53.jpg"
-  }
- },
- {
-  "titulo": "Ava",
-  "ano": 2020,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2769742.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/uobkkvvKCZbTKpJCMnvuTRQt5bV.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_XPHE4OM0VD",
-   "titulo": "Ava",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2760544.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/uobkkvvKCZbTKpJCMnvuTRQt5bV.jpg"
-  }
- },
- {
-  "titulo": "Bala Perdida",
-  "ano": 2020,
-  "link": "https://nixplay.lat/movie/saimo-vods/221097/706503.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/7RWwkWraLdonauosvAgq1K67p1V.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_1DWZ5YGXEQB",
-   "titulo": "Bala Perdida",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2761582.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/7RWwkWraLdonauosvAgq1K67p1V.jpg"
   }
  },
  {
@@ -1486,7 +1458,7 @@
  {
   "titulo": "Cães de Guerra",
   "ano": 2024,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301069.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/949484.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/wGk3nQeatNW9qyFfkfPSzFKuLZi.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -1551,34 +1523,6 @@
    "titulo": "Controle",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2752069.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/owv9nfKSe3JjnsUQnw1JhxOtHaC.jpg"
-  }
- },
- {
-  "titulo": "Carol",
-  "ano": 2015,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2771722.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/bA9eV51goZvcufsd9TBtGuDwORz.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_I13H10ITXB",
-   "titulo": "Carol",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2753150.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/bA9eV51goZvcufsd9TBtGuDwORz.jpg"
-  }
- },
- {
-  "titulo": "Christine",
-  "ano": 2016,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2769128.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/lQgflKBffMBXkOsM0PpLl2nWFyn.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_1I597GZ3RIL",
-   "titulo": "Christine",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2763181.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/lQgflKBffMBXkOsM0PpLl2nWFyn.jpg"
   }
  },
  {
@@ -2027,20 +1971,6 @@
    "titulo": "Fúria Sobre Rodas",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2752322.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/kDyCVJHZvHWTr0YFWxYROEZkf8t.jpg"
-  }
- },
- {
-  "titulo": "Frankie",
-  "ano": 2019,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2769900.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/5YRDvaBWBbhTKBYYc7BoOWdW01N.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_1W89DOEEXWV",
-   "titulo": "Frankie",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2762252.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/5YRDvaBWBbhTKBYYc7BoOWdW01N.jpg"
   }
  },
  {
@@ -2562,20 +2492,6 @@
   }
  },
  {
-  "titulo": "Lola",
-  "ano": 2023,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2770644.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/jN1SFh3lHY2rVcupajsLseNEpJq.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_1DGW4S8NU1B",
-   "titulo": "LOLA",
-   "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/80271.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/jN1SFh3lHY2rVcupajsLseNEpJq.jpg"
-  }
- },
- {
   "titulo": "Maligno",
   "ano": 2021,
   "link": "https://nixplay.lat/movie/saimo-vods/221097/619778.mp4",
@@ -2592,7 +2508,7 @@
  {
   "titulo": "Marcas do Passado",
   "ano": 2022,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301139.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/995900.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/fpSZqVXPV4aWxZB0DfGEhvhbiJn.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -2648,7 +2564,7 @@
  {
   "titulo": "Medo",
   "ano": 2023,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301141.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/725675.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/pCDb2U7nlTHjFUoHcejyYCB0WHB.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -2783,34 +2699,6 @@
    "titulo": "Máquina de Guerra",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2751796.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/48h40o6Q97hZaqH0g7bOiXOrImX.jpg"
-  }
- },
- {
-  "titulo": "Maria",
-  "ano": 2024,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2769935.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/3xzxA0ZXo2DwImpS7DNSHkuTiTI.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_35B6W7O4CQ",
-   "titulo": "Maria",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2758056.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/3xzxA0ZXo2DwImpS7DNSHkuTiTI.jpg"
-  }
- },
- {
-  "titulo": "Melania",
-  "ano": 2026,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2771968.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/ba6Silct0Y4pyvrSv0Tj0Urmx9f.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_8EEG04KBFN",
-   "titulo": "Melania",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2751737.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/ba6Silct0Y4pyvrSv0Tj0Urmx9f.jpg"
   }
  },
  {
@@ -2951,20 +2839,6 @@
    "titulo": "O Bastardo",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2752345.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/xmFigFDrjHqXov3od5E0LvnyJhP.jpg"
-  }
- },
- {
-  "titulo": "O Beijo da Mulher Aranha",
-  "ano": 2025,
-  "link": "https://nixplay.lat/movie/saimo-vods/221097/1214684.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/6AoOcnoRdBvr2GHyPiCMrZVzRVT.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_I95KLDLAWP",
-   "titulo": "O Beijo da Mulher Aranha",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2750284.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/6AoOcnoRdBvr2GHyPiCMrZVzRVT.jpg"
   }
  },
  {
@@ -3334,7 +3208,7 @@
  {
   "titulo": "O Refúgio",
   "ano": 2026,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301188.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/799882.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/49b7CTeJqugnpBboT6D5xGy3h4H.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -3390,7 +3264,7 @@
  {
   "titulo": "O Ritual",
   "ano": 2025,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301191.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1278950.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/fQv7neaPTFjBzvKkysAA6FXDIz7.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -3404,7 +3278,7 @@
  {
   "titulo": "O Sequestro",
   "ano": 2023,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301193.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1002459.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/nY5v3pTXZjms3m1ZrUMlt3teL7X.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -3446,7 +3320,7 @@
  {
   "titulo": "O Substituto",
   "ano": 2021,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301196.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/776279.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/iyuQlHLnBK7GEMNYhzIUBVlpESm.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -3514,20 +3388,6 @@
   }
  },
  {
-  "titulo": "O Vingador",
-  "ano": 2003,
-  "link": "https://nixplay.lat/movie/saimo-vods/221097/8409.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/8FNmtrtdga1YyYtA41ZXHlBsVyX.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_K0061GGKNQ",
-   "titulo": "O Vingador",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2761624.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/8FNmtrtdga1YyYtA41ZXHlBsVyX.jpg"
-  }
- },
- {
   "titulo": "O Vingador do Futuro",
   "ano": 2012,
   "link": "https://nixplay.lat/movie/saimo-vods/221097/64635.mp4",
@@ -3581,20 +3441,6 @@
    "titulo": "Operação Fronteira",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2761898.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/smz1j5GJtFm9PuBUYvQszVoGR4.jpg"
-  }
- },
- {
-  "titulo": "Os Desajustados",
-  "ano": 2018,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301208.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/oxAGYHNQeScvCxZuhzMj0dRUEFp.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_T7VYAWWR7D",
-   "titulo": "Os Desajustados",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2753816.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/oxAGYHNQeScvCxZuhzMj0dRUEFp.jpg"
   }
  },
  {
@@ -3670,7 +3516,7 @@
  {
   "titulo": "Para Sempre",
   "ano": 2023,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301216.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/72570.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/cryEN3sWlgB2wTzcUNVtDGI8bkM.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -3740,7 +3586,7 @@
  {
   "titulo": "Perdidos na Noite",
   "ano": 2022,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301220.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/874355.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/qBT4gkpdORLOrZ5lCmuwAyFjkzl.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -3920,20 +3766,6 @@
   }
  },
  {
-  "titulo": "Paloma",
-  "ano": 2022,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2772656.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/gD4UC83SP0of6NdW71qJwy734bP.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_1F4AZ2PQJKS",
-   "titulo": "Paloma",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2762729.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/gD4UC83SP0of6NdW71qJwy734bP.jpg"
-  }
- },
- {
   "titulo": "Quando o Amor Acontece",
   "ano": 2020,
   "link": "https://nixplay.lat/movie/saimo-vods/221097/672852.mp4",
@@ -3978,7 +3810,7 @@
  {
   "titulo": "Questão de Honra",
   "ano": 2022,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301233.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1291945.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/cPSZgOjUA8WJoFw3K6KX0qiZYdJ.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4230,7 +4062,7 @@
  {
   "titulo": "Sem Saída",
   "ano": 2025,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301244.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1371291.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/fUCIj47O9v5zktS81hRWktUVnSR.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4328,7 +4160,7 @@
  {
   "titulo": "Sob as Estrelas",
   "ano": 2025,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301250.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/653797.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/cpOsCWExVAyrv0pOCImlXvNpJs4.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4356,7 +4188,7 @@
  {
   "titulo": "Sob o Domínio do Medo",
   "ano": 2011,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301251.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/64639.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/xg3KFQFT47tbHPvSjDQ7zDKJM3D.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4566,7 +4398,7 @@
  {
   "titulo": "Um Amor de Natal",
   "ano": 2024,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301271.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1377267.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/v2Y6zC1tHVsoMXQjnqtg1Bl8uXv.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4608,7 +4440,7 @@
  {
   "titulo": "Um Conto de Natal",
   "ano": 2022,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301272.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/1001865.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/2jR1JmDCOKbOIfTc3a9pQV36EpZ.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4748,7 +4580,7 @@
  {
   "titulo": "Valente",
   "ano": 2012,
-  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301280.mp4",
+  "link": "https://nixplay.lat/movie/saimo-vods/221097/62177.mp4",
   "capa": "https://image.tmdb.org/t/p/w500/gYbCpjAsyJ0uO0rKcvJ295INZZp.jpg",
   "origem": "Filmes Saimo",
   "motivo": "mesmo título e ano",
@@ -4911,20 +4743,6 @@
    "titulo": "Vício Frenético",
    "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2762477.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/9AcjcR5qBVWPnVgtR5fCDU3HVhv.jpg"
-  }
- },
- {
-  "titulo": "Veronica",
-  "ano": 2017,
-  "link": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2771599.mp4",
-  "capa": "https://image.tmdb.org/t/p/w500/2gOgIGkZshFwJBY2F9iy2L69L1W.jpg",
-  "origem": "Filmes Saimo",
-  "motivo": "mesmo título e ano",
-  "seriaJuntadoEm": {
-   "id": "VOD_NBU06J3K69",
-   "titulo": "Verônica",
-   "linkPrincipal": "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2757534.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/2gOgIGkZshFwJBY2F9iy2L69L1W.jpg"
   }
  },
  {
