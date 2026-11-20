@@ -1,17 +1,17 @@
 {
-  "geradoEm": "2026-11-20T00:03:19.013Z",
-  "modo": "analisar",
+  "geradoEm": "2026-11-20T04:10:30.642Z",
+  "modo": "desligado",
   "opcoes": {
-    "modo": "analisar",
+    "modo": "desligado",
     "anoNoTitulo": true,
     "travaCapa": true
   },
-  "explicacao": "nada foi juntado no app; os \"retirados\" mostram o que SERIA juntado se o modo fosse \"ativo\"",
-  "filmesNasFontes": 29826,
-  "cardsDeFilmesNoApp": 27191,
-  "seriamRetirados": 2636,
+  "explicacao": "sem filtro: todos os filmes aparecem como vieram da lista",
+  "filmesNasFontes": 33364,
+  "cardsDeFilmesNoApp": 27188,
+  "retirados": 3021,
   "porMotivo": {
-    "mesmo título e ano": 2636
+    "mesmo título e ano": 3021
   },
   "separadosPelaTravaDaCapa": 0
 }
