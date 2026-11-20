@@ -193,6 +193,7 @@ async function checkStreams(builder, args) {
 
 // ------------------------------------------------------------------ saída
 async function emit(builder, args, epg, sourcesReport, validacao) {
+    builder.ordenarCategorias(args.ordemCatalogo);      // filmes/séries: os mais novos primeiro (sources.json → "ordemCatalogo")
     const tmp = args.out + '.tmp-' + Date.now();
     await fs.rm(tmp, { recursive: true, force: true });
     const writes = [];
@@ -484,6 +485,7 @@ async function main() {
         return links.map((url, k) => ({ ...src, url, urls: undefined, nome: src.nome, _parte: `${k + 1}/${links.length}` }));
     });
     const builder = new Core.CatalogBuilder({ deduplicacao: cfg.deduplicacao });
+    args.ordemCatalogo = cfg.ordemCatalogo || 'novos';    // filmes/séries: 'novos' (padrão) ou 'fonte'
     const epg = new Set();
     // Guias (EPG/XMLTV) escritos na própria fonte: "epg": "https://…/guia.xml.gz" (ou uma lista).
     // Entram no manifest.epg junto com os url-tvg das M3U — é dali que o TVzine baixa o guia.

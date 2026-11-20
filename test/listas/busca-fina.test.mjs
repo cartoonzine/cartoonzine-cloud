@@ -25,3 +25,25 @@ test('fontes {url, idioma, qualidade} viram audios e qualidadeMax do título', (
     assert.deepEqual(it.audios.sort(), ['dublado', 'legendado']); assert.equal(it.qualidadeMax, 'FHD');
     assert.equal(it.url, 'http://v/1.mp4');
 });
+
+test('filmes/séries: os mais novos primeiro (destaque antes); canais ficam na ordem da lista; "fonte" desliga', () => {
+    const monta = () => {
+        const b = new C.CatalogBuilder({});
+        const vod = { nome: 'f', tipo: 'vod_json', prefixoId: 'V' };
+        b.addRaw({ title: 'Velho', year: 1999, url: 'http://v/1.mp4', cat: 'Filmes' }, vod);
+        b.addRaw({ title: 'Sem Ano', url: 'http://v/2.mp4', cat: 'Filmes' }, vod);
+        b.addRaw({ title: 'Novo', year: 2026, url: 'http://v/3.mp4', cat: 'Filmes' }, vod);
+        b.addRaw({ title: 'Meio', year: 2015, url: 'http://v/4.mp4', cat: 'Filmes', destaque: true }, vod);
+        b.addRaw({ title: 'Série Nova', year: 2025, cat: 'Filmes', seasons: [{ season: 1, episodes: [{ episode: 1, url: 'http://v/s.mp4' }] }] }, vod);
+        const tv = { nome: 'c', tipo: 'tvzine_worker', prefixoId: 'T' };
+        b.addRaw({ title: 'Canal B', year: 2000, url: 'http://t/b.m3u8', group: 'Notícias' }, tv);
+        b.addRaw({ title: 'Canal A', year: 2026, url: 'http://t/a.m3u8', group: 'Notícias' }, tv);
+        return b;
+    };
+    const titulos = (b, cat) => b.catCards.get(cat).map(id => b.card(id, cat).title);
+    let b = monta(); b.ordenarCategorias();
+    assert.deepEqual(titulos(b, 'Filmes'), ['Meio', 'Novo', 'Série Nova', 'Velho', 'Sem Ano']);
+    assert.deepEqual(titulos(b, 'Notícias'), ['Canal B', 'Canal A'], 'canal não muda de ordem');
+    b = monta(); b.ordenarCategorias('fonte');
+    assert.deepEqual(titulos(b, 'Filmes').slice(0, 2), ['Velho', 'Sem Ano']);
+});
