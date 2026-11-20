@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-20T23:32:36.503Z",
+  "geradoEm": "2026-11-20T23:44:31.177Z",
   "modo": "desligado",
   "opcoes": {
     "modo": "desligado",
@@ -7,7 +7,7 @@
     "travaCapa": true
   },
   "explicacao": "sem filtro: todos os filmes aparecem como vieram da lista",
-  "filmesNasFontes": 33388,
+  "filmesNasFontes": 33387,
   "cardsDeFilmesNoApp": 27211,
   "retirados": 3020,
   "porMotivo": {
