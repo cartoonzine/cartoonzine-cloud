@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-20T04:19:26.759Z",
+  "geradoEm": "2026-11-20T14:37:44.937Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -36,8 +36,8 @@
   "links": {
     "links": 1134629,
     "testados": 0,
-    "doCache": 1401,
-    "pulados": 1133228,
+    "doCache": 0,
+    "pulados": 1134629,
     "ok": 0,
     "falhou": 0,
     "protegido": 0,
