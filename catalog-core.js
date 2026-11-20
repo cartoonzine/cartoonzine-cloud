@@ -857,6 +857,23 @@
         return firstArr || [];
     }
 
+    // 📅 campos de data de postagem que a fonte pode trazer (Xtream: "added" em segundos)
+    const CAMPOS_DATA_ENTRADA = ['adicionado', 'added', 'addedAt', 'criadoEm', 'postadoEm', 'dataPostagem'];
+    /** Data → 'AAAA-MM-DD' (aceita segundos, milissegundos, Date ou texto de data); inválida → null */
+    function dataDia(v) {
+        if (v == null || v === '') return null;
+        let ms;
+        if (v instanceof Date) ms = v.getTime();
+        else if (typeof v === 'number' || /^\d{9,13}$/.test(String(v).trim())) { const n = Number(v); ms = n < 1e11 ? n * 1000 : n; }
+        else ms = Date.parse(String(v));
+        if (!Number.isFinite(ms)) return null;
+        const d = new Date(ms).toISOString().slice(0, 10);
+        return d >= '1990-01-01' && d <= '2100-12-31' ? d : null;
+    }
+    // 🔎 campos da ficha de filtro (os mesmos nomes dos cards)
+    const CAMPOS_FICHA = ['id', 'title', 'year', 'genre', 'age', 'audios', 'qualidadeMax', 'rating', 'popularity', 'runtime', 'adicionado', 'torrent', 'destaque'];
+    const ehTorrentUrl = (u) => /^magnet:|\.torrent(\?|#|$)/i.test(String(u || ''));
+
     function clean(obj) {
         for (const k of Object.keys(obj)) {
             const v = obj[k];
@@ -1321,6 +1338,7 @@
                 bannerThumb: s.meta.bannerThumb || s.meta.thumb || PLACEHOLDER,
                 desc: s.meta.desc, year: s.meta.year, genre: s.meta.genre,
                 logo: s.meta.logo,
+                adicionado: s.meta.adicionado,
                 cat: cat || [...s.cats][0],
                 categoryType: 'series',
                 seasons: seasons.size,
@@ -1447,12 +1465,65 @@
                 return Number.isFinite(n) && n > 1800 ? n : 0;
             };
             const destaque = (id) => { const s = this.series.get(id); return (s ? s.meta && s.meta.destaque : (this.items.get(id) || {}).destaque) ? 1 : 0; };
+            const adic = (id) => { const s = this.series.get(id); return (s ? s.meta && s.meta.adicionado : (this.items.get(id) || {}).adicionado) || ''; };
             for (const [cat, ids] of this.catCards) {
                 const tipo = this.catType.get(cat);
                 if (tipo !== 'vod' && tipo !== 'series' && tipo !== 'episode') continue;
                 const pos = new Map(ids.map((id, i) => [id, i]));
-                ids.sort((a, b) => destaque(b) - destaque(a) || ano(b) - ano(a) || pos.get(a) - pos.get(b));
+                if (modo === 'recentes') ids.sort((a, b) => destaque(b) - destaque(a) || String(adic(b)).localeCompare(String(adic(a))) || ano(b) - ano(a) || pos.get(a) - pos.get(b));
+                else ids.sort((a, b) => destaque(b) - destaque(a) || ano(b) - ano(a) || pos.get(a) - pos.get(b));
             }
+        }
+
+        /**
+         * 📅 Data de entrada: quando o título apareceu no catálogo pela 1ª vez → item.adicionado = 'AAAA-MM-DD'.
+         * memoria = { id: [entrada, vistoPorUltimo] } (entradas.json, guardado entre um build e outro).
+         * A data que a fonte trouxer (added / addedAt / adicionado / criadoEm / postadoEm) vale mais que a memória;
+         * sem nenhuma das duas, é hoje. Série: a data do episódio mais novo (episódio novo faz a série subir).
+         * Quem sumiu do catálogo há mais de 60 dias sai da memória (o arquivo não cresce para sempre).
+         * @returns {object} a memória atualizada (gravar de volta em entradas.json)
+         */
+        aplicarEntradas(memoria = {}, hoje = new Date().toISOString().slice(0, 10)) {
+            const daFonte = (it) => { for (const k of CAMPOS_DATA_ENTRADA) { const d = dataDia(it[k]); if (d) return d; } return null; };
+            for (const [id, it] of this.items) {
+                const m = memoria[id];
+                const d = daFonte(it) || (m && m[0]) || hoje;
+                memoria[id] = [d, hoje];
+                it.adicionado = d;
+            }
+            for (const s of this.series.values()) {
+                let max = '';
+                for (const id of s.episodes) { const it = this.items.get(id); if (it && it.adicionado > max) max = it.adicionado; }
+                if (max) s.meta.adicionado = max;
+            }
+            const limite = new Date(Date.parse(hoje) - 60 * 86400e3).toISOString().slice(0, 10);
+            for (const [id, m] of Object.entries(memoria)) if (!Array.isArray(m) || !m[1] || m[1] < limite) delete memoria[id];
+            return memoria;
+        }
+
+        /**
+         * 🔎 Ficha de filtro de uma categoria: só os campos que os filtros usam, de TODOS os títulos, na mesma
+         * ordem das páginas (a posição i está na página Math.floor(i / pageSize)). Assim o app filtra o catálogo
+         * inteiro baixando um arquivo pequeno, e só depois busca as páginas dos títulos que vão aparecer.
+         * Formato: { v: 1, campos: [...], itens: [[valores na ordem de campos], ...] } (nulos do fim cortados)
+         */
+        fichaFiltro(cat) {
+            const ids = this.catCards.get(cat) || [];
+            const campos = CAMPOS_FICHA;
+            const itens = [];
+            for (const id of ids) {
+                const c = this.card(id, cat);
+                if (!c) continue;
+                const linha = campos.map(k => {
+                    if (k === 'torrent') return ehTorrentUrl(c.url) ? 1 : null;
+                    if (k === 'destaque') return c.destaque ? 1 : null;
+                    const v = c[k];
+                    return v === undefined || v === '' || (Array.isArray(v) && !v.length) ? null : v;
+                });
+                while (linha.length > 1 && linha[linha.length - 1] === null) linha.pop();
+                itens.push(linha);
+            }
+            return { v: 1, campos, itens };
         }
 
         remove(ids) {
@@ -1699,6 +1770,14 @@
 
         series(id) { return this.b.seriesDetail(id); }
 
+        /** Ficha de filtro da categoria (ver CatalogBuilder.fichaFiltro). */
+        ficha(slugOrName) {
+            this._categories();
+            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
+            if (!cat) return null;
+            return Object.assign({ pageSize: this.pageSize }, this.b.fichaFiltro(cat.nome));
+        }
+
         search(q, limit) {
             if (!this._rows) {
                 this._rows = [];
@@ -1717,6 +1796,7 @@
     return {
         VERSION: '2.0.0',
         PLACEHOLDER,
+        dataDia, CAMPOS_FICHA,
         cyrb53, makeId, idShard,
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,

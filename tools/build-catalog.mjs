@@ -12,6 +12,7 @@
  *     series/<id>.json              temporadas + episódios de cada série
  *     items/<abc>.json              detalhe completo por ID (4096 fatias)
  *     search/<xx>.json              índice de busca por prefixo de 2 letras
+ *     filtros/<categoria>.json      ficha de filtro: os campos dos filtros de TODOS os títulos da categoria
  *
  * Uso:
  *   node tools/build-catalog.mjs --sources sources.json --out catalog
@@ -26,6 +27,7 @@
  *   --check-streams       testa se os links respondem (remove os mortos)
  *   --check-limit <n>     máximo de links testados por execução (padrão: 3000)
  *   --health <arq>        memória dos testes entre execuções (padrão: health-cache.json)
+ *   --entradas <arq>      memória da data em que cada título entrou (padrão: entradas.json) → "Recém-postados"
  *   --force               publica mesmo se o catálogo encolher mais de 50%
  *   --sem-epg             não prepara o guia (EPG) no build (o app volta a ler os XMLTV sozinho)
  *   --compat-episodios    gera também TODOS os episódios em lotes (só para o modo antigo
@@ -47,7 +49,7 @@ const Core = require(path.join(__dirname, '..', 'catalog-core.js'));
 function parseArgs(argv) {
     const a = {
         sources: 'sources.json', out: 'catalog', pageSize: 120, concurrency: 6,
-        timeout: 60000, checkStreams: false, checkLimit: 3000, health: 'health-cache.json',
+        timeout: 60000, checkStreams: false, checkLimit: 3000, health: 'health-cache.json', entradas: 'entradas.json',
         checkTimeout: 8000, maxFails: 3
     };
     for (let i = 2; i < argv.length; i++) {
@@ -62,6 +64,7 @@ function parseArgs(argv) {
             case '--check-streams': a.checkStreams = true; break;
             case '--check-limit': a.checkLimit = +v; a.checkLimitDefinido = true; i++; break;
             case '--health': a.health = v; i++; break;
+            case '--entradas': a.entradas = v; i++; break;
             case '--force': a.force = true; break;
             case '--compat-episodios': a.compatEpisodios = true; break;
             case '--validar-tudo': a.validarTudo = true; break;
@@ -193,6 +196,10 @@ async function checkStreams(builder, args) {
 
 // ------------------------------------------------------------------ saída
 async function emit(builder, args, epg, sourcesReport, validacao) {
+    // 📅 data de entrada de cada título (antes de ordenar: o modo "recentes" usa ela)
+    let entradas = {};
+    try { entradas = JSON.parse(await fs.readFile(args.entradas, 'utf8')) || {}; } catch { /* primeira execução: tudo entra hoje */ }
+    builder.aplicarEntradas(entradas);
     builder.ordenarCategorias(args.ordemCatalogo);      // filmes/séries: os mais novos primeiro (sources.json → "ordemCatalogo")
     const tmp = args.out + '.tmp-' + Date.now();
     await fs.rm(tmp, { recursive: true, force: true });
@@ -214,6 +221,11 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
             writes.push([path.join(tmp, 'cat', s, `${p}.json`), cards]);
         }
         const entry = { nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages };
+        // 🔎 ficha de filtro (canais ao vivo não têm filtros de filme)
+        if (cat.type !== 'live' && ids.length) {
+            writes.push([path.join(tmp, 'filtros', `${s}.json`), builder.fichaFiltro(cat.nome)]);
+            entry.filtro = `filtros/${s}.json`;
+        }
         if (cat.console) entry.console = cat.console;
         // Formato do motor antigo: episódios "achatados" (um item por episódio) em lotes
         if (cat.type === 'series' && args.compatEpisodios) {
@@ -334,6 +346,7 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
     if (fss.existsSync(args.out)) await fs.rename(args.out, old);
     await fs.rename(tmp, args.out);
     await fs.rm(old, { recursive: true, force: true });
+    await fs.writeFile(args.entradas, JSON.stringify(entradas));
     return manifest;
 }
 
@@ -485,7 +498,7 @@ async function main() {
         return links.map((url, k) => ({ ...src, url, urls: undefined, nome: src.nome, _parte: `${k + 1}/${links.length}` }));
     });
     const builder = new Core.CatalogBuilder({ deduplicacao: cfg.deduplicacao });
-    args.ordemCatalogo = cfg.ordemCatalogo || 'novos';    // filmes/séries: 'novos' (padrão) ou 'fonte'
+    args.ordemCatalogo = cfg.ordemCatalogo || 'novos';    // filmes/séries: 'novos' (padrão, ano de lançamento), 'recentes' (recém-postados) ou 'fonte'
     const epg = new Set();
     // Guias (EPG/XMLTV) escritos na própria fonte: "epg": "https://…/guia.xml.gz" (ou uma lista).
     // Entram no manifest.epg junto com os url-tvg das M3U — é dali que o TVzine baixa o guia.
