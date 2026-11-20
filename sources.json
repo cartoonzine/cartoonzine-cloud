@@ -24,7 +24,7 @@
     "_anoNoTitulo": "true = trata 'Filme (2017)' como 'Filme' do ano 2017 para achar cópias. false = compara o nome como veio.",
     "_travaCapa": "true = nunca junta dois filmes com capas diferentes (evita juntar filmes distintos). false = junta só por título + ano.",
 
-    "modo": "analisar",
+    "modo": "desligado",
     "anoNoTitulo": true,
     "travaCapa": true
   },
@@ -61,7 +61,10 @@
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
-      "url": "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/filmes_sm.json"
+      "url": [
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/filmes_sm.json",
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/kids_sm.json"
+    ]
     },
     {
       "nome": "Séries Saimo",
@@ -72,7 +75,9 @@
       "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt1.json",
       "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt2.json",
       "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt3.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/doramas_sm.json"
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/doramas_sm.json",
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/novelas_sm.json",
+      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/novelinhas_sm.json"
     ]
     },
     {
@@ -216,7 +221,7 @@
       "nome": "TVzine - Canais (Saimo)",
       "tipo": "tvzine_worker",
       "prefixoId": "TV",
-      "url": ""
+      "url": "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/canais_sm.json"
     },
     {
      "nome": "TVzine - Canais",
