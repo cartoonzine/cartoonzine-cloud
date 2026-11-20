@@ -27,7 +27,7 @@
  *   --check-streams       testa se os links respondem (remove os mortos)
  *   --check-limit <n>     máximo de links testados por execução (padrão: 3000)
  *   --health <arq>        memória dos testes entre execuções (padrão: health-cache.json)
- *   --entradas <arq>      memória da data em que cada título entrou (padrão: entradas.json) → "Recém-postados"
+ *   --entradas <arq>      memória da data em que cada título entrou (padrão: entradas.json ao lado da pasta --out) → "Recém-postados"
  *   --force               publica mesmo se o catálogo encolher mais de 50%
  *   --sem-epg             não prepara o guia (EPG) no build (o app volta a ler os XMLTV sozinho)
  *   --compat-episodios    gera também TODOS os episódios em lotes (só para o modo antigo
@@ -49,7 +49,7 @@ const Core = require(path.join(__dirname, '..', 'catalog-core.js'));
 function parseArgs(argv) {
     const a = {
         sources: 'sources.json', out: 'catalog', pageSize: 120, concurrency: 6,
-        timeout: 60000, checkStreams: false, checkLimit: 3000, health: 'health-cache.json', entradas: 'entradas.json',
+        timeout: 60000, checkStreams: false, checkLimit: 3000, health: 'health-cache.json',
         checkTimeout: 8000, maxFails: 3
     };
     for (let i = 2; i < argv.length; i++) {
@@ -197,6 +197,8 @@ async function checkStreams(builder, args) {
 // ------------------------------------------------------------------ saída
 async function emit(builder, args, epg, sourcesReport, validacao) {
     // 📅 data de entrada de cada título (antes de ordenar: o modo "recentes" usa ela)
+    // fica ao lado da pasta do catálogo (no repositório: ./entradas.json)
+    if (!args.entradas) args.entradas = path.join(path.dirname(path.resolve(args.out)), 'entradas.json');
     let entradas = {};
     try { entradas = JSON.parse(await fs.readFile(args.entradas, 'utf8')) || {}; } catch { /* primeira execução: tudo entra hoje */ }
     builder.aplicarEntradas(entradas);
