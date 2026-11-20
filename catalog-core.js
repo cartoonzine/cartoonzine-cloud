@@ -1431,6 +1431,30 @@
             return n;
         }
 
+        /**
+         * Ordem dos cards dentro de cada categoria de FILMES/SÉRIES (sources.json → "ordemCatalogo"):
+         *   'novos' (padrão): os mais novos primeiro — destaque do Studio, depois pelo ano (mais recente em cima);
+         *                     no mesmo ano fica a ordem da lista (as fontes já costumam trazer o lançamento antes)
+         *   'fonte': a ordem em que chegaram das listas (como era antes)
+         * Canais, rádios e jogos nunca mudam de ordem.
+         */
+        ordenarCategorias(modo = 'novos') {
+            if (modo === 'fonte') return;
+            const ano = (id) => {
+                const s = this.series.get(id);
+                const y = s ? (s.meta && s.meta.year) : (this.items.get(id) || {}).year;
+                const n = parseInt(y, 10);
+                return Number.isFinite(n) && n > 1800 ? n : 0;
+            };
+            const destaque = (id) => { const s = this.series.get(id); return (s ? s.meta && s.meta.destaque : (this.items.get(id) || {}).destaque) ? 1 : 0; };
+            for (const [cat, ids] of this.catCards) {
+                const tipo = this.catType.get(cat);
+                if (tipo !== 'vod' && tipo !== 'series' && tipo !== 'episode') continue;
+                const pos = new Map(ids.map((id, i) => [id, i]));
+                ids.sort((a, b) => destaque(b) - destaque(a) || ano(b) - ano(a) || pos.get(a) - pos.get(b));
+            }
+        }
+
         remove(ids) {
             const dead = ids instanceof Set ? ids : new Set(ids);
             if (!dead.size) return 0;
@@ -1597,6 +1621,7 @@
                 }
                 progress({ fonte: src.nome, concluidas: ++concluidas, total: usable.length, itens: this.b.items.size });
             }
+            this.b.ordenarCategorias(opts.ordemCatalogo);
             this._cats = null;
             this._rows = null;
             return this.manifest();
