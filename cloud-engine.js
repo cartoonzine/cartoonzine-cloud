@@ -768,7 +768,7 @@
         // Contexto para carregar mais sob demanda (modo Netflix)
         const cursor = new Map();
         for (const c of cats) cursor.set(c, usaCompat(c) ? { compat: true, n: 1, max: c.compatPages } : { compat: false, n: Math.min(c.pages, lim), max: c.pages });
-        compatCtx = { geracao, somar, marcar, cursor, buscar };
+        compatCtx = { geracao, somar, marcar, cursor, buscar, alvo };
         completarDestinos(geracao);
 
         // 2) O RESTO do catálogo em segundo plano (como o motor antigo: tudo no window.DB)
@@ -875,6 +875,31 @@
         })().finally(() => carregando.delete(nome));
         carregando.set(nome, p);
         return p;
+    };
+
+    /**
+     * 🔎 Traz UM título para o window.DB (ex.: achado pela busca no índice, mas numa página que o app ainda
+     * não carregou). Não duplica: se já estiver no DB, devolve o que está lá. Devolve { item, destino } ou null.
+     */
+    Engine.trazerParaDB = async function (id) {
+        if (!compatCtx) await Engine.ready;
+        const ctx = compatCtx;
+        if (!ctx || !ctx.alvo || id == null) return null;
+        const achar = () => {
+            for (const [destino, arr] of Object.entries(ctx.alvo)) {
+                const item = (arr || []).find(x => x && (x.id === id || x.seriesId === id));
+                if (item) return { item, destino };
+            }
+            return null;
+        };
+        const ja = achar();
+        if (ja) return ja;
+        const it = await Engine.getItem(id).catch(() => null);
+        if (!it || ctx !== compatCtx) return null;
+        const cats = (Engine.manifest && Engine.manifest.categories) || [];
+        const cat = cats.find(c => c.nome === it.cat) || { destino: it.categoryType === 'game' ? 'games' : 'videos' };
+        ctx.somar(cat, [Object.assign({}, it)]);
+        return achar();
     };
 
     /** Traz a categoria INTEIRA (usado quando o usuário aplica um filtro). */
