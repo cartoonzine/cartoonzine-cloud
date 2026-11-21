@@ -5,6 +5,11 @@
       "nome": "Cartoonzine Studio · Jogos (retrô e web)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/fontes-cloud.json",
       "colecoes": ["jogos", "jogos-web"]
+    },
+    {
+      "nome": "Cartoonzine Studio · Sidechain",
+      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/listas/sidechain-fontes.json",
+      "colecoes": ["sidechain"]
     }
   ],
   "_comentarioListas": "Jeito simples de pôr listas de canais, filmes e séries: só cole os links abaixo (entre aspas, separados por vírgula). Serve M3U, JSON, Markdown e links de site sem extensão (ex.: https://canais-exemplo.pages.dev/) — o robô descobre o formato sozinho e, se o link abrir uma página, usa as listas que a página aponta. Link que traz filmes E séries juntos vai em \"filmesESeries\": os filmes ficam em Filmes e os episódios (\"Naruto S01E03\") viram série na prateleira de Séries. Para dar nome, guia (EPG) ou desligar um link: { \"url\": \"https://…\", \"nome\": \"Meus canais\", \"epg\": \"https://…/guia.xml.gz\", \"ativo\": false }.",
