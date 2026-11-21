@@ -118,6 +118,10 @@
     const fetchOpts = { timeoutMs: CFG.timeoutMs, tentativas: CFG.tentativas };
     const baseUrl = CFG.manifestUrl.replace(/[^/]*$/, '');
 
+    // O manifest decide a versão do catálogo: nunca pode vir de cache HTTP
+    // (Electron, WebViews de Smart TV e alguns proxies seguram arquivos por minutos).
+    const urlSemCache = (u) => u + (u.includes('?') ? '&' : '?') + '_=' + Date.now();
+
     // ==================================================================
     // Cache em 2 níveis: RAM (LRU) + IndexedDB (sobrevive a recarregar)
     // ==================================================================
@@ -158,6 +162,12 @@
             });
         };
         return {
+            /** Fecha a conexão (necessário para conseguir apagar o banco). */
+            async fechar() {
+                const db = dbp && await dbp;
+                if (db) try { db.close(); } catch (e) { /* ignore */ }
+                dbp = null;
+            },
             get: k => tx('readonly', s => s.get(k)),
             set: (k, v) => tx('readwrite', s => s.put(v, k)),
             /** Remove entradas de versões antigas do catálogo. */
@@ -195,7 +205,7 @@
         async init() {
             let m = null;
             try {
-                const { res, done } = await Core.fetchWithRetry(CFG.manifestUrl, Object.assign({ init: { cache: 'no-cache' } }, fetchOpts, { tentativas: 1 }));
+                const { res, done } = await Core.fetchWithRetry(urlSemCache(CFG.manifestUrl), Object.assign({ init: { cache: 'no-store' } }, fetchOpts, { tentativas: 1 }));
                 try { m = await res.json(); } finally { done(); }
                 if (!m || m.schema !== 2 || !Array.isArray(m.categories)) throw new Error('manifest inválido');
                 KV.set(this.mkey, m);
@@ -222,7 +232,7 @@
 
         async checkUpdate() {
             try {
-                const { res, done } = await Core.fetchWithRetry(CFG.manifestUrl, Object.assign({ init: { cache: 'no-cache' } }, fetchOpts, { tentativas: 0 }));
+                const { res, done } = await Core.fetchWithRetry(urlSemCache(CFG.manifestUrl), Object.assign({ init: { cache: 'no-store' } }, fetchOpts, { tentativas: 0 }));
                 let m; try { m = await res.json(); } finally { done(); }
                 if (m && m.schema === 2 && m.version !== this.manifest.version) {
                     KV.set(this.mkey, m);
@@ -436,8 +446,9 @@
             try {
                 const { res, done } = await Core.fetchWithRetry(CFG.sourcesUrl, fetchOpts);
                 try {
-                    const texto = await res.text();
-                    const j = Core.parseJSONTolerante ? Core.parseJSONTolerante(texto, 'sources.json') : JSON.parse(texto);
+                    // mesmo leitor "perdoador" do build: vírgula sobrando / comentários não derrubam a leitura
+                    const txt = await res.text();
+                    const j = Core.parseJSONTolerante ? Core.parseJSONTolerante(txt, 'sources.json') : JSON.parse(txt);
                     return Array.isArray(j) ? j : (j.fontes || j.sources || []);
                 } finally { done(); }
             } catch (e) {
@@ -693,6 +704,7 @@
             games: lista(db, 'games'),
             filmes: lista(db, 'filmes'),                  // TVzine → aba Filmes (DB.filmes)
             series: lista(db, 'series'),                  // TVzine → aba Séries (DB.series)
+            livros: lista(db, 'livros'),                  // Bookzine → biblioteca (DB.livros)
             iptv: global('CZ_IPTV'),
             radio: global('CZ_VIDEOS_RADIO'),             // Radio Hub → Tuner
             streams: global('CZ_M3U_STREAMS'),            // Radio Hub → Listas Stream
@@ -1067,6 +1079,47 @@
     Engine.escolherLinkQueFunciona = escolherLinkQueFunciona;
     Engine.preencherCompat = preencherCompat;
 
+    /**
+     * Apaga o cache do catálogo no aparelho (IndexedDB + memória) e reinicia o motor.
+     * Uso: await CloudEngine.limparCache()   — ou   CloudEngine.limparCache({ recarregar: true })
+     */
+    Engine.limparCache = async function (opts = {}) {
+        if (Engine._static) Engine._static.mem.clear();
+        await KV.fechar();
+        await new Promise((ok) => {
+            try {
+                const rq = indexedDB.deleteDatabase('cloud-engine-v2');
+                rq.onsuccess = rq.onerror = rq.onblocked = () => ok();
+            } catch (e) { ok(); }
+        });
+        log('🧹 Cache do catálogo apagado.');
+        if (opts.recarregar) { location.reload(); return; }
+        return Engine.recarregar();
+    };
+
+    /**
+     * O catálogo chegou: redesenha a tela atual para mostrar os itens da nuvem, SEM tirar o usuário
+     * do lugar — o foco volta para o mesmo elemento e as rolagens ficam onde estavam.
+     * Telas que não dependem do catálogo (ou se atualizam sozinhas pelos eventos) não são redesenhadas:
+     * player, login e as telas do TVzine (elas ouvem "cloud_engine_destino_completo").
+     */
+    const NAO_REDESENHAR = /^(player|login|ultra_tv_player|tvzine_|desenhos_24h|bookzine_leitor)/;
+    function redesenharTelaAtual() {
+        if (typeof window.render !== 'function') return;
+        const view = (window.state && window.state.view) || '';
+        if (NAO_REDESENHAR.test(view)) return;
+        const app = document.getElementById('app');
+        const ae = document.activeElement;
+        const focoId = ae && ae !== document.body && ae.id ? ae.id : null;
+        const rolagens = [];
+        if (app) app.querySelectorAll('[id]').forEach(el => { if (el.scrollTop || el.scrollLeft) rolagens.push([el.id, el.scrollTop, el.scrollLeft]); });
+        const rolagemJanela = [window.scrollX, window.scrollY];
+        try { window.render(); } catch (e) { console.warn('⚠️ [Cloud Engine] render():', e); return; }
+        rolagens.forEach(([id, t, l]) => { const el = document.getElementById(id); if (el) { el.scrollTop = t; el.scrollLeft = l; } });
+        if (rolagemJanela[0] || rolagemJanela[1]) window.scrollTo(rolagemJanela[0], rolagemJanela[1]);
+        if (focoId) { const el = document.getElementById(focoId); if (el && typeof el.focus === 'function') { try { el.focus({ preventScroll: true }); } catch (e) { /* */ } } }
+    }
+
     // ==================================================================
     // Ignição
     // ==================================================================
@@ -1113,12 +1166,12 @@
 
         const falhas = (Engine.manifest.fontes || []).filter(f => !f.ok);
         falhas.forEach(f => console.warn(`❌ [Cloud Engine] Fonte "${f.nome}": ${f.erro}`));
-        log(`✅ Pronto em ${Math.round(performance.now() - t0)}ms — modo ${Engine.modo} | ` +
+        log(`✅ Pronto em ${Math.round(performance.now() - t0)}ms — modo ${Engine.modo} | catálogo v${Engine.manifest.version} (${(Engine.manifest.generatedAt || '').replace('T', ' ').slice(0, 16)} UTC) | ` +
             `${Engine.manifest.totals.itens.toLocaleString('pt-BR')} itens em ${Engine.manifest.categories.length} categorias | ` +
             `na memória: VOD ${((window.DB || {}).videos || []).length} · TV ${(window.CZ_IPTV || []).length} · Rádio ${(window.CZ_VIDEOS_RADIO || []).length} · Jogos ${((window.DB || {}).games || []).length}`);
 
         emit('cloud_engine_ready', { modo: Engine.modo, manifest: Engine.manifest });
-        if (CFG.renderAutomatico && typeof window.render === 'function') window.render();
+        if (CFG.renderAutomatico) redesenharTelaAtual();
 
         // 3) Atualizações automáticas do catálogo estático
         clearInterval(timerUpdate);
