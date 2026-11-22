@@ -9,11 +9,14 @@ test('mesmo tmdbId com nomes diferentes vira UM card (id do primeiro); áudios s
     const src = { nome: 't', tipo: 'vod_json', prefixoId: 'V' };
     b.addRaw({ title: 'Matrix', year: 1999, tmdbId: 603, tmdbTipo: 'movie', rating: 8.2, url: 'http://v/a.mp4', audios: ['dublado'], qualidadeMax: 'HD' }, src);
     b.addRaw({ title: 'The Matrix', year: 1999, tmdbId: 'movie/603', url: 'http://v/b.mp4', fontes: [{ url: 'http://v/b.mp4', idioma: 'legendado', qualidade: 'fhd' }] }, src);
-    b.addRaw({ title: 'Matrix', year: 1999, tmdbId: 604, url: 'http://v/c.mp4' }, src);   // outro código = outra obra? mesmo nome+ano junta pela chave de sempre
+    b.addRaw({ title: 'Matrix', year: 1999, tmdbId: 604, url: 'http://v/c.mp4' }, src);   // 🛡 outro código = outra obra: NUNCA junta (trava TMDB)
     const cards = [];
     for (const [cat, ids] of b.catCards) for (const id of ids) cards.push(b.card(id, cat));
-    const m = cards.filter(c => /matrix/i.test(c.title));
+    const todos = cards.filter(c => /matrix/i.test(c.title));
+    assert.equal(todos.length, 2, 'o 604 fica num card próprio');
+    const m = todos.filter(c => String(c.tmdbId).endsWith('603'));
     assert.equal(m.length, 1);
+    assert.ok(!(m[0].mirrors || []).includes('http://v/c.mp4'), 'o link do 604 não vira reserva do 603');
     assert.deepEqual(m[0].audios.sort(), ['dublado', 'legendado']);
     assert.equal(m[0].qualidadeMax, 'FHD'); assert.equal(m[0].rating, 8.2); assert.equal(m[0].tmdbTipo, 'movie');
     assert.ok((m[0].mirrors || []).includes('http://v/b.mp4'));
