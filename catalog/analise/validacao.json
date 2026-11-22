@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-22T20:46:05.864Z",
+  "geradoEm": "2026-11-22T21:37:53.524Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -51,9 +51,9 @@
     "duracaoS": 2.2
   },
   "itens": {
-    "avaliados": 589923,
+    "avaliados": 589931,
     "ok": 10805,
-    "semTeste": 578951,
+    "semTeste": 578959,
     "principalTrocado": 0,
     "indisponiveis": 0,
     "removidos": 0,
