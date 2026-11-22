@@ -28,10 +28,13 @@
     "_modo_desligado": "desligado → No app: sem filtro nenhum, como o motor antigo. No relatório: vazio.",
     "_anoNoTitulo": "true = trata 'Filme (2017)' como 'Filme' do ano 2017 para achar cópias. false = compara o nome como veio.",
     "_travaCapa": "true = nunca junta dois filmes com capas diferentes (evita juntar filmes distintos). false = junta só por título + ano.",
+    "_travas_sempre_ligadas": "🛡 Sempre, em qualquer modo: TMDB diferente nunca junta (O Rei Leão 1994 × 2019); TMDB achado só pelo nome (tmdbPorNome) só junta se título ou ano baterem; séries com o mesmo nome e TMDB diferente ficam separadas (Doctor Who 1963 × 2005). Tudo que foi separado aparece no relatório com o motivo.",
+    "_tituloLimpo": "true = 'Matrix 1080p DUB' (1999) acha a cópia de 'Matrix' (1999) — só para achar; o card e o id não mudam. Passa pelas mesmas travas. false = desliga.",
 
     "modo": "desligado",
     "anoNoTitulo": true,
-    "travaCapa": true
+    "travaCapa": true,
+    "tituloLimpo": true
   },
   
   "validacao": {

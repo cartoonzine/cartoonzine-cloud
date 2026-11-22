@@ -389,7 +389,8 @@ async function escreverAnalise(builder, dir, geradoEm) {
         cardsDeFilmesNoApp: ativos.length,
         [d.modo === 'analisar' ? 'seriamRetirados' : 'retirados']: retirados.length,
         porMotivo,
-        separadosPelaTravaDaCapa: separados.length
+        separados: separados.length,
+        separadosPorMotivo: separados.reduce((m, x) => { const k = x.motivo || 'capas diferentes'; m[k] = (m[k] || 0) + 1; return m; }, {})
     };
     const cRet = [['titulo', r => r.titulo], ['ano', r => r.ano], ['motivo', r => r.motivo], ['link', r => r.link], ['origem', r => r.origem],
         ['foi para (card)', r => (r.juntadoEm || r.seriaJuntadoEm).titulo], ['id do card', r => (r.juntadoEm || r.seriaJuntadoEm).id],

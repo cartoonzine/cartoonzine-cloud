@@ -457,6 +457,9 @@
         const tipo = /^(movie|tv)$/.test(it.tmdbTipo || '') ? it.tmdbTipo : 'movie';
         return /^\d+$/.test(String(id)) ? tipo + '/' + id : '';
     }
+    // Título limpo (sem 1080p, DUB, LEG, "(ano)"…) — usado só para ACHAR cópias; a chave/ID do card não muda
+    const LIXO_TITULO = /\b(dub|dublado|dublada|leg|legendado|legendada|dual|audio|nacional|pt ?br|sub|4k|uhd|fhd|hd|sd|1080p?|720p?|480p?|2160p?|x26[45]|h26[45]|hevc|web ?dl|webrip|bluray|brrip|dvdrip|hdtv|remux)\b/g;
+    function tituloLimpo(t) { return normText(t).replace(/\b(19|20)\d{2}\b/g, ' ').replace(LIXO_TITULO, ' ').replace(/\s+/g, ' ').trim(); }
     const rankQualidade = (q) => ({ SD: 1, HD: 2, FHD: 3, '4K': 4 })[String(q || '').toUpperCase()] || 0;
 
     // ------------------------------------------------------------------
@@ -1002,7 +1005,8 @@
                 desc: raw.overview || raw.desc || raw.description,
                 year: raw.year || anoSerie, genre: asGenre(raw.genre || raw.genres),
                 extra: extras(raw), destaque: raw.destaque ? true : undefined,
-                logo: logoDoTitulo(raw)                     // séries: o PNG do título (CZ-HUD e banner)
+                logo: logoDoTitulo(raw),                    // séries: o PNG do título (CZ-HUD e banner)
+                tmdbKey: chaveTmdb({ tmdbId: raw.tmdbId, tmdbTipo: raw.tmdbTipo || 'tv' }) || undefined
             };
             const out = [];
             for (const temp of raw.seasons) {
@@ -1020,6 +1024,7 @@
                         id: makeId(prefix, `ep|${seriesId}|${s}|${e}`),
                         _key: `ep|${seriesId}|${s}|${e}`,
                         _anoNoNome: anoSerie ? true : undefined,
+                        _serieTmdb: meta.tmdbKey, _serieAno: anoChave || undefined,
                         title: ep.title ? `${serie} - T${s}E${e} - ${ep.title}` : `${serie} - T${s}E${e}`,
                         epTitle: ep.title,
                         serie, seriesId, season: s, episode: e,
@@ -1106,8 +1111,10 @@
                 Object.assign(item, {
                     categoryType: 'episode', serie: ep.serie, seriesId,
                     season: ep.season, episode: ep.episode,
-                    _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre }
+                    _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre,
+                        tmdbKey: raw.tmdbTipo === 'tv' ? chaveTmdb(raw) || undefined : undefined }
                 });
+                if (raw.tmdbTipo === 'tv' && chaveTmdb(raw)) item._serieTmdb = chaveTmdb(raw);
                 item._key = `ep|${seriesId}|${ep.season}|${ep.episode}`;
                 if (src.separarSeries) { item.cat = catDeSerie(item.cat); item._dest = 'series'; }   // lista mista: vai para Séries
             }
@@ -1148,13 +1155,15 @@
             this.dedup = {
                 modo: ['ativo', 'analisar', 'desligado'].includes(d.modo) ? d.modo : 'ativo',
                 anoNoTitulo: d.anoNoTitulo !== false,
-                travaCapa: d.travaCapa !== false
+                travaCapa: d.travaCapa !== false,
+                tituloLimpo: d.tituloLimpo !== false
             };
             this._sep = 0;
             this.vodRecebidos = 0;
             this.items = new Map();       // id -> item completo
             this.keyToId = new Map();     // _key -> id
             this.tmdbToId = new Map();    // "movie/603" -> id  (mesma obra com nomes diferentes vira UM card)
+            this.limpoToId = new Map();   // "vod|titulo limpo|ano" -> id  (só para achar cópias; o id não muda)
             this.series = new Map();      // seriesId -> {meta, cats:Set, episodes:[]}
             this.catOrder = [];           // ordem de aparição das categorias
             this.catCards = new Map();    // cat -> [ids de cards]
@@ -1177,14 +1186,60 @@
             this.catCards.get(cat).push(id);
         }
 
+        /** Separa este item do card que ele ia virar cópia (a chave e o id ganham um sufixo estável). */
+        _separar(item, sufixo, motivo, o) {
+            this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o && o.title, motivo, links: [o && o.url, item.url], ids: [o && o.id] });
+            item._key = item._key + '|' + sufixo;
+            if (item._tituloOriginal && item.categoryType === 'vod') item.title = item._tituloOriginal;
+            item.id = item.id + '_' + cyrb53(sufixo).toString(36).toUpperCase().slice(0, 6);
+            return this.keyToId.get(item._key);
+        }
+
         add(item) {
             this.stats.recebidos++;
+            // 🛡 SÉRIES HOMÔNIMAS: "Doctor Who" (1963) × (2005), "Shameless" EUA × UK… mesmo nome, TMDB ou ano diferente
+            // = séries diferentes. A 2ª ganha um seriesId próprio (os episódios dela nunca viram reserva da outra).
+            if (item.categoryType === 'episode') {
+                const s = this.series.get(item.seriesId);
+                const tkS = item._serieTmdb || (item._seriesMeta && item._seriesMeta.tmdbKey) || '';
+                const anoS = item._serieAno || '';
+                if (s && s.meta) {
+                    const outraTmdb = tkS && s.meta.tmdbKey && s.meta.tmdbKey !== tkS;
+                    const outroAno = !tkS && anoS && s.meta.year && String(s.meta.year) !== String(anoS);
+                    if (outraTmdb || outroAno) {
+                        const suf = outraTmdb ? tkS : 'ano' + anoS, novo = item.seriesId + '_' + cyrb53(suf).toString(36).toUpperCase().slice(0, 6);
+                        if (!this.series.has(novo) && this.relatorio.separados.length < 50000) this.relatorio.separados.push({ titulo: item.serie, motivo: outraTmdb ? 'série homônima: TMDB diferente' : 'série homônima: ano diferente', tmdb: [s.meta.tmdbKey, tkS], ids: [item.seriesId, novo] });
+                        item._key = item._key.replace(item.seriesId, novo);
+                        item.id = item.id + '_' + cyrb53(suf).toString(36).toUpperCase().slice(0, 6);
+                        item.seriesId = novo;
+                        if (item._seriesMeta) item._seriesMeta.seriesId = novo;
+                    } else if (tkS && !s.meta.tmdbKey) s.meta.tmdbKey = tkS;
+                }
+                if (item._seriesMeta && tkS) item._seriesMeta.tmdbKey = tkS;
+            }
             let existingId = this.keyToId.get(item._key);
             // filme com código do TMDB: "Matrix" e "The Matrix (1999)" são o mesmo card. O id continua o de antes
             // (vem da chave de sempre), então favoritos e "continuar assistindo" não mudam.
             const tk = item.categoryType === 'vod' ? chaveTmdb(item) : '';
-            if (!existingId && tk && this.tmdbToId.has(tk)) existingId = this.tmdbToId.get(tk);
-            const mesmaObra = !!(tk && existingId && this.tmdbToId.get(tk) === existingId);
+            if (!existingId && tk && this.tmdbToId.has(tk)) {
+                const cand = this.tmdbToId.get(tk), o = this.items.get(cand);
+                // 🛡 TMDB achado só pelo nome (pode ser chute): só junta se o título ou o ano também baterem
+                const chute = item.tmdbPorNome || (o && o.tmdbPorNome);
+                const bate = o && (tituloLimpo(item._tituloOriginal || item.title) === tituloLimpo(o.title) || (item.year && o.year && String(item.year) === String(o.year)));
+                if (!chute || bate) existingId = cand;
+                else this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, comoCard: o && o.title, motivo: 'TMDB achado pelo nome, título e ano não batem', tmdb: tk });
+            }
+            // título limpo ("Matrix 1999 1080p DUB" = "Matrix" 1999) só para ACHAR a cópia — passa pelas mesmas travas
+            let porLimpo = false;
+            const kl = item.categoryType === 'vod' && item.year && this.dedup.tituloLimpo && this.dedup.modo !== 'desligado' ? 'vod|' + tituloLimpo(item._tituloOriginal || item.title) + '|' + item.year : '';
+            if (!existingId && kl && kl.length > 8 && this.limpoToId.has(kl)) { existingId = this.limpoToId.get(kl); porLimpo = true; }
+            let mesmaObra = !!(tk && existingId && this.tmdbToId.get(tk) === existingId);
+            // 🛡 TRAVA TMDB: dois códigos do TMDB diferentes = obras diferentes. Nunca junta (O Rei Leão 1994 × 2019).
+            if (existingId && item.categoryType === 'vod') {
+                const o = this.items.get(existingId), to = o ? chaveTmdb(o) : '';
+                if (tk && to && tk !== to) { existingId = this._separar(item, 'tmdb:' + tk, 'TMDB diferente', o); mesmaObra = false; porLimpo = false; }
+            }
+            if (porLimpo && existingId && this.dedup.modo !== 'ativo') { const o = this.items.get(existingId); if (this.dedup.modo === 'analisar' && o) this._registrarRetirado(o, item, true); existingId = null; }
             if (item.categoryType === 'vod') this.vodRecebidos++;
 
             // Trava pela capa: mesmo título + mesmo ano, mas capas DIFERENTES do TMDB
@@ -1192,7 +1247,7 @@
             if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
                 const o = this.items.get(existingId);
                 if (o && capasDiferentes(o.thumb, item.thumb)) {
-                    this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
+                    this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, motivo: 'capas diferentes', capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
                     item._key = item._key + '|capa:' + item.thumb;
                     if (item._tituloOriginal) item.title = item._tituloOriginal;   // mantém "Filme (1990)" para distinguir
                     item.id = item.id + '_' + cyrb53(item.thumb).toString(36).toUpperCase().slice(0, 6);
@@ -1249,6 +1304,7 @@
                 if (Array.isArray(item.audios) && item.audios.length) orig.audios = [...new Set((orig.audios || []).concat(item.audios))];
                 if (item.qualidadeMax && rankQualidade(item.qualidadeMax) > rankQualidade(orig.qualidadeMax)) orig.qualidadeMax = item.qualidadeMax;
                 if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, orig.id);
+                if (kl && kl.length > 8 && !this.limpoToId.has(kl)) this.limpoToId.set(kl, orig.id);
                 // mesmo canal em listas de países diferentes: aparece nos dois países —
                 // MAS a lista de um país (sources-idioma.json / "pais" na fonte) manda: vence o país adivinhado
                 if (item.paises && item.paises.length) {
@@ -1279,7 +1335,8 @@
             delete item._tituloOriginal;
             this.keyToId.set(item._key, item.id);
             if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, item.id);
-            delete item._key;
+            if (kl && kl.length > 8 && !this.limpoToId.has(kl)) this.limpoToId.set(kl, item.id);
+            delete item._key; delete item._serieTmdb; delete item._serieAno;
             this.items.set(item.id, item);
 
             if (item.categoryType === 'episode') {
