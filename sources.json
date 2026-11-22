@@ -70,7 +70,7 @@
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
       "url": [
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/filmes_sm.json",
+      "",
       "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/kids_sm.json"
     ]
     },
