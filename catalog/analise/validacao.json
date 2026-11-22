@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-22T21:37:53.524Z",
+  "geradoEm": "2026-11-22T21:59:18.824Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -48,7 +48,7 @@
     "porTipo": {},
     "servidoresDesligados": [],
     "motivoParada": "memória acima de 1536 MB",
-    "duracaoS": 2.2
+    "duracaoS": 2.7
   },
   "itens": {
     "avaliados": 589931,

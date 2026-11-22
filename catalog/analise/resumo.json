@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-22T21:38:28.426Z",
+  "geradoEm": "2026-11-22T21:59:57.438Z",
   "modo": "desligado",
   "opcoes": {
     "modo": "desligado",
@@ -12,7 +12,7 @@
   "cardsDeFilmesNoApp": 28468,
   "retirados": 6455,
   "porMotivo": {
-    "mesmo título e ano": 6455
+    "mesmo TMDB": 6455
   },
   "separados": 352,
   "separadosPorMotivo": {
