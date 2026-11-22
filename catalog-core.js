@@ -1239,6 +1239,7 @@
                 const o = this.items.get(existingId), to = o ? chaveTmdb(o) : '';
                 if (tk && to && tk !== to) { existingId = this._separar(item, 'tmdb:' + tk, 'TMDB diferente', o); mesmaObra = false; porLimpo = false; }
             }
+            item._motivoJunta = mesmaObra ? 'mesmo TMDB' : porLimpo ? 'título limpo' : '';
             if (porLimpo && existingId && this.dedup.modo !== 'ativo') { const o = this.items.get(existingId); if (this.dedup.modo === 'analisar' && o) this._registrarRetirado(o, item, true); existingId = null; }
             if (item.categoryType === 'vod') this.vodRecebidos++;
 
@@ -1336,7 +1337,7 @@
             this.keyToId.set(item._key, item.id);
             if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, item.id);
             if (kl && kl.length > 8 && !this.limpoToId.has(kl)) this.limpoToId.set(kl, item.id);
-            delete item._key; delete item._serieTmdb; delete item._serieAno;
+            delete item._key; delete item._serieTmdb; delete item._serieAno; delete item._motivoJunta;
             this.items.set(item.id, item);
 
             if (item.categoryType === 'episode') {
@@ -1359,7 +1360,7 @@
         /** Registra uma cópia retirada (ou que SERIA retirada, no modo analisar). */
         _registrarRetirado(orig, item, simulado) {
             if (this.relatorio.juntados.length >= 50000) return;
-            const motivo = (item._anoNoNome || this.anoNoNome.has(orig.id)) ? '(ano) no nome' : 'mesmo título e ano';
+            const motivo = item._motivoJunta || orig._motivoJunta || ((item._anoNoNome || this.anoNoNome.has(orig.id)) ? '(ano) no nome' : 'mesmo título e ano');
             this.relatorio.juntados.push({
                 titulo: item._tituloOriginal || item.title,
                 ano: item.year || null,
