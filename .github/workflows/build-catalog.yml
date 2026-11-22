@@ -16,8 +16,10 @@ on:
         type: boolean
         default: false
   push:
+    branches: [main]            # só no main: em branch de PR o robô commitava o catálogo e dava conflito
     paths:
       - sources.json
+      - sources-idioma.json
       - catalog-core.js
       - tools/build-catalog.mjs
       - tools/validador/**
@@ -61,13 +63,13 @@ jobs:
         run: |
           git config user.name  "cartoonzine-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add catalog health-cache.json
+          git add catalog health-cache.json entradas.json
           if git diff --cached --quiet; then
             echo "Nada mudou."
           else
             git commit -m "catálogo: atualização automática"
             # Se alguém editou o repositório durante o build, a main andou:
-            # traz as mudanças (o robô só mexe em catalog/ e health-cache.json) e tenta de novo.
+            # traz as mudanças (o robô só mexe em catalog/, health-cache.json e entradas.json) e tenta de novo.
             for tentativa in 1 2 3; do
               git pull --rebase -X theirs origin "${GITHUB_REF_NAME}" && git push && exit 0
               git rebase --abort 2>/dev/null || true

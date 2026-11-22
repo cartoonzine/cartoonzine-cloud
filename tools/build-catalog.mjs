@@ -12,6 +12,7 @@
  *     series/<id>.json              temporadas + episódios de cada série
  *     items/<abc>.json              detalhe completo por ID (4096 fatias)
  *     search/<xx>.json              índice de busca por prefixo de 2 letras
+ *     filtros/<categoria>.json      ficha de filtro: os campos dos filtros de TODOS os títulos da categoria
  *
  * Uso:
  *   node tools/build-catalog.mjs --sources sources.json --out catalog
@@ -26,6 +27,7 @@
  *   --check-streams       testa se os links respondem (remove os mortos)
  *   --check-limit <n>     máximo de links testados por execução (padrão: 3000)
  *   --health <arq>        memória dos testes entre execuções (padrão: health-cache.json)
+ *   --entradas <arq>      memória da data em que cada título entrou (padrão: entradas.json ao lado da pasta --out) → "Recém-postados"
  *   --force               publica mesmo se o catálogo encolher mais de 50%
  *   --sem-epg             não prepara o guia (EPG) no build (o app volta a ler os XMLTV sozinho)
  *   --compat-episodios    gera também TODOS os episódios em lotes (só para o modo antigo
@@ -54,6 +56,7 @@ function parseArgs(argv) {
         const k = argv[i], v = argv[i + 1];
         switch (k) {
             case '--sources': a.sources = v; i++; break;
+            case '--sources-idioma': a.sourcesIdioma = v; i++; break;
             case '--out': a.out = v; i++; break;
             case '--page-size': a.pageSize = +v; i++; break;
             case '--concurrency': a.concurrency = +v; i++; break;
@@ -61,6 +64,7 @@ function parseArgs(argv) {
             case '--check-streams': a.checkStreams = true; break;
             case '--check-limit': a.checkLimit = +v; a.checkLimitDefinido = true; i++; break;
             case '--health': a.health = v; i++; break;
+            case '--entradas': a.entradas = v; i++; break;
             case '--force': a.force = true; break;
             case '--compat-episodios': a.compatEpisodios = true; break;
             case '--validar-tudo': a.validarTudo = true; break;
@@ -192,6 +196,13 @@ async function checkStreams(builder, args) {
 
 // ------------------------------------------------------------------ saída
 async function emit(builder, args, epg, sourcesReport, validacao) {
+    // 📅 data de entrada de cada título (antes de ordenar: o modo "recentes" usa ela)
+    // fica ao lado da pasta do catálogo (no repositório: ./entradas.json)
+    if (!args.entradas) args.entradas = path.join(path.dirname(path.resolve(args.out)), 'entradas.json');
+    let entradas = {};
+    try { entradas = JSON.parse(await fs.readFile(args.entradas, 'utf8')) || {}; } catch { /* primeira execução: tudo entra hoje */ }
+    builder.aplicarEntradas(entradas);
+    builder.ordenarCategorias(args.ordemCatalogo);      // filmes/séries: os mais novos primeiro (sources.json → "ordemCatalogo")
     const tmp = args.out + '.tmp-' + Date.now();
     await fs.rm(tmp, { recursive: true, force: true });
     const writes = [];
@@ -212,6 +223,11 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
             writes.push([path.join(tmp, 'cat', s, `${p}.json`), cards]);
         }
         const entry = { nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages };
+        // 🔎 ficha de filtro (canais ao vivo não têm filtros de filme)
+        if (cat.type !== 'live' && ids.length) {
+            writes.push([path.join(tmp, 'filtros', `${s}.json`), builder.fichaFiltro(cat.nome)]);
+            entry.filtro = `filtros/${s}.json`;
+        }
         if (cat.console) entry.console = cat.console;
         // Formato do motor antigo: episódios "achatados" (um item por episódio) em lotes
         if (cat.type === 'series' && args.compatEpisodios) {
@@ -332,6 +348,7 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
     if (fss.existsSync(args.out)) await fs.rename(args.out, old);
     await fs.rename(tmp, args.out);
     await fs.rm(old, { recursive: true, force: true });
+    await fs.writeFile(args.entradas, JSON.stringify(entradas));
     return manifest;
 }
 
@@ -372,7 +389,8 @@ async function escreverAnalise(builder, dir, geradoEm) {
         cardsDeFilmesNoApp: ativos.length,
         [d.modo === 'analisar' ? 'seriamRetirados' : 'retirados']: retirados.length,
         porMotivo,
-        separadosPelaTravaDaCapa: separados.length
+        separados: separados.length,
+        separadosPorMotivo: separados.reduce((m, x) => { const k = x.motivo || 'capas diferentes'; m[k] = (m[k] || 0) + 1; return m; }, {})
     };
     const cRet = [['titulo', r => r.titulo], ['ano', r => r.ano], ['motivo', r => r.motivo], ['link', r => r.link], ['origem', r => r.origem],
         ['foi para (card)', r => (r.juntadoEm || r.seriaJuntadoEm).titulo], ['id do card', r => (r.juntadoEm || r.seriaJuntadoEm).id],
@@ -429,11 +447,49 @@ async function incluirFontesDoStudio(cfg) {
     }
 }
 
+/**
+ * "listas" do sources.json (canais / filmes / series: só os links) → fontes comuns no fim de "fontes".
+ * Depois, todo link SEM extensão de lista (ex.: https://filmes-exemplo.pages.dev/) é espiado: se abrir uma
+ * página HTML em vez da lista, as listas que a página aponta (.m3u/.json/.txt/.md) entram no lugar dela.
+ */
+async function incluirListas(cfg, args) {
+    if (Array.isArray(cfg)) return;
+    const lista = cfg.fontes || cfg.sources || (cfg.fontes = []);
+    const novas = Core.fontesDasListas(cfg.listas, lista);
+    if (novas.length) { lista.push(...novas); log(`🔗 Listas: ${novas.length} link(s) de canais/filmes/séries vindos de "listas"`); }
+    // sources-idioma.json (ao lado do sources.json): listas de UM país — os canais ficam só naquele país
+    const arqIdioma = args.sourcesIdioma || path.join(path.dirname(args.sources), 'sources-idioma.json');
+    let cfgIdioma = null;
+    try { cfgIdioma = Core.parseJSONTolerante(await fs.readFile(arqIdioma, 'utf8'), arqIdioma); } catch (e) { if (e.code !== 'ENOENT') log(`⚠ ${arqIdioma}: ${e.message} — seguindo sem ele`); }
+    const doPais = cfgIdioma ? Core.fontesPorPais(cfgIdioma, lista) : [];
+    if (doPais.length) { lista.push(...doPais); log(`🌎 Listas por país: ${doPais.length} link(s) em ${new Set(doPais.map(f => f.pais || f.idioma)).size} país(es)`); }
+    const semExtensao = (u) => /^https?:\/\//i.test(u) && !/\.(m3u8?|json|txt|md|markdown|xml|gz)(\?|#|$)/i.test(u);
+    for (const src of lista) {
+        if (!src || src.ativo === false || src.aoVivo === true) continue;
+        const links = [].concat(src.url || [], src.urls || []).map(u => String((u && u.url) || u || '').trim()).filter(Boolean);
+        if (!links.some(semExtensao)) continue;
+        const final = [];
+        for (const u of links) {
+            if (!semExtensao(u)) { final.push(u); continue; }
+            try {
+                const { r, done } = await fetchRetry(u, { timeout: args.timeout, retries: 1 });
+                let texto; try { texto = await r.text(); } finally { done(); }
+                if (!Core.pareceHtml(texto)) { final.push(u); continue; }
+                const achadas = Core.linksDeListaNoHtml(texto, r.url || u);
+                if (achadas.length) { final.push(...achadas); log(`🔎 ${src.nome || u}: a página aponta ${achadas.length} lista(s)`); }
+                else log(`⚠ ${src.nome || u}: o link abre uma página, não uma lista — sem .m3u/.json nela (fonte ignorada)`);
+            } catch (e) { final.push(u); }   // fora do ar agora: segue como estava (o relatório mostra o erro)
+        }
+        if (final.join('\n') !== links.join('\n')) { src.url = final.length > 1 ? final : (final[0] || ''); delete src.urls; }
+    }
+}
+
 async function main() {
     const args = parseArgs(process.argv);
     const t0 = Date.now();
     const cfg = Core.parseJSONTolerante(await fs.readFile(args.sources, 'utf8'), args.sources);
     await incluirFontesDoStudio(cfg);
+    await incluirListas(cfg, args);
     // Uma fonte pode ter VÁRIAS listas: "url": "..." | "url": ["...", "..."] | "urls": ["...", "..."].
     // Cada link vira uma parte da mesma fonte (mesma categoria, prefixo e opções); o formato
     // (JSON ou M3U) é decidido por link, então dá para misturar .json e .m3u8 na mesma fonte.
@@ -445,6 +501,7 @@ async function main() {
         return links.map((url, k) => ({ ...src, url, urls: undefined, nome: src.nome, _parte: `${k + 1}/${links.length}` }));
     });
     const builder = new Core.CatalogBuilder({ deduplicacao: cfg.deduplicacao });
+    args.ordemCatalogo = cfg.ordemCatalogo || 'novos';    // filmes/séries: 'novos' (padrão, ano de lançamento), 'recentes' (recém-postados) ou 'fonte'
     const epg = new Set();
     // Guias (EPG/XMLTV) escritos na própria fonte: "epg": "https://…/guia.xml.gz" (ou uma lista).
     // Entram no manifest.epg junto com os url-tvg das M3U — é dali que o TVzine baixa o guia.
@@ -488,6 +545,12 @@ async function main() {
             log(`✖ ${src.nome}${src._parte ? ` [${src._parte}]` : ''}: ${e.message}`);
             report.push({ nome: src.nome, parte: src._parte, ok: false, erro: String(e.message || e) });
         }
+    }
+
+    // Listas de país (sources-idioma.json) ensinam o país aos mesmos canais vindos de listas mistas
+    if (typeof builder.aprenderPaises === 'function') {
+        const aprendidos = builder.aprenderPaises();
+        if (aprendidos) log(`🎓 ${aprendidos} canal(is) de listas mistas ganharam o país pelas listas de país (mesmo tvg-id ou nome)`);
     }
 
     // Países dos canais ao vivo (aba Países do TVzine): quantos e por qual regra

@@ -288,6 +288,13 @@
             return this.file(`series/${encodeURIComponent(id)}.json`, { opcional: true });
         }
 
+        async ficha(c) {
+            const cat = this.cat(c);
+            if (!cat || !cat.filtro) return null;               // catálogo antigo, sem ficha
+            const f = await this.file(cat.filtro, { opcional: true });
+            return f ? Object.assign({ pageSize: this.manifest.pageSize }, f) : null;
+        }
+
         /** Acha a fatia de busca mais específica que existe para a palavra. */
         _shardFor(tk) {
             for (let d = Math.min(tk.length, 6); d >= 2; d--) {
@@ -338,6 +345,7 @@
                 else if (op === 'item') result = cat.item(args[0]);
                 else if (op === 'series') result = cat.series(args[0]);
                 else if (op === 'search') result = cat.search(args[0], args[1]);
+                else if (op === 'ficha') result = cat.ficha(args[0]);
                 self.postMessage({ id, ok: true, result });
             } catch (err) {
                 self.postMessage({ id, ok: false, error: String(err && err.message || err) });
@@ -407,6 +415,7 @@
         item(id) { return this._call('item', [id]); }
         series(id) { return this._call('series', [id]); }
         search(q, limit) { return this._call('search', [q, limit]); }
+        ficha(c) { return this._call('ficha', [c]); }
     }
 
     // ==================================================================
@@ -519,6 +528,26 @@
                 if (s) return s;
             }
             return null;
+        },
+
+        /**
+         * 🔎 Ficha de filtro da categoria INTEIRA (não só do que já foi carregado):
+         * devolve { total, pageSize, itens: [{ id, title, year, genre, age, audios, qualidadeMax, rating,
+         * popularity, runtime, adicionado, torrent, destaque, _pos, _pagina }] } ou null (catálogo antigo → use
+         * carregarCategoriaInteira). _pagina diz qual getPage() traz o card completo.
+         */
+        async getFicha(c) {
+            const r = this._resolver(c);
+            if (!r || !r.prov || !r.prov.ficha) return null;
+            const f = await r.prov.ficha(r.cat._slugInterno).catch(() => null);
+            if (!f || !Array.isArray(f.campos) || !Array.isArray(f.itens)) return null;
+            const ps = f.pageSize || (this.manifest && this.manifest.pageSize) || 120;
+            const itens = f.itens.map((linha, i) => {
+                const o = { _pos: i, _pagina: Math.floor(i / ps) };
+                f.campos.forEach((k, j) => { if (linha[j] != null) o[k] = linha[j]; });
+                return o;
+            });
+            return { total: itens.length, pageSize: ps, itens };
         },
 
         async search(q, { limite = 60 } = {}) {

@@ -421,6 +421,11 @@
                     if (/\]\(/.test(t)) { parseMarkdown(t, onHeader).forEach(onEntry); return; } // "[Nome](link)" = Markdown
                     dados = parseJSONTolerante(t, 'lista');   // vírgula sobrando / comentários (listas editadas à mão)
                 }
+                // lista JSON com guia no topo (DBs do Studio: { "epg": ["https://…/guia.xml.gz"], "channels": [...] })
+                if (onHeader && dados && !Array.isArray(dados)) {
+                    const g = [].concat(dados.epg || dados['url-tvg'] || []).flatMap(u => String(u || '').split(',')).map(u => u.trim()).filter(u => /^https?:\/\//i.test(u));
+                    if (g.length) onHeader({ epg: g });
+                }
                 extractList(dados).forEach(onEntry);
             }
         };
@@ -442,6 +447,20 @@
         p.end();
         return { entries: out, epg };
     }
+
+    /** "movie/603" do item (tmdbId + tmdbTipo, ou o formato antigo "movie/603" no tmdbId). '' = sem código. */
+    function chaveTmdb(it) {
+        const id = it && it.tmdbId;
+        if (id == null || id === '') return '';
+        const m = /^(movie|tv)\/(\d+)$/.exec(String(id));
+        if (m) return m[1] + '/' + m[2];
+        const tipo = /^(movie|tv)$/.test(it.tmdbTipo || '') ? it.tmdbTipo : 'movie';
+        return /^\d+$/.test(String(id)) ? tipo + '/' + id : '';
+    }
+    // Título limpo (sem 1080p, DUB, LEG, "(ano)"…) — usado só para ACHAR cópias; a chave/ID do card não muda
+    const LIXO_TITULO = /\b(dub|dublado|dublada|leg|legendado|legendada|dual|audio|nacional|pt ?br|sub|4k|uhd|fhd|hd|sd|1080p?|720p?|480p?|2160p?|x26[45]|h26[45]|hevc|web ?dl|webrip|bluray|brrip|dvdrip|hdtv|remux)\b/g;
+    function tituloLimpo(t) { return normText(t).replace(/\b(19|20)\d{2}\b/g, ' ').replace(LIXO_TITULO, ' ').replace(/\s+/g, ' ').trim(); }
+    const rankQualidade = (q) => ({ SD: 1, HD: 2, FHD: 3, '4K': 4 })[String(q || '').toUpperCase()] || 0;
 
     // ------------------------------------------------------------------
     // PAÍSES dos canais ao vivo (TVzine → aba "Países")
@@ -679,6 +698,113 @@
         return out;
     }
 
+    /**
+     * "listas" (no topo do sources.json, fora de "fontes"): o jeito simples de pôr listas de terceiros —
+     * só os links, separados por tipo. Cada link vira uma fonte comum (o formato M3U/JSON/Markdown é
+     * descoberto pelo conteúdo, então serve link sem extensão, tipo https://canais-exemplo.pages.dev/).
+     *   "listas": {
+     *     "canais": ["https://canais-exemplo.pages.dev/", { "url": "https://…/lista.m3u", "nome": "Meus canais", "epg": "https://…/guia.xml.gz" }],
+     *     "filmes": ["https://filmes-exemplo.pages.dev/"],
+     *     "series": ["https://…/series.m3u"]
+     *   }
+     * Um link que já está em "fontes" não é repetido. { "ativo": false } desliga um link sem apagar.
+     */
+    const MODELOS_LISTAS = {
+        canais: { tipo: 'tvzine_worker', prefixoId: 'LST_TV', rotulo: 'Canais' },
+        filmes: { tipo: 'tvzine_worker', prefixoId: 'LST_VOD', categoryType: 'vod', destino: 'filmes', agruparSeries: false, rotulo: 'Filmes' },
+        series: { tipo: 'tvzine_worker', prefixoId: 'LST_SER', categoryType: 'vod', destino: 'series', agruparSeries: false, rotulo: 'Séries' },
+        // filmes e séries na MESMA lista: episódios ("Naruto S01E03") viram card de série na prateleira de séries
+        filmesESeries: { tipo: 'tvzine_worker', prefixoId: 'LST_MIX', categoryType: 'vod', destino: 'filmes', separarSeries: true, rotulo: 'Filmes e séries' }
+    };
+    const ALIAS_LISTAS = { canal: 'canais', tv: 'canais', iptv: 'canais', live: 'canais', filme: 'filmes', movies: 'filmes', vod: 'filmes', serie: 'series', 'séries': 'series', tvshows: 'series', filmeseseries: 'filmesESeries', 'filmes-e-series': 'filmesESeries', filmes_series: 'filmesESeries', 'filmes e séries': 'filmesESeries', 'filmes e series': 'filmesESeries', misto: 'filmesESeries' };
+    function fontesDasListas(listas, fontesExistentes, extra) {
+        extra = extra || {};
+        if (!listas || typeof listas !== 'object' || Array.isArray(listas)) return [];
+        const ja = new Set((fontesExistentes || []).flatMap(f => [].concat((f && f.url) || [], (f && f.urls) || [])).map(u => String((u && u.url) || u || '').trim()).filter(Boolean));
+        const out = [];
+        Object.keys(listas).forEach(chave => {
+            if (chave[0] === '_') return;
+            const tipo = MODELOS_LISTAS[chave] ? chave : ALIAS_LISTAS[String(chave).toLowerCase().trim()];
+            const modelo = MODELOS_LISTAS[tipo];
+            if (!modelo) return;
+            [].concat(listas[chave] || []).forEach((it, k) => {
+                const o = typeof it === 'string' ? { url: it } : (it && typeof it === 'object' ? it : null);
+                if (!o || o.ativo === false) return;
+                const url = String(o.url || '').trim();
+                if (!/^https?:\/\//i.test(url) || ja.has(url)) return;
+                ja.add(url);
+                let host = url; try { host = new URL(url).hostname; } catch (e) { /* */ }
+                const { rotulo, ...base } = modelo;
+                const fonte = Object.assign({}, base, {
+                    nome: o.nome || `Listas${extra.rotulo ? ' · ' + extra.rotulo : ''} · ${rotulo} · ${host}`,
+                    prefixoId: base.prefixoId + (extra.sufixo ? '_' + extra.sufixo : '') + '_' + (k + 1),
+                    url, _deListas: tipo
+                });
+                // lista de UM país (sources-idioma.json): canais vão só para o país; filmes/séries levam o idioma.
+                // (o canal NÃO leva "idioma": assim ele junta com o mesmo canal vindo de outras listas)
+                if (extra.pais) { if (tipo === 'canais') { fonte.pais = extra.pais; fonte.paisExclusivo = true; } else if (extra.idioma) fonte.idioma = extra.idioma; }
+                ['epg', 'targetCategory', 'idioma', 'grupos', 'incluir', 'excluir', 'formato', 'agruparSeries', 'prefixoId'].forEach(c => { if (o[c] !== undefined) fonte[c] = o[c]; });
+                out.push(fonte);
+            });
+        });
+        return out;
+    }
+
+    /**
+     * sources-idioma.json → fontes. Um bloco por país, com as mesmas chaves do "listas":
+     *   { "paises": { "br": { "pais": "Brasil", "idioma": "pt-BR", "canais": [ … ], "filmes": [ … ], … } } }
+     * Canais dessas listas ficam SÓ naquele país (vencem as listas mistas) e ensinam o país às listas sem país.
+     */
+    function fontesPorPais(cfgIdioma, fontesExistentes) {
+        const blocos = cfgIdioma && (cfgIdioma.paises || cfgIdioma);
+        if (!blocos || typeof blocos !== 'object' || Array.isArray(blocos)) return [];
+        const out = [];
+        Object.keys(blocos).forEach(chave => {
+            if (chave[0] === '_') return;
+            const b = blocos[chave];
+            if (!b || typeof b !== 'object' || b.ativo === false) return;
+            const cod = Paises.lista(chave)[0] || Paises.lista(b.pais || '')[0];
+            if (!cod) return;
+            const { pais, idioma, ativo, ...listas } = b;
+            out.push(...fontesDasListas(listas, (fontesExistentes || []).concat(out), { pais: cod, idioma, rotulo: Paises.nome(cod) || cod.toUpperCase(), sufixo: cod.toUpperCase() }));
+        });
+        return out;
+    }
+
+    /** Nome do canal para comparar listas diferentes: sem acento, qualidade (HD/FHD/4K…) nem [tags]/(tags). */
+    function chaveNomeCanal(t) {
+        const n = normText(String(t || '').replace(/[\[(][^\])]*[\])]/g, ' '))
+            .replace(/\b(hd|fhd|uhd|sd|hq|4k|8k|h265|hevc|\d{3,4}p|backup|alt|ao vivo|live|24h|24 horas|tv)\b/g, ' ')
+            .replace(/\s+/g, ' ').trim();
+        return n.length >= 3 ? n : '';
+    }
+
+    /** O link abriu uma PÁGINA (HTML) em vez da lista? (comum em sites *.pages.dev / *.github.io) */
+    function pareceHtml(texto) {
+        return /^\s*(<!doctype html|<html|<head|<body|<meta|<script|<div|<!--)/i.test(String(texto || '').replace(/^﻿/, '').slice(0, 512));
+    }
+    /**
+     * Listas que uma página HTML aponta: links .m3u / .json / .txt / .md (href, src, ou soltos no texto/JS).
+     * .m3u8 fica de fora de propósito: numa página quase sempre é UM canal (HLS), não uma lista.
+     */
+    function linksDeListaNoHtml(html, base) {
+        const s = String(html || ''), out = [];
+        const re = /(?:href|src|data-url|data-lista)\s*=\s*["']([^"'#]+)["']|["'`](https?:\/\/[^"'`\s]+|\.{0,2}\/?[\w\-./%]+)["'`]/gi;
+        let m;
+        while ((m = re.exec(s))) {
+            const bruto = (m[1] || m[2] || '').trim();
+            if (!/\.(m3u|json|txt|md)(\?[^"'\s]*)?$/i.test(bruto)) continue;
+            if (/(manifest|package|tsconfig|site\.webmanifest|_redirects|robots)\b[^/]*$/i.test(bruto)) continue;
+            let abs; try { abs = new URL(bruto, base).toString(); } catch (e) { continue; }
+            if (!/^https?:/i.test(abs) || out.includes(abs)) continue;
+            out.push(abs);
+        }
+        return out;
+    }
+
+    /** Lista mista (filmes + séries): a categoria das séries ganha "Séries · " (o app separa prateleira por categoria) */
+    function catDeSerie(cat) { const c = String(cat || 'Geral'); return /s[ée]ries?/i.test(c) ? c : 'Séries · ' + c; }
+
     function isUsableUrl(u) {
         return !!u && !/SEU_USER|SEU_REPO/.test(u);
     }
@@ -734,6 +860,23 @@
         return firstArr || [];
     }
 
+    // 📅 campos de data de postagem que a fonte pode trazer (Xtream: "added" em segundos)
+    const CAMPOS_DATA_ENTRADA = ['adicionado', 'added', 'addedAt', 'criadoEm', 'postadoEm', 'dataPostagem'];
+    /** Data → 'AAAA-MM-DD' (aceita segundos, milissegundos, Date ou texto de data); inválida → null */
+    function dataDia(v) {
+        if (v == null || v === '') return null;
+        let ms;
+        if (v instanceof Date) ms = v.getTime();
+        else if (typeof v === 'number' || /^\d{9,13}$/.test(String(v).trim())) { const n = Number(v); ms = n < 1e11 ? n * 1000 : n; }
+        else ms = Date.parse(String(v));
+        if (!Number.isFinite(ms)) return null;
+        const d = new Date(ms).toISOString().slice(0, 10);
+        return d >= '1990-01-01' && d <= '2100-12-31' ? d : null;
+    }
+    // 🔎 campos da ficha de filtro (os mesmos nomes dos cards)
+    const CAMPOS_FICHA = ['id', 'title', 'year', 'genre', 'age', 'audios', 'qualidadeMax', 'rating', 'popularity', 'runtime', 'adicionado', 'torrent', 'destaque'];
+    const ehTorrentUrl = (u) => /^magnet:|\.torrent(\?|#|$)/i.test(String(u || ''));
+
     function clean(obj) {
         for (const k of Object.keys(obj)) {
             const v = obj[k];
@@ -765,6 +908,13 @@
         'urls', 'links', 'streams', 'sources', 'fontes', 'categoria', 'grupo', 'genero', 'descricao', 'ano',
         'country', 'tvgCountry', 'language', 'tvgLanguage', 'pais', 'paises', 'paisVia']);
 
+    /** Logo PNG do título de filme/série: "logo" ou "bannerlogo" (Studio/DB antigo) — se não for a própria capa */
+    function logoDoTitulo(raw) {
+        const l = raw.logo || raw.bannerlogo || raw.bannerLogo;
+        const capa = raw.posterUrl || raw.thumb || raw.poster;
+        return l && typeof l === 'string' && l !== capa ? l : undefined;
+    }
+
     function extras(raw) {
         const out = {};
         if (!raw || typeof raw !== 'object') return out;
@@ -786,10 +936,20 @@
         const vistos = new Set(), out = [];
         const add = (x) => {
             const url = normUrl(typeof x === 'string' ? x : x && (x.url || x.link || x.src || x.streamUrl));
-            if (!url || vistos.has(url)) return;
-            vistos.add(url);
+            if (!url) return;
             const idioma = x && typeof x === 'object' ? (x.idioma || x.lang || x.language || x.audio) : undefined;
-            out.push(idioma ? { url, idioma: String(idioma) } : { url });
+            const qualidade = x && typeof x === 'object' ? (x.qualidade || x.quality) : undefined;
+            if (vistos.has(url)) {                 // "url" + o mesmo link em "fontes" com idioma/qualidade: completa
+                const ja = out.find(o => o.url === url);
+                if (ja && idioma && !ja.idioma) ja.idioma = String(idioma);
+                if (ja && qualidade && !ja.qualidade) ja.qualidade = String(qualidade).toUpperCase();
+                return;
+            }
+            vistos.add(url);
+            const o = { url };
+            if (idioma) o.idioma = String(idioma);
+            if (qualidade) o.qualidade = String(qualidade).toUpperCase();
+            out.push(o);
         };
         [].concat(raw.url || raw.streamUrl || raw.stream_url || raw.link || raw.rom || raw.file || raw.src || raw.youtube || []).forEach(add);
         for (const k of ['urls', 'links', 'streams', 'sources', 'fontes', 'mirrors']) if (Array.isArray(raw[k])) raw[k].forEach(add);
@@ -844,7 +1004,9 @@
                 bannerThumb: raw.backdropUrl || raw.bannerThumb || raw.backdrop,
                 desc: raw.overview || raw.desc || raw.description,
                 year: raw.year || anoSerie, genre: asGenre(raw.genre || raw.genres),
-                extra: extras(raw), destaque: raw.destaque ? true : undefined
+                extra: extras(raw), destaque: raw.destaque ? true : undefined,
+                logo: logoDoTitulo(raw),                    // séries: o PNG do título (CZ-HUD e banner)
+                tmdbKey: chaveTmdb({ tmdbId: raw.tmdbId, tmdbTipo: raw.tmdbTipo || 'tv' }) || undefined
             };
             const out = [];
             for (const temp of raw.seasons) {
@@ -862,6 +1024,7 @@
                         id: makeId(prefix, `ep|${seriesId}|${s}|${e}`),
                         _key: `ep|${seriesId}|${s}|${e}`,
                         _anoNoNome: anoSerie ? true : undefined,
+                        _serieTmdb: meta.tmdbKey, _serieAno: anoChave || undefined,
                         title: ep.title ? `${serie} - T${s}E${e} - ${ep.title}` : `${serie} - T${s}E${e}`,
                         epTitle: ep.title,
                         serie, seriesId, season: s, episode: e,
@@ -872,8 +1035,8 @@
                         idiomas: idiomasEp,
                         desc: ep.overview || ep.desc || meta.desc,
                         year: meta.year, genre: meta.genre,
-                        cat: baseCat, categoryType: 'episode',
-                        origem, _dest, _seriesMeta: meta
+                        cat: src.separarSeries ? catDeSerie(baseCat) : baseCat, categoryType: 'episode',
+                        origem, _dest: src.separarSeries ? 'series' : _dest, _seriesMeta: meta
                     }));
                 }
             }
@@ -908,6 +1071,10 @@
             title,
             thumb: raw.thumb || raw.posterUrl || raw.poster || raw.logo || raw.image || raw.cover,
             bannerThumb: raw.bannerThumb || raw.backdropUrl || raw.backdrop,
+            // jogos: o LOGO PNG (nome do jogo em transparente) segue como "logo" — o banner e o CZ-HUD
+            // usam ele no lugar do título. (Nos canais "logo" é a imagem do card e já vira o thumb.)
+            logo: categoryType === 'game' ? (raw.logo && raw.logo !== (raw.thumb || raw.posterUrl || raw.poster) ? raw.logo : undefined)
+                : categoryType === 'vod' ? logoDoTitulo(raw) : undefined,   // filmes: o PNG do título (CZ-HUD e banner)
             url,
             mirrors: espelhos.length ? espelhos : undefined,
             idiomas,
@@ -944,12 +1111,24 @@
                 Object.assign(item, {
                     categoryType: 'episode', serie: ep.serie, seriesId,
                     season: ep.season, episode: ep.episode,
-                    _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre }
+                    _seriesMeta: { serie: ep.serie, seriesId, thumb: item.thumb, bannerThumb: item.bannerThumb, desc: item.desc, year: item.year, genre: item.genre,
+                        tmdbKey: raw.tmdbTipo === 'tv' ? chaveTmdb(raw) || undefined : undefined }
                 });
+                if (raw.tmdbTipo === 'tv' && chaveTmdb(raw)) item._serieTmdb = chaveTmdb(raw);
                 item._key = `ep|${seriesId}|${ep.season}|${ep.episode}`;
+                if (src.separarSeries) { item.cat = catDeSerie(item.cat); item._dest = 'series'; }   // lista mista: vai para Séries
             }
         }
 
+        // busca fina (Filtros+): áudios e a melhor qualidade pelas "fontes" {url, idioma, qualidade}, se a lista não disse
+        if (categoryType === 'vod' && lks.length) {
+            if (!Array.isArray(item.audios) || !item.audios.length) {
+                const a = new Set();
+                lks.forEach(l => { const t = normText(l.idioma || ''); if (/dual/.test(t)) { a.add('dublado'); a.add('legendado'); } else if (/dub|portugu|pt br/.test(t)) a.add('dublado'); else if (/leg|sub/.test(t)) a.add('legendado'); else if (/orig/.test(t)) a.add('original'); });
+                if (a.size) item.audios = [...a];
+            }
+            if (!item.qualidadeMax) { const q = lks.map(l => l.qualidade).filter(Boolean).sort((x, y) => rankQualidade(y) - rankQualidade(x))[0]; if (q && rankQualidade(q)) item.qualidadeMax = q; }
+        }
         // Chave de deduplicação: mesma obra de fontes diferentes vira UM item com espelhos
         if (!item._key) {
             // fonte com "idioma": o idioma entra na chave (o canal X do México não vira espelho do X do Brasil).
@@ -976,12 +1155,15 @@
             this.dedup = {
                 modo: ['ativo', 'analisar', 'desligado'].includes(d.modo) ? d.modo : 'ativo',
                 anoNoTitulo: d.anoNoTitulo !== false,
-                travaCapa: d.travaCapa !== false
+                travaCapa: d.travaCapa !== false,
+                tituloLimpo: d.tituloLimpo !== false
             };
             this._sep = 0;
             this.vodRecebidos = 0;
             this.items = new Map();       // id -> item completo
             this.keyToId = new Map();     // _key -> id
+            this.tmdbToId = new Map();    // "movie/603" -> id  (mesma obra com nomes diferentes vira UM card)
+            this.limpoToId = new Map();   // "vod|titulo limpo|ano" -> id  (só para achar cópias; o id não muda)
             this.series = new Map();      // seriesId -> {meta, cats:Set, episodes:[]}
             this.catOrder = [];           // ordem de aparição das categorias
             this.catCards = new Map();    // cat -> [ids de cards]
@@ -1004,17 +1186,69 @@
             this.catCards.get(cat).push(id);
         }
 
+        /** Separa este item do card que ele ia virar cópia (a chave e o id ganham um sufixo estável). */
+        _separar(item, sufixo, motivo, o) {
+            this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o && o.title, motivo, links: [o && o.url, item.url], ids: [o && o.id] });
+            item._key = item._key + '|' + sufixo;
+            if (item._tituloOriginal && item.categoryType === 'vod') item.title = item._tituloOriginal;
+            item.id = item.id + '_' + cyrb53(sufixo).toString(36).toUpperCase().slice(0, 6);
+            return this.keyToId.get(item._key);
+        }
+
         add(item) {
             this.stats.recebidos++;
+            // 🛡 SÉRIES HOMÔNIMAS: "Doctor Who" (1963) × (2005), "Shameless" EUA × UK… mesmo nome, TMDB ou ano diferente
+            // = séries diferentes. A 2ª ganha um seriesId próprio (os episódios dela nunca viram reserva da outra).
+            if (item.categoryType === 'episode') {
+                const s = this.series.get(item.seriesId);
+                const tkS = item._serieTmdb || (item._seriesMeta && item._seriesMeta.tmdbKey) || '';
+                const anoS = item._serieAno || '';
+                if (s && s.meta) {
+                    const outraTmdb = tkS && s.meta.tmdbKey && s.meta.tmdbKey !== tkS;
+                    const outroAno = !tkS && anoS && s.meta.year && String(s.meta.year) !== String(anoS);
+                    if (outraTmdb || outroAno) {
+                        const suf = outraTmdb ? tkS : 'ano' + anoS, novo = item.seriesId + '_' + cyrb53(suf).toString(36).toUpperCase().slice(0, 6);
+                        if (!this.series.has(novo) && this.relatorio.separados.length < 50000) this.relatorio.separados.push({ titulo: item.serie, motivo: outraTmdb ? 'série homônima: TMDB diferente' : 'série homônima: ano diferente', tmdb: [s.meta.tmdbKey, tkS], ids: [item.seriesId, novo] });
+                        item._key = item._key.replace(item.seriesId, novo);
+                        item.id = item.id + '_' + cyrb53(suf).toString(36).toUpperCase().slice(0, 6);
+                        item.seriesId = novo;
+                        if (item._seriesMeta) item._seriesMeta.seriesId = novo;
+                    } else if (tkS && !s.meta.tmdbKey) s.meta.tmdbKey = tkS;
+                }
+                if (item._seriesMeta && tkS) item._seriesMeta.tmdbKey = tkS;
+            }
             let existingId = this.keyToId.get(item._key);
+            // filme com código do TMDB: "Matrix" e "The Matrix (1999)" são o mesmo card. O id continua o de antes
+            // (vem da chave de sempre), então favoritos e "continuar assistindo" não mudam.
+            const tk = item.categoryType === 'vod' ? chaveTmdb(item) : '';
+            if (!existingId && tk && this.tmdbToId.has(tk)) {
+                const cand = this.tmdbToId.get(tk), o = this.items.get(cand);
+                // 🛡 TMDB achado só pelo nome (pode ser chute): só junta se o título ou o ano também baterem
+                const chute = item.tmdbPorNome || (o && o.tmdbPorNome);
+                const bate = o && (tituloLimpo(item._tituloOriginal || item.title) === tituloLimpo(o.title) || (item.year && o.year && String(item.year) === String(o.year)));
+                if (!chute || bate) existingId = cand;
+                else this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, comoCard: o && o.title, motivo: 'TMDB achado pelo nome, título e ano não batem', tmdb: tk });
+            }
+            // título limpo ("Matrix 1999 1080p DUB" = "Matrix" 1999) só para ACHAR a cópia — passa pelas mesmas travas
+            let porLimpo = false;
+            const kl = item.categoryType === 'vod' && item.year && this.dedup.tituloLimpo && this.dedup.modo !== 'desligado' ? 'vod|' + tituloLimpo(item._tituloOriginal || item.title) + '|' + item.year : '';
+            if (!existingId && kl && kl.length > 8 && this.limpoToId.has(kl)) { existingId = this.limpoToId.get(kl); porLimpo = true; }
+            let mesmaObra = !!(tk && existingId && this.tmdbToId.get(tk) === existingId);
+            // 🛡 TRAVA TMDB: dois códigos do TMDB diferentes = obras diferentes. Nunca junta (O Rei Leão 1994 × 2019).
+            if (existingId && item.categoryType === 'vod') {
+                const o = this.items.get(existingId), to = o ? chaveTmdb(o) : '';
+                if (tk && to && tk !== to) { existingId = this._separar(item, 'tmdb:' + tk, 'TMDB diferente', o); mesmaObra = false; porLimpo = false; }
+            }
+            item._motivoJunta = mesmaObra ? 'mesmo TMDB' : porLimpo ? 'título limpo' : '';
+            if (porLimpo && existingId && this.dedup.modo !== 'ativo') { const o = this.items.get(existingId); if (this.dedup.modo === 'analisar' && o) this._registrarRetirado(o, item, true); existingId = null; }
             if (item.categoryType === 'vod') this.vodRecebidos++;
 
             // Trava pela capa: mesmo título + mesmo ano, mas capas DIFERENTES do TMDB
             // = filmes diferentes (lista de origem com título/ano errado). Não junta.
-            if (existingId && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
+            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
                 const o = this.items.get(existingId);
                 if (o && capasDiferentes(o.thumb, item.thumb)) {
-                    this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
+                    this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, motivo: 'capas diferentes', capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
                     item._key = item._key + '|capa:' + item.thumb;
                     if (item._tituloOriginal) item.title = item._tituloOriginal;   // mantém "Filme (1990)" para distinguir
                     item.id = item.id + '_' + cyrb53(item.thumb).toString(36).toUpperCase().slice(0, 6);
@@ -1024,7 +1258,7 @@
 
             // Modo "analisar"/"desligado": filmes nunca são juntados (cada um vira um card).
             // Em "analisar", registra o que SERIA retirado, para comparar antes de ativar.
-            if (existingId && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
+            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
                 const o = this.items.get(existingId);
                 if (!o || item.url !== o.url) {
                     this._sep++;
@@ -1064,13 +1298,20 @@
                     orig.mirrors = orig.mirrors || [];
                     if (!orig.mirrors.includes(item.url) && orig.mirrors.length < 8) orig.mirrors.push(item.url);
                 }
-                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId']) {
+                for (const k of ['thumb', 'bannerThumb', 'desc', 'year', 'genre', 'tvgId', 'logo', 'tmdbId', 'tmdbTipo', 'imdbId', 'rating', 'age', 'popularity', 'runtime']) {
                     if (orig[k] == null && item[k] != null) orig[k] = item[k];
                 }
-                // mesmo canal em listas de países diferentes: aparece nos dois países
+                // busca fina: o card fica com TODOS os áudios e a MELHOR qualidade das cópias
+                if (Array.isArray(item.audios) && item.audios.length) orig.audios = [...new Set((orig.audios || []).concat(item.audios))];
+                if (item.qualidadeMax && rankQualidade(item.qualidadeMax) > rankQualidade(orig.qualidadeMax)) orig.qualidadeMax = item.qualidadeMax;
+                if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, orig.id);
+                if (kl && kl.length > 8 && !this.limpoToId.has(kl)) this.limpoToId.set(kl, orig.id);
+                // mesmo canal em listas de países diferentes: aparece nos dois países —
+                // MAS a lista de um país (sources-idioma.json / "pais" na fonte) manda: vence o país adivinhado
                 if (item.paises && item.paises.length) {
-                    if (!orig.paises) { orig.paises = item.paises.slice(); orig.paisVia = item.paisVia; }
-                    else item.paises.forEach(p => { if (!orig.paises.includes(p)) orig.paises.push(p); });
+                    const forte = (v) => v === 'fonte';
+                    if (!orig.paises || !orig.paises.length || (forte(item.paisVia) && !forte(orig.paisVia))) { orig.paises = item.paises.slice(); orig.paisVia = item.paisVia; }
+                    else if (forte(item.paisVia) === forte(orig.paisVia)) item.paises.forEach(p => { if (!orig.paises.includes(p)) orig.paises.push(p); });
                 }
                 if (item.cat !== orig.cat && orig.categoryType !== 'episode') {
                     orig.cats = orig.cats || [orig.cat];
@@ -1094,7 +1335,9 @@
             delete item._anoNoNome;
             delete item._tituloOriginal;
             this.keyToId.set(item._key, item.id);
-            delete item._key;
+            if (tk && !this.tmdbToId.has(tk)) this.tmdbToId.set(tk, item.id);
+            if (kl && kl.length > 8 && !this.limpoToId.has(kl)) this.limpoToId.set(kl, item.id);
+            delete item._key; delete item._serieTmdb; delete item._serieAno; delete item._motivoJunta;
             this.items.set(item.id, item);
 
             if (item.categoryType === 'episode') {
@@ -1117,7 +1360,7 @@
         /** Registra uma cópia retirada (ou que SERIA retirada, no modo analisar). */
         _registrarRetirado(orig, item, simulado) {
             if (this.relatorio.juntados.length >= 50000) return;
-            const motivo = (item._anoNoNome || this.anoNoNome.has(orig.id)) ? '(ano) no nome' : 'mesmo título e ano';
+            const motivo = item._motivoJunta || orig._motivoJunta || ((item._anoNoNome || this.anoNoNome.has(orig.id)) ? '(ano) no nome' : 'mesmo título e ano');
             this.relatorio.juntados.push({
                 titulo: item._tituloOriginal || item.title,
                 ano: item.year || null,
@@ -1152,6 +1395,8 @@
                 thumb: s.meta.thumb || PLACEHOLDER,
                 bannerThumb: s.meta.bannerThumb || s.meta.thumb || PLACEHOLDER,
                 desc: s.meta.desc, year: s.meta.year, genre: s.meta.genre,
+                logo: s.meta.logo,
+                adicionado: s.meta.adicionado,
                 cat: cat || [...s.cats][0],
                 categoryType: 'series',
                 seasons: seasons.size,
@@ -1231,6 +1476,114 @@
         }
 
         /** Remove itens (ex.: streams mortos) e limpa categorias/séries. */
+        /**
+         * Os canais das listas de país (via "fonte") ensinam o país aos canais de listas mistas que ficaram
+         * sem país (iriam para "Internacional") ou com país só pelo domínio: mesmo tvg-id ou mesmo nome → mesmo país.
+         * Nome que aparece em países diferentes (ex.: "Disney Channel" BR e PT) é ambíguo e não ensina nada.
+         * @returns {number} quantos canais ganharam país
+         */
+        aprenderPaises() {
+            const porTvg = new Map(), porNome = new Map();
+            const guardar = (mapa, k, paises) => {
+                if (!k) return;
+                const ant = mapa.get(k);
+                if (ant === undefined) mapa.set(k, paises.join(','));
+                else if (ant !== paises.join(',')) mapa.set(k, null);              // ambíguo
+            };
+            for (const it of this.items.values()) {
+                if (it.categoryType !== 'live' || it.paisVia !== 'fonte' || !it.paises || !it.paises.length) continue;
+                guardar(porTvg, it.tvgId && String(it.tvgId).toLowerCase(), it.paises);
+                guardar(porNome, chaveNomeCanal(it.title), it.paises);
+            }
+            if (!porTvg.size && !porNome.size) return 0;
+            let n = 0;
+            for (const it of this.items.values()) {
+                if (it.categoryType !== 'live') continue;
+                if (it.paises && it.paises.length && !['dominio', 'idioma'].includes(it.paisVia)) continue;
+                const p = (it.tvgId && porTvg.get(String(it.tvgId).toLowerCase())) || porNome.get(chaveNomeCanal(it.title));
+                if (!p) continue;
+                it.paises = p.split(','); it.paisVia = 'aprendido'; n++;
+            }
+            return n;
+        }
+
+        /**
+         * Ordem dos cards dentro de cada categoria de FILMES/SÉRIES (sources.json → "ordemCatalogo"):
+         *   'novos' (padrão): os mais novos primeiro — destaque do Studio, depois pelo ano (mais recente em cima);
+         *                     no mesmo ano fica a ordem da lista (as fontes já costumam trazer o lançamento antes)
+         *   'fonte': a ordem em que chegaram das listas (como era antes)
+         * Canais, rádios e jogos nunca mudam de ordem.
+         */
+        ordenarCategorias(modo = 'novos') {
+            if (modo === 'fonte') return;
+            const ano = (id) => {
+                const s = this.series.get(id);
+                const y = s ? (s.meta && s.meta.year) : (this.items.get(id) || {}).year;
+                const n = parseInt(y, 10);
+                return Number.isFinite(n) && n > 1800 ? n : 0;
+            };
+            const destaque = (id) => { const s = this.series.get(id); return (s ? s.meta && s.meta.destaque : (this.items.get(id) || {}).destaque) ? 1 : 0; };
+            const adic = (id) => { const s = this.series.get(id); return (s ? s.meta && s.meta.adicionado : (this.items.get(id) || {}).adicionado) || ''; };
+            for (const [cat, ids] of this.catCards) {
+                const tipo = this.catType.get(cat);
+                if (tipo !== 'vod' && tipo !== 'series' && tipo !== 'episode') continue;
+                const pos = new Map(ids.map((id, i) => [id, i]));
+                if (modo === 'recentes') ids.sort((a, b) => destaque(b) - destaque(a) || String(adic(b)).localeCompare(String(adic(a))) || ano(b) - ano(a) || pos.get(a) - pos.get(b));
+                else ids.sort((a, b) => destaque(b) - destaque(a) || ano(b) - ano(a) || pos.get(a) - pos.get(b));
+            }
+        }
+
+        /**
+         * 📅 Data de entrada: quando o título apareceu no catálogo pela 1ª vez → item.adicionado = 'AAAA-MM-DD'.
+         * memoria = { id: [entrada, vistoPorUltimo] } (entradas.json, guardado entre um build e outro).
+         * A data que a fonte trouxer (added / addedAt / adicionado / criadoEm / postadoEm) vale mais que a memória;
+         * sem nenhuma das duas, é hoje. Série: a data do episódio mais novo (episódio novo faz a série subir).
+         * Quem sumiu do catálogo há mais de 60 dias sai da memória (o arquivo não cresce para sempre).
+         * @returns {object} a memória atualizada (gravar de volta em entradas.json)
+         */
+        aplicarEntradas(memoria = {}, hoje = new Date().toISOString().slice(0, 10)) {
+            const daFonte = (it) => { for (const k of CAMPOS_DATA_ENTRADA) { const d = dataDia(it[k]); if (d) return d; } return null; };
+            for (const [id, it] of this.items) {
+                const m = memoria[id];
+                const d = daFonte(it) || (m && m[0]) || hoje;
+                memoria[id] = [d, hoje];
+                it.adicionado = d;
+            }
+            for (const s of this.series.values()) {
+                let max = '';
+                for (const id of s.episodes) { const it = this.items.get(id); if (it && it.adicionado > max) max = it.adicionado; }
+                if (max) s.meta.adicionado = max;
+            }
+            const limite = new Date(Date.parse(hoje) - 60 * 86400e3).toISOString().slice(0, 10);
+            for (const [id, m] of Object.entries(memoria)) if (!Array.isArray(m) || !m[1] || m[1] < limite) delete memoria[id];
+            return memoria;
+        }
+
+        /**
+         * 🔎 Ficha de filtro de uma categoria: só os campos que os filtros usam, de TODOS os títulos, na mesma
+         * ordem das páginas (a posição i está na página Math.floor(i / pageSize)). Assim o app filtra o catálogo
+         * inteiro baixando um arquivo pequeno, e só depois busca as páginas dos títulos que vão aparecer.
+         * Formato: { v: 1, campos: [...], itens: [[valores na ordem de campos], ...] } (nulos do fim cortados)
+         */
+        fichaFiltro(cat) {
+            const ids = this.catCards.get(cat) || [];
+            const campos = CAMPOS_FICHA;
+            const itens = [];
+            for (const id of ids) {
+                const c = this.card(id, cat);
+                if (!c) continue;
+                const linha = campos.map(k => {
+                    if (k === 'torrent') return ehTorrentUrl(c.url) ? 1 : null;
+                    if (k === 'destaque') return c.destaque ? 1 : null;
+                    const v = c[k];
+                    return v === undefined || v === '' || (Array.isArray(v) && !v.length) ? null : v;
+                });
+                while (linha.length > 1 && linha[linha.length - 1] === null) linha.pop();
+                itens.push(linha);
+            }
+            return { v: 1, campos, itens };
+        }
+
         remove(ids) {
             const dead = ids instanceof Set ? ids : new Set(ids);
             if (!dead.size) return 0;
@@ -1397,6 +1750,7 @@
                 }
                 progress({ fonte: src.nome, concluidas: ++concluidas, total: usable.length, itens: this.b.items.size });
             }
+            this.b.ordenarCategorias(opts.ordemCatalogo);
             this._cats = null;
             this._rows = null;
             return this.manifest();
@@ -1474,6 +1828,14 @@
 
         series(id) { return this.b.seriesDetail(id); }
 
+        /** Ficha de filtro da categoria (ver CatalogBuilder.fichaFiltro). */
+        ficha(slugOrName) {
+            this._categories();
+            const cat = this._bySlug.get(slugOrName) || this._cats.find(c => c.nome === slugOrName);
+            if (!cat) return null;
+            return Object.assign({ pageSize: this.pageSize }, this.b.fichaFiltro(cat.nome));
+        }
+
         search(q, limit) {
             if (!this._rows) {
                 this._rows = [];
@@ -1492,11 +1854,12 @@
     return {
         VERSION: '2.0.0',
         PLACEHOLDER,
+        dataDia, CAMPOS_FICHA,
         cyrb53, makeId, idShard,
         normText, slug, normUrl, searchTokens, searchShardKey, matchesQuery,
         detectEpisode, createM3UParser, parseM3U,
         Paises,
-        sourceFormat, isUsableUrl, epgDasFontes, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
+        sourceFormat, isUsableUrl, epgDasFontes, fontesDasListas, fontesPorPais, chaveNomeCanal, pareceHtml, linksDeListaNoHtml, extractList, normalize, createSourceReader, parseSourceText, parseMarkdown,
         CatalogBuilder, streamCandidates, destinoDe, parseJSONTolerante,
         rankSearch, makeLimiter, fetchWithRetry, readChunks, LocalCatalog
     };

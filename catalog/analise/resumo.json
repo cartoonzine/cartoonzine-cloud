@@ -1,15 +1,22 @@
 {
-  "geradoEm": "2026-11-03T01:07:25.260Z",
-  "modo": "analisar",
+  "geradoEm": "2026-11-22T21:38:28.426Z",
+  "modo": "desligado",
   "opcoes": {
-    "modo": "analisar",
+    "modo": "desligado",
     "anoNoTitulo": true,
-    "travaCapa": true
+    "travaCapa": true,
+    "tituloLimpo": true
   },
-  "explicacao": "nada foi juntado no app; os \"retirados\" mostram o que SERIA juntado se o modo fosse \"ativo\"",
-  "filmesNasFontes": 237,
-  "cardsDeFilmesNoApp": 237,
-  "seriamRetirados": 0,
-  "porMotivo": {},
-  "separadosPelaTravaDaCapa": 0
+  "explicacao": "sem filtro: todos os filmes aparecem como vieram da lista",
+  "filmesNasFontes": 53253,
+  "cardsDeFilmesNoApp": 28468,
+  "retirados": 6455,
+  "porMotivo": {
+    "mesmo título e ano": 6455
+  },
+  "separados": 352,
+  "separadosPorMotivo": {
+    "série homônima: TMDB diferente": 4,
+    "TMDB diferente": 348
+  }
 }

@@ -1,1 +1,4574 @@
-[]
+[
+ {
+  "titulo": "しもべの王子様",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/201887",
+   "tv/323569"
+  ],
+  "ids": [
+   "VOD_SER_9UJ8FTNNJG",
+   "VOD_SER_9UJ8FTNNJG_UIRBNR"
+  ]
+ },
+ {
+  "titulo": "Yu Yu Hakusho",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/30669",
+   "tv/121659"
+  ],
+  "ids": [
+   "VOD_SER_P8HMTXJH3B",
+   "VOD_SER_P8HMTXJH3B_VWKZF4"
+  ]
+ },
+ {
+  "titulo": "Acampamento Mágico",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/228671",
+   "tv/228673"
+  ],
+  "ids": [
+   "LIV_ANI_152ZSU4TT41",
+   "LIV_ANI_152ZSU4TT41_1CEDEE"
+  ]
+ },
+ {
+  "titulo": "Devil May Cry",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/12577",
+   "tv/235930"
+  ],
+  "ids": [
+   "LIV_ANI_5AXP7TQN8R",
+   "LIV_ANI_5AXP7TQN8R_228HQ1"
+  ]
+ },
+ {
+  "titulo": "22 de Julho",
+  "ano": 2018,
+  "comoCard": "22 de Julho",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53788.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53788.mp4"
+  ],
+  "ids": [
+   "VOD_J4QQOMFITC"
+  ]
+ },
+ {
+  "titulo": "A Cidade dos Sonhos",
+  "ano": 2024,
+  "comoCard": "A Cidade dos Sonhos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/253314.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/253314.mp4"
+  ],
+  "ids": [
+   "VOD_2DF8GC8NRFL"
+  ]
+ },
+ {
+  "titulo": "A Libertação",
+  "ano": 2024,
+  "comoCard": "A Libertação",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/54145.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/54145.mp4"
+  ],
+  "ids": [
+   "VOD_2B6R37II1OB"
+  ]
+ },
+ {
+  "titulo": "Alarme de Incêndio",
+  "ano": 2024,
+  "comoCard": "Alarme de Incendio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/54408.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/54408.mp4"
+  ],
+  "ids": [
+   "VOD_1C0I7649HJR"
+  ]
+ },
+ {
+  "titulo": "Consequencias",
+  "ano": 2019,
+  "comoCard": "Consequencias",
+  "motivo": "TMDB diferente",
+  "links": [
+   "https://nixplay.lat/movie/saimo-vods/221097/433502.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55310.mp4"
+  ],
+  "ids": [
+   "VOD_1UIAI4O2JKQ"
+  ]
+ },
+ {
+  "titulo": "Delicious",
+  "ano": 2025,
+  "comoCard": "Delicious",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55475.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55475.mp4"
+  ],
+  "ids": [
+   "VOD_2ENPER639SL"
+  ]
+ },
+ {
+  "titulo": "Filho da Mãe",
+  "ano": 2022,
+  "comoCard": "Filho da Mãe",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55894.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/55894.mp4"
+  ],
+  "ids": [
+   "VOD_22PVS7L8S7E"
+  ]
+ },
+ {
+  "titulo": "God Complex - O Complexo Industrial da Censura",
+  "ano": 2025,
+  "comoCard": "God Complex - O Complexo Industrial da Censura",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97439.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97439.mp4"
+  ],
+  "ids": [
+   "VOD_6K5EO9C7VY"
+  ]
+ },
+ {
+  "titulo": "Mortal Kombat",
+  "ano": 2026,
+  "comoCard": "Mortal Kombat",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57059.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57059.mp4"
+  ],
+  "ids": [
+   "VOD_TZCB5AD56R"
+  ]
+ },
+ {
+  "titulo": "Natal Sangrento",
+  "ano": 2025,
+  "comoCard": "Natal Sangrento",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97452.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97452.mp4"
+  ],
+  "ids": [
+   "VOD_26V4CPEHZZO"
+  ]
+ },
+ {
+  "titulo": "No Olho do Furacao",
+  "ano": 2018,
+  "comoCard": "No Olho do Furacão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/256152.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/256152.mp4"
+  ],
+  "ids": [
+   "VOD_1IXB44VNRD7"
+  ]
+ },
+ {
+  "titulo": "O Amor Está no Ar",
+  "ano": 2023,
+  "comoCard": "O Amor Esta no Ar",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57275.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57275.mp4"
+  ],
+  "ids": [
+   "VOD_1IE74GSQNC6"
+  ]
+ },
+ {
+  "titulo": "O Homem-Cão",
+  "ano": 2025,
+  "comoCard": "O Homem Cão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57484.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57484.mp4"
+  ],
+  "ids": [
+   "VOD_27F5JZDEMBO"
+  ]
+ },
+ {
+  "titulo": "O Melhor. Natal. de Todos!",
+  "ano": 2023,
+  "comoCard": "O Melhor Natal de Todos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57547.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57547.mp4"
+  ],
+  "ids": [
+   "VOD_11CNCNPXGCK"
+  ]
+ },
+ {
+  "titulo": "O Sistema",
+  "ano": 2022,
+  "comoCard": "O Sistema",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57717.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57717.mp4"
+  ],
+  "ids": [
+   "VOD_XTSQ7HKIYO"
+  ]
+ },
+ {
+  "titulo": "O Último Vagão",
+  "ano": 2023,
+  "comoCard": "O Ultimo Vagao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57779.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57779.mp4"
+  ],
+  "ids": [
+   "VOD_14MUMVYORAX"
+  ]
+ },
+ {
+  "titulo": "Oslo",
+  "ano": 2021,
+  "comoCard": "Oslo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57932.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57932.mp4"
+  ],
+  "ids": [
+   "VOD_1TXZ6MF6AZ5"
+  ]
+ },
+ {
+  "titulo": "Pedro Páramo",
+  "ano": 2024,
+  "comoCard": "Pedro Páramo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/314388.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/314388.mp4"
+  ],
+  "ids": [
+   "VOD_MUGKH6QXT2"
+  ]
+ },
+ {
+  "titulo": "Pele",
+  "ano": 2021,
+  "comoCard": "Pele",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58028.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58028.mp4"
+  ],
+  "ids": [
+   "VOD_1U2KOJLDVL8"
+  ]
+ },
+ {
+  "titulo": "Quasimodo",
+  "ano": 2023,
+  "comoCard": "Quasimodo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58223.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58223.mp4"
+  ],
+  "ids": [
+   "VOD_1UQUE8ERDJN"
+  ]
+ },
+ {
+  "titulo": "Tudo é Possível",
+  "ano": 2022,
+  "comoCard": "Tudo e Possivel",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58971.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58971.mp4"
+  ],
+  "ids": [
+   "VOD_27QKC6XS8ON"
+  ]
+ },
+ {
+  "titulo": "A Caminho da Guerra",
+  "ano": 2009,
+  "comoCard": "A Caminho da Guerra",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/313328.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/313328.mp4"
+  ],
+  "ids": [
+   "VOD_RDND8AAD0V"
+  ]
+ },
+ {
+  "titulo": "A Ilha",
+  "ano": 2026,
+  "comoCard": "A Ilha",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1634.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1634.mp4"
+  ],
+  "ids": [
+   "VOD_19INWZU27P9"
+  ]
+ },
+ {
+  "titulo": "A Missão",
+  "ano": 1986,
+  "comoCard": "A Missão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1669.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300799.mp4"
+  ],
+  "ids": [
+   "VOD_13IE5ATQ9ER"
+  ]
+ },
+ {
+  "titulo": "A Ultima Resistencia",
+  "ano": 2017,
+  "comoCard": "A Última Resistência",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1789.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1789.mp4"
+  ],
+  "ids": [
+   "VOD_1Q27K51AY61"
+  ]
+ },
+ {
+  "titulo": "A Vinganca do Dragao",
+  "ano": 1979,
+  "comoCard": "A Vingança do Dragão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1805.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1805.mp4"
+  ],
+  "ids": [
+   "VOD_6L8ZXB00PS"
+  ]
+ },
+ {
+  "titulo": "Acima da Lei",
+  "ano": 2019,
+  "comoCard": "Acima da Lei",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1848.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300800.mp4"
+  ],
+  "ids": [
+   "VOD_26UD6AZSQM2"
+  ]
+ },
+ {
+  "titulo": "Ate O Ceu",
+  "ano": 2020,
+  "comoCard": "Até o Céu",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/2214.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/2214.mp4"
+  ],
+  "ids": [
+   "VOD_1VTUJMBAM89"
+  ]
+ },
+ {
+  "titulo": "Contra o Tempo",
+  "ano": 2026,
+  "comoCard": "Contra o Tempo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/2931.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/2931.mp4"
+  ],
+  "ids": [
+   "VOD_FAVU6WWH76"
+  ]
+ },
+ {
+  "titulo": "Coração de Caçador",
+  "ano": 2022,
+  "comoCard": "Coração de Caçador",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/251411.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/251411.mp4"
+  ],
+  "ids": [
+   "VOD_25GHA75T47O"
+  ]
+ },
+ {
+  "titulo": "Desconhecido",
+  "ano": 2011,
+  "comoCard": "Desconhecido",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300811.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/3214.mp4"
+  ],
+  "ids": [
+   "VOD_1FHKG7PWQP5"
+  ]
+ },
+ {
+  "titulo": "Desconhecido",
+  "ano": 2011,
+  "comoCard": "Desconhecido",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300811.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300811.mp4"
+  ],
+  "ids": [
+   "VOD_1FHKG7PWQP5"
+  ]
+ },
+ {
+  "titulo": "Dinheiro Fácil",
+  "ano": 2023,
+  "comoCard": "Dinheiro Facil",
+  "motivo": "TMDB diferente",
+  "links": [
+   "https://embedplayer2.xyz/cdn/hls/e453f2c48d5dfc1e9bf73b512689b444/master.txt?format=m3u8",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/3306.mp4"
+  ],
+  "ids": [
+   "VOD_2ANNIMIBNYQ"
+  ]
+ },
+ {
+  "titulo": "Em Busca da Vitória",
+  "ano": 2019,
+  "comoCard": "Em Busca da Vitória",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/251419.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/251419.mp4"
+  ],
+  "ids": [
+   "VOD_VD716TAJTX"
+  ]
+ },
+ {
+  "titulo": "Emboscada",
+  "ano": 2025,
+  "comoCard": "Emboscada",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/3507.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/3507.mp4"
+  ],
+  "ids": [
+   "VOD_1L7UNHEZIXZ"
+  ]
+ },
+ {
+  "titulo": "Homem-Aranha",
+  "ano": 2026,
+  "comoCard": "Homem-Aranha",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/4081.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/4081.mp4"
+  ],
+  "ids": [
+   "VOD_16T0VP45OKD"
+  ]
+ },
+ {
+  "titulo": "Inimigo Invisível",
+  "ano": 2019,
+  "comoCard": "Inimigo Invisível",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/4234.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/4234.mp4"
+  ],
+  "ids": [
+   "VOD_DC9FEF2U6L"
+  ]
+ },
+ {
+  "titulo": "Lukas",
+  "ano": 2018,
+  "comoCard": "Lukas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/4754.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/4754.mp4"
+  ],
+  "ids": [
+   "VOD_16HFSTFGITE"
+  ]
+ },
+ {
+  "titulo": "No Limite",
+  "ano": 2026,
+  "comoCard": "No Limite",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5267.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5267.mp4"
+  ],
+  "ids": [
+   "VOD_15GFNLVS3CW"
+  ]
+ },
+ {
+  "titulo": "O Candidato",
+  "ano": 2022,
+  "comoCard": "O CANDIDATO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5451.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5451.mp4"
+  ],
+  "ids": [
+   "VOD_F6X734SNGW"
+  ]
+ },
+ {
+  "titulo": "O Enviado",
+  "ano": 2004,
+  "comoCard": "O Enviado",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5588.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5588.mp4"
+  ],
+  "ids": [
+   "VOD_2BEQRZEPTSF"
+  ]
+ },
+ {
+  "titulo": "O Guarda-Costas",
+  "ano": 1992,
+  "comoCard": "O Guarda-Costas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5712.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5712.mp4"
+  ],
+  "ids": [
+   "VOD_11S9IETYZZQ"
+  ]
+ },
+ {
+  "titulo": "O Preço de uma Vida",
+  "ano": 2022,
+  "comoCard": "O Preço de uma Vida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/251437.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/251437.mp4"
+  ],
+  "ids": [
+   "VOD_1HQO4HRK28D"
+  ]
+ },
+ {
+  "titulo": "O Último Mercenário",
+  "ano": 2021,
+  "comoCard": "O Ultimo Mercenario",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6183.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6183.mp4"
+  ],
+  "ids": [
+   "VOD_1LTU5KPQ3M8"
+  ]
+ },
+ {
+  "titulo": "O Último Voo",
+  "ano": 2010,
+  "comoCard": "O Último Voo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/290720.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/290720.mp4"
+  ],
+  "ids": [
+   "VOD_A09KB6UCTL"
+  ]
+ },
+ {
+  "titulo": "Pilotos de Combate",
+  "ano": 2024,
+  "comoCard": "Pilotos de Combate",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6568.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6568.mp4"
+  ],
+  "ids": [
+   "VOD_1PVNXF7MK9R"
+  ]
+ },
+ {
+  "titulo": "Refém",
+  "ano": 2005,
+  "comoCard": "Refém",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6836.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6836.mp4"
+  ],
+  "ids": [
+   "VOD_16CEPR9OQUW"
+  ]
+ },
+ {
+  "titulo": "Robin Hood",
+  "ano": 2026,
+  "comoCard": "Robin Hood",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6954.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6954.mp4"
+  ],
+  "ids": [
+   "VOD_DXVI92NWO7"
+  ]
+ },
+ {
+  "titulo": "Sem Filhos",
+  "ano": 2020,
+  "comoCard": "Sem Filhos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7171.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7171.mp4"
+  ],
+  "ids": [
+   "VOD_TKNKE4VDT"
+  ]
+ },
+ {
+  "titulo": "Sem Retorno",
+  "ano": 2026,
+  "comoCard": "Sem Retorno",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7202.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7202.mp4"
+  ],
+  "ids": [
+   "VOD_1AKFDXSSR7Z"
+  ]
+ },
+ {
+  "titulo": "Sentença de Morte",
+  "ano": 2007,
+  "comoCard": "Sentença de Morte",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7224.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7224.mp4"
+  ],
+  "ids": [
+   "VOD_ORKEXA3IVF"
+  ]
+ },
+ {
+  "titulo": "Shaolin",
+  "ano": 2011,
+  "comoCard": "Shaolin",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7272.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7272.mp4"
+  ],
+  "ids": [
+   "VOD_YRFFNY2OB5"
+  ]
+ },
+ {
+  "titulo": "Sooryavanshi",
+  "ano": 2021,
+  "comoCard": "Sooryavanshi",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7373.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7373.mp4"
+  ],
+  "ids": [
+   "VOD_10SL0KWU483"
+  ]
+ },
+ {
+  "titulo": "Street Fighter",
+  "ano": 2026,
+  "comoCard": "Street Fighter",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7396.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7396.mp4"
+  ],
+  "ids": [
+   "VOD_2BVIIPYN7O5"
+  ]
+ },
+ {
+  "titulo": "Transformers",
+  "ano": 2024,
+  "comoCard": "Transformers",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7671.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7671.mp4"
+  ],
+  "ids": [
+   "VOD_UTPBQY34NN"
+  ]
+ },
+ {
+  "titulo": "A Árvore dos Desejos",
+  "ano": 2020,
+  "comoCard": "A Arvore dos Desejos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/8539.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/8539.mp4"
+  ],
+  "ids": [
+   "VOD_EZX5F1PA1F"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 1977,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4"
+  ],
+  "ids": [
+   "VOD_IPG9NVX42X"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 1981,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300879.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300879.mp4"
+  ],
+  "ids": [
+   "VOD_1BX5UF5TAA7"
+  ]
+ },
+ {
+  "titulo": "Dinossauro",
+  "ano": 2000,
+  "comoCard": "Dinossauro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9294.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9294.mp4"
+  ],
+  "ids": [
+   "VOD_CSPCI77IHW"
+  ]
+ },
+ {
+  "titulo": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 2",
+  "ano": 2023,
+  "comoCard": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 2",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9893.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9893.mp4"
+  ],
+  "ids": [
+   "VOD_1ZUIAUQVKRS"
+  ]
+ },
+ {
+  "titulo": "Pinocchio",
+  "ano": 2002,
+  "comoCard": "Pinocchio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/10814.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/10814.mp4"
+  ],
+  "ids": [
+   "VOD_1FUMV0X9AQJ"
+  ]
+ },
+ {
+  "titulo": "Trolls",
+  "ano": 2016,
+  "comoCard": "Trolls",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/11607.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/11607.mp4"
+  ],
+  "ids": [
+   "VOD_OIQBEZ99N0"
+  ]
+ },
+ {
+  "titulo": "A Comedia Divina",
+  "ano": 2017,
+  "comoCard": "A Comedia Divina",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/12322.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/12322.mp4"
+  ],
+  "ids": [
+   "VOD_Z8ZXDPZQCZ"
+  ]
+ },
+ {
+  "titulo": "A Despedida",
+  "ano": 2019,
+  "comoCard": "A Despedida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22399.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/12346.mp4"
+  ],
+  "ids": [
+   "VOD_25TBSN0LXNC"
+  ]
+ },
+ {
+  "titulo": "A Filha do Papai Noel",
+  "ano": 2019,
+  "comoCard": "A Filha do Papai Noel",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/12421.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/12421.mp4"
+  ],
+  "ids": [
+   "VOD_66CKS55KTR"
+  ]
+ },
+ {
+  "titulo": "Álbum de Família",
+  "ano": 2013,
+  "comoCard": "Álbum de Família",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21009.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21009.mp4"
+  ],
+  "ids": [
+   "VOD_1E45YC8WPAB"
+  ]
+ },
+ {
+  "titulo": "Anos 90",
+  "ano": 2018,
+  "comoCard": "Anos 90",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13155.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13155.mp4"
+  ],
+  "ids": [
+   "VOD_17XV576BILC"
+  ]
+ },
+ {
+  "titulo": "Assim é a Vida",
+  "ano": 2026,
+  "comoCard": "Assim é a Vida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13358.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13358.mp4"
+  ],
+  "ids": [
+   "VOD_1A5HTZYG06N"
+  ]
+ },
+ {
+  "titulo": "Bitch",
+  "ano": 2017,
+  "comoCard": "Bitch",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13562.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13562.mp4"
+  ],
+  "ids": [
+   "VOD_4Q5IPBPSMQ"
+  ]
+ },
+ {
+  "titulo": "Cats",
+  "ano": 2019,
+  "comoCard": "Cats",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13830.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13830.mp4"
+  ],
+  "ids": [
+   "VOD_200I6N074SL"
+  ]
+ },
+ {
+  "titulo": "Cherry",
+  "ano": 2021,
+  "comoCard": "Cherry",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13873.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13873.mp4"
+  ],
+  "ids": [
+   "VOD_6B1ROF5V6P"
+  ]
+ },
+ {
+  "titulo": "Deu Ruim",
+  "ano": 2017,
+  "comoCard": "Deu Ruim",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/14452.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/14452.mp4"
+  ],
+  "ids": [
+   "VOD_1UBMQ39QOG5"
+  ]
+ },
+ {
+  "titulo": "Escola de Espiões",
+  "ano": 2015,
+  "comoCard": "Escola de Espiões",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/14959.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/14959.mp4"
+  ],
+  "ids": [
+   "VOD_1KV88U9ZYO2"
+  ]
+ },
+ {
+  "titulo": "Espírito de Família",
+  "ano": 2020,
+  "comoCard": "Espírito de Família",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15022.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15022.mp4"
+  ],
+  "ids": [
+   "VOD_1FZQIEV8779"
+  ]
+ },
+ {
+  "titulo": "Fora de Série",
+  "ano": 2019,
+  "comoCard": "Fora de Série",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300916.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15241.mp4"
+  ],
+  "ids": [
+   "VOD_113595QJZA9"
+  ]
+ },
+ {
+  "titulo": "Fora de Série",
+  "ano": 2019,
+  "comoCard": "Fora de Série",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300916.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300916.mp4"
+  ],
+  "ids": [
+   "VOD_113595QJZA9"
+  ]
+ },
+ {
+  "titulo": "Histeria",
+  "ano": 2011,
+  "comoCard": "Histeria",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15533.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15533.mp4"
+  ],
+  "ids": [
+   "VOD_UFJDXSY6RC"
+  ]
+ },
+ {
+  "titulo": "Jogada de Mestre",
+  "ano": 2015,
+  "comoCard": "Jogada de Mestre",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97000.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97000.mp4"
+  ],
+  "ids": [
+   "VOD_2B0F5TPCRYE"
+  ]
+ },
+ {
+  "titulo": "Junior",
+  "ano": 1994,
+  "comoCard": "Junior",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15819.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/15819.mp4"
+  ],
+  "ids": [
+   "VOD_18NP5UPG0S5"
+  ]
+ },
+ {
+  "titulo": "L.O.C. A",
+  "ano": 2020,
+  "comoCard": "L.O.C. A",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300920.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300920.mp4"
+  ],
+  "ids": [
+   "VOD_1O5QQRJ8OWE"
+  ]
+ },
+ {
+  "titulo": "Leve-Me",
+  "ano": 2017,
+  "comoCard": "Leve-Me",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/16005.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/16005.mp4"
+  ],
+  "ids": [
+   "VOD_2864T5RJXED"
+  ]
+ },
+ {
+  "titulo": "O Calouro",
+  "ano": 2020,
+  "comoCard": "O Calouro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/17401.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/17401.mp4"
+  ],
+  "ids": [
+   "VOD_1TDIXFZVLR"
+  ]
+ },
+ {
+  "titulo": "Os Estagiários",
+  "ano": 2004,
+  "comoCard": "Os Estagiários",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18279.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18279.mp4"
+  ],
+  "ids": [
+   "VOD_128RBFJIWTJ"
+  ]
+ },
+ {
+  "titulo": "Os Três Patetas",
+  "ano": 2012,
+  "comoCard": "Os Três Patetas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18425.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18425.mp4"
+  ],
+  "ids": [
+   "VOD_1PY30QP71HQ"
+  ]
+ },
+ {
+  "titulo": "Palm Beach",
+  "ano": 2019,
+  "comoCard": "Palm Beach",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18525.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18525.mp4"
+  ],
+  "ids": [
+   "VOD_1QKEN2NNO51"
+  ]
+ },
+ {
+  "titulo": "Pluft O Fantasminha",
+  "ano": 2022,
+  "comoCard": "Pluft O Fantasminha",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18761.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18761.mp4"
+  ],
+  "ids": [
+   "VOD_DNE4T1GJM5"
+  ]
+ },
+ {
+  "titulo": "Ponto Cego",
+  "ano": 2018,
+  "comoCard": "Ponto Cego",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18797.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18797.mp4"
+  ],
+  "ids": [
+   "VOD_1X03L6PH7DW"
+  ]
+ },
+ {
+  "titulo": "Receita Secreta",
+  "ano": 2020,
+  "comoCard": "Receita Secreta",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300940.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300940.mp4"
+  ],
+  "ids": [
+   "VOD_6GEI42YU8T"
+  ]
+ },
+ {
+  "titulo": "Se Eu Fosse a Minha Mãe",
+  "ano": 1976,
+  "comoCard": "Se Eu Fosse a Minha Mae",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19263.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19263.mp4"
+  ],
+  "ids": [
+   "VOD_8ID36KJ7M2"
+  ]
+ },
+ {
+  "titulo": "Sem Volta",
+  "ano": 2021,
+  "comoCard": "Sem Volta",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/314439.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/314439.mp4"
+  ],
+  "ids": [
+   "VOD_NX12VHIZWZ"
+  ]
+ },
+ {
+  "titulo": "Sonho de uma Noite de Verão",
+  "ano": 1999,
+  "comoCard": "Sonho de uma Noite de Verão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300941.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19553.mp4"
+  ],
+  "ids": [
+   "VOD_1G17O1CFUQT"
+  ]
+ },
+ {
+  "titulo": "Sonho de uma Noite de Verão",
+  "ano": 1999,
+  "comoCard": "Sonho de uma Noite de Verão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300941.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300941.mp4"
+  ],
+  "ids": [
+   "VOD_1G17O1CFUQT"
+  ]
+ },
+ {
+  "titulo": "Um Tio Quase Perfeito",
+  "ano": 2017,
+  "comoCard": "Um Tio Quase Perfeito",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20467.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20467.mp4"
+  ],
+  "ids": [
+   "VOD_BV010GM8FP"
+  ]
+ },
+ {
+  "titulo": "Uma Noite de Loucuras",
+  "ano": 2017,
+  "comoCard": "Uma Noite de Loucuras",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20615.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20615.mp4"
+  ],
+  "ids": [
+   "VOD_1Z7FER98XRN"
+  ]
+ },
+ {
+  "titulo": "Vampiras",
+  "ano": 2012,
+  "comoCard": "Vampiras",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20759.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20759.mp4"
+  ],
+  "ids": [
+   "VOD_1MJTVWALLYQ"
+  ]
+ },
+ {
+  "titulo": "Z-O-M-B-I-E-S",
+  "ano": 2018,
+  "comoCard": "Z-O-M-B-I-E-S",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20966.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20966.mp4"
+  ],
+  "ids": [
+   "VOD_2FLQSKH8KPG"
+  ]
+ },
+ {
+  "titulo": "A Marca do Mal",
+  "ano": 2025,
+  "comoCard": "A Marca do Mal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/98594.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/98594.mp4"
+  ],
+  "ids": [
+   "VOD_11F6BXQCGTI"
+  ]
+ },
+ {
+  "titulo": "A Viúva Negra",
+  "ano": 2019,
+  "comoCard": "A Viuva Negra",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21105.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21105.mp4"
+  ],
+  "ids": [
+   "VOD_F9C6ISPMFB"
+  ]
+ },
+ {
+  "titulo": "O Desconhecido",
+  "ano": 2022,
+  "comoCard": "O Desconhecido",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21640.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21640.mp4"
+  ],
+  "ids": [
+   "VOD_2C7DNVXLMSD"
+  ]
+ },
+ {
+  "titulo": "Reféns da Noite",
+  "ano": 2022,
+  "comoCard": "Reféns da Noite",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21842.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21842.mp4"
+  ],
+  "ids": [
+   "VOD_13G1L02FVZ4"
+  ]
+ },
+ {
+  "titulo": "Segurança Máxima",
+  "ano": 2022,
+  "comoCard": "Seguranca Maxima",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21873.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21873.mp4"
+  ],
+  "ids": [
+   "VOD_VDOEIBEGIT"
+  ]
+ },
+ {
+  "titulo": "72 Horas",
+  "ano": 2010,
+  "comoCard": "72 Horas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22169.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22169.mp4"
+  ],
+  "ids": [
+   "VOD_13KQPW7QLE1"
+  ]
+ },
+ {
+  "titulo": "A Carga",
+  "ano": 2018,
+  "comoCard": "A Carga",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22283.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22283.mp4"
+  ],
+  "ids": [
+   "VOD_KASZDO0C0I"
+  ]
+ },
+ {
+  "titulo": "A Despedida",
+  "ano": 2019,
+  "comoCard": "A Despedida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22399.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22399.mp4"
+  ],
+  "ids": [
+   "VOD_25TBSN0LXNC"
+  ]
+ },
+ {
+  "titulo": "A Escalada",
+  "ano": 2002,
+  "comoCard": "A Escalada",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22422.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22422.mp4"
+  ],
+  "ids": [
+   "VOD_11HJCD06489"
+  ]
+ },
+ {
+  "titulo": "A Escolha",
+  "ano": 2018,
+  "comoCard": "A Escolha",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22438.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22438.mp4"
+  ],
+  "ids": [
+   "VOD_2SUGOW3BHF"
+  ]
+ },
+ {
+  "titulo": "A Febre",
+  "ano": 2021,
+  "comoCard": "A Febre",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22490.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22490.mp4"
+  ],
+  "ids": [
+   "VOD_1VBARTJNIGY"
+  ]
+ },
+ {
+  "titulo": "A Filha do Rei",
+  "ano": 2022,
+  "comoCard": "A Filha do Rei",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22500.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22500.mp4"
+  ],
+  "ids": [
+   "VOD_1RTI42YUCO3"
+  ]
+ },
+ {
+  "titulo": "A Gangue",
+  "ano": 2021,
+  "comoCard": "A Gangue",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22537.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/22537.mp4"
+  ],
+  "ids": [
+   "VOD_N1BG146IRQ"
+  ]
+ },
+ {
+  "titulo": "A Ultima Nota",
+  "ano": 2020,
+  "comoCard": "A Última Nota",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23112.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23112.mp4"
+  ],
+  "ids": [
+   "VOD_ARVDWRE8ZG"
+  ]
+ },
+ {
+  "titulo": "A Verdade",
+  "ano": 2019,
+  "comoCard": "A Verdade",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23117.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23117.mp4"
+  ],
+  "ids": [
+   "VOD_FJ6VS23U1I"
+  ]
+ },
+ {
+  "titulo": "Antes que Seja Tarde",
+  "ano": 2019,
+  "comoCard": "Antes Que Seja Tarde",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23739.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23739.mp4"
+  ],
+  "ids": [
+   "VOD_19LDTIPXVYB"
+  ]
+ },
+ {
+  "titulo": "Apesar de Tudo",
+  "ano": 2016,
+  "comoCard": "Apesar de Tudo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23810.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23810.mp4"
+  ],
+  "ids": [
+   "VOD_1YLAS1FSJ1"
+  ]
+ },
+ {
+  "titulo": "Assassinos",
+  "ano": 1995,
+  "comoCard": "Assassinos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24040.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24040.mp4"
+  ],
+  "ids": [
+   "VOD_1M4VDDHQETY"
+  ]
+ },
+ {
+  "titulo": "Boxer",
+  "ano": 2024,
+  "comoCard": "Boxer",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24356.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24356.mp4"
+  ],
+  "ids": [
+   "VOD_1W0ZS2HRSPH"
+  ]
+ },
+ {
+  "titulo": "Close",
+  "ano": 2022,
+  "comoCard": "Close",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24699.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24699.mp4"
+  ],
+  "ids": [
+   "VOD_2Y21WMQ4D4"
+  ]
+ },
+ {
+  "titulo": "Contra Corrente",
+  "ano": 2004,
+  "comoCard": "Contra Corrente",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24848.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/24848.mp4"
+  ],
+  "ids": [
+   "VOD_1AIQN38NBAS"
+  ]
+ },
+ {
+  "titulo": "De Fora Para Dentro",
+  "ano": 2018,
+  "comoCard": "De Fora Para Dentro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25142.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25142.mp4"
+  ],
+  "ids": [
+   "VOD_26GNFWUU2LS"
+  ]
+ },
+ {
+  "titulo": "Deserto",
+  "ano": 2015,
+  "comoCard": "Deserto",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25275.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25275.mp4"
+  ],
+  "ids": [
+   "VOD_1XDWSCRISSX"
+  ]
+ },
+ {
+  "titulo": "Desterro",
+  "ano": 2021,
+  "comoCard": "Desterro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25297.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25297.mp4"
+  ],
+  "ids": [
+   "VOD_UVVYDHKZ3T"
+  ]
+ },
+ {
+  "titulo": "Dois Lados do Amor",
+  "ano": 2014,
+  "comoCard": "Dois Lados do Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25412.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25412.mp4"
+  ],
+  "ids": [
+   "VOD_2E9RJOSAZUJ"
+  ]
+ },
+ {
+  "titulo": "Encontros ao Acaso",
+  "ano": 2019,
+  "comoCard": "Encontros ao Acaso",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25716.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25716.mp4"
+  ],
+  "ids": [
+   "VOD_1L79IZFDDV4"
+  ]
+ },
+ {
+  "titulo": "Era Uma Vez",
+  "ano": 2019,
+  "comoCard": "Era Uma Vez",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25787.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25787.mp4"
+  ],
+  "ids": [
+   "VOD_SA0ZBZ1FBN"
+  ]
+ },
+ {
+  "titulo": "Eulália",
+  "ano": 2023,
+  "comoCard": "Eulalia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25982.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25982.mp4"
+  ],
+  "ids": [
+   "VOD_1YA1QA5V8EZ"
+  ]
+ },
+ {
+  "titulo": "Família",
+  "ano": 2023,
+  "comoCard": "Família",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26041.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26041.mp4"
+  ],
+  "ids": [
+   "VOD_14U0KE5EMKY"
+  ]
+ },
+ {
+  "titulo": "Focus",
+  "ano": 2015,
+  "comoCard": "Focus",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/308103.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/308103.mp4"
+  ],
+  "ids": [
+   "VOD_17XLHLSZ35I"
+  ]
+ },
+ {
+  "titulo": "Fogo no Coração",
+  "ano": 2018,
+  "comoCard": "Fogo no Coracao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26182.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26182.mp4"
+  ],
+  "ids": [
+   "VOD_XUY763D65B"
+  ]
+ },
+ {
+  "titulo": "Guerra é Guerra!",
+  "ano": 2012,
+  "comoCard": "Guerra é Guerra!",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26536.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26536.mp4"
+  ],
+  "ids": [
+   "VOD_IGRRV9F228"
+  ]
+ },
+ {
+  "titulo": "Hoje Falaremos sobre Aquele Dia",
+  "ano": 2023,
+  "comoCard": "Hoje Falaremos sobre Aquele Dia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26715.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26715.mp4"
+  ],
+  "ids": [
+   "VOD_Q7X24XTR5"
+  ]
+ },
+ {
+  "titulo": "Inverno",
+  "ano": 2022,
+  "comoCard": "Inverno",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26938.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26938.mp4"
+  ],
+  "ids": [
+   "VOD_HZMSNIT9FP"
+  ]
+ },
+ {
+  "titulo": "Jockey",
+  "ano": 2021,
+  "comoCard": "Jockey",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27002.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27002.mp4"
+  ],
+  "ids": [
+   "VOD_L2GYISU9BP"
+  ]
+ },
+ {
+  "titulo": "Juntos Novamente",
+  "ano": 2023,
+  "comoCard": "Juntos Novamente",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27155.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27155.mp4"
+  ],
+  "ids": [
+   "VOD_JHF3OX26BQ"
+  ]
+ },
+ {
+  "titulo": "Lizzie",
+  "ano": 2018,
+  "comoCard": "Lizzie",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27396.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27396.mp4"
+  ],
+  "ids": [
+   "VOD_2024ZLMD0D1"
+  ]
+ },
+ {
+  "titulo": "Mãe Só Há Uma",
+  "ano": 2016,
+  "comoCard": "Mae So Ha Uma",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28211.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28211.mp4"
+  ],
+  "ids": [
+   "VOD_1X2ARJFRA5T"
+  ]
+ },
+ {
+  "titulo": "Marcas da Vida",
+  "ano": 2022,
+  "comoCard": "Marcas da Vida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27643.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27643.mp4"
+  ],
+  "ids": [
+   "VOD_99MRB5WITX"
+  ]
+ },
+ {
+  "titulo": "Medidas Desesperadas",
+  "ano": 1998,
+  "comoCard": "Medidas Desesperadas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27734.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27734.mp4"
+  ],
+  "ids": [
+   "VOD_10S9ZULPMJC"
+  ]
+ },
+ {
+  "titulo": "Meu Filho",
+  "ano": 2021,
+  "comoCard": "Meu Filho",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27855.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27855.mp4"
+  ],
+  "ids": [
+   "VOD_2600L88A5IK"
+  ]
+ },
+ {
+  "titulo": "Mirador",
+  "ano": 2022,
+  "comoCard": "Mirador",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28046.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28046.mp4"
+  ],
+  "ids": [
+   "VOD_OITYFMWZPH"
+  ]
+ },
+ {
+  "titulo": "Mulher Proibida",
+  "ano": 2024,
+  "comoCard": "Mulher Proibida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/98890.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/98890.mp4"
+  ],
+  "ids": [
+   "VOD_1573EVSKAMF"
+  ]
+ },
+ {
+  "titulo": "Nosso Amor",
+  "ano": 2019,
+  "comoCard": "Nosso Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28387.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28387.mp4"
+  ],
+  "ids": [
+   "VOD_1D8U0YAOUER"
+  ]
+ },
+ {
+  "titulo": "O Amigo",
+  "ano": 2025,
+  "comoCard": "O Amigo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28545.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28545.mp4"
+  ],
+  "ids": [
+   "VOD_Z5Q5RSOGV0"
+  ]
+ },
+ {
+  "titulo": "O Fiel Camareiro",
+  "ano": 2015,
+  "comoCard": "O Fiel Camareiro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28953.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28953.mp4"
+  ],
+  "ids": [
+   "VOD_1WEKI7532T4"
+  ]
+ },
+ {
+  "titulo": "O Que Ficou Para Trás",
+  "ano": 2020,
+  "comoCard": "O Que Ficou Para Tras",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/29649.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/29649.mp4"
+  ],
+  "ids": [
+   "VOD_1O7R1MZ95A3"
+  ]
+ },
+ {
+  "titulo": "O Rei da Escocia",
+  "ano": 2006,
+  "comoCard": "O Rei da Escócia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/29680.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/29680.mp4"
+  ],
+  "ids": [
+   "VOD_DUKPRE3QDK"
+  ]
+ },
+ {
+  "titulo": "Os Delinquentes",
+  "ano": 2023,
+  "comoCard": "Os Delinquentes",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/30213.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/30213.mp4"
+  ],
+  "ids": [
+   "VOD_WMNDDNGFVX"
+  ]
+ },
+ {
+  "titulo": "Private Lesson",
+  "ano": 2021,
+  "comoCard": "Private Lesson",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/30785.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/30785.mp4"
+  ],
+  "ids": [
+   "VOD_PJ2X23KUGJ"
+  ]
+ },
+ {
+  "titulo": "Provocação",
+  "ano": 2004,
+  "comoCard": "Provocação",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/30828.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/30828.mp4"
+  ],
+  "ids": [
+   "VOD_RYHBXNEL01"
+  ]
+ },
+ {
+  "titulo": "Rustin",
+  "ano": 2023,
+  "comoCard": "Rustin",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31343.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31343.mp4"
+  ],
+  "ids": [
+   "VOD_26PLZTYK8TB"
+  ]
+ },
+ {
+  "titulo": "Shirley",
+  "ano": 2020,
+  "comoCard": "Shirley",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31603.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31603.mp4"
+  ],
+  "ids": [
+   "VOD_1OAAHJIB3TJ"
+  ]
+ },
+ {
+  "titulo": "Silêncio",
+  "ano": 2016,
+  "comoCard": "Silencio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31635.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31635.mp4"
+  ],
+  "ids": [
+   "VOD_2GJE216QZJJ"
+  ]
+ },
+ {
+  "titulo": "Spin",
+  "ano": 2021,
+  "comoCard": "Spin",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31790.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31790.mp4"
+  ],
+  "ids": [
+   "VOD_A1RRPJVAGB"
+  ]
+ },
+ {
+  "titulo": "Tudo Por um Sonho",
+  "ano": 2012,
+  "comoCard": "Tudo Por um Sonho",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97899.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97899.mp4"
+  ],
+  "ids": [
+   "VOD_1ES7BXKHN74"
+  ]
+ },
+ {
+  "titulo": "Um Lugar",
+  "ano": 2026,
+  "comoCard": "Um Lugar",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32580.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32580.mp4"
+  ],
+  "ids": [
+   "VOD_F8DQ93Y8XK"
+  ]
+ },
+ {
+  "titulo": "Uma História Americana",
+  "ano": 1990,
+  "comoCard": "Uma Historia Americana",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32804.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32804.mp4"
+  ],
+  "ids": [
+   "VOD_22OMXA8N6WO"
+  ]
+ },
+ {
+  "titulo": "Uma Última Vez",
+  "ano": 2018,
+  "comoCard": "Uma Última Vez",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32991.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32991.mp4"
+  ],
+  "ids": [
+   "VOD_2CLITNASELJ"
+  ]
+ },
+ {
+  "titulo": "Uma Vida Inteira",
+  "ano": 2023,
+  "comoCard": "Uma Vida Inteira",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32958.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/32958.mp4"
+  ],
+  "ids": [
+   "VOD_17WXJ4ITE3W"
+  ]
+ },
+ {
+  "titulo": "Vida em Jogo",
+  "ano": 2019,
+  "comoCard": "Vida em Jogo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33070.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33070.mp4"
+  ],
+  "ids": [
+   "VOD_1FIER200FD6"
+  ]
+ },
+ {
+  "titulo": "30 Anos Congelada 3 Irmaos se Arrependem",
+  "ano": 2025,
+  "comoCard": "30 Anos Congelada 3 Irmaos se Arrependem",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302915.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302915.mp4"
+  ],
+  "ids": [
+   "VOD_CYRZLOA8G"
+  ]
+ },
+ {
+  "titulo": "A CEO SECRETA",
+  "ano": 2024,
+  "comoCard": "A CEO SECRETA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302228.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302228.mp4"
+  ],
+  "ids": [
+   "VOD_CJZ4XRP5HJ"
+  ]
+ },
+ {
+  "titulo": "A LENDA DO LIDER FILI",
+  "ano": 2025,
+  "comoCard": "A LENDA DO LIDER FILI",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301536.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301536.mp4"
+  ],
+  "ids": [
+   "VOD_9FMSZZ6Q09"
+  ]
+ },
+ {
+  "titulo": "A MASCARA DO BILIONARIO",
+  "ano": 2024,
+  "comoCard": "A MASCARA DO BILIONARIO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302199.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302199.mp4"
+  ],
+  "ids": [
+   "VOD_1M4VL9B2EY4"
+  ]
+ },
+ {
+  "titulo": "A Noiva Muda do Alfa Amaldicoado",
+  "ano": 2025,
+  "comoCard": "A Noiva Muda do Alfa Amaldicoado",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303142.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303142.mp4"
+  ],
+  "ids": [
+   "VOD_1UKY5O0OP8E"
+  ]
+ },
+ {
+  "titulo": "A REJEITADA LUNA VOLTOU COM UM FILHO",
+  "ano": 2025,
+  "comoCard": "A REJEITADA LUNA VOLTOU COM UM FILHO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302249.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302240.mp4"
+  ],
+  "ids": [
+   "VOD_261HSX5WLUU"
+  ]
+ },
+ {
+  "titulo": "A SINFONIA BEM ORQUESTRADA COM MEU PATRAO",
+  "ano": 2025,
+  "comoCard": "A SINFONIA BEM ORQUESTRADA COM MEU PATRAO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302962.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302183.mp4"
+  ],
+  "ids": [
+   "VOD_1LY219OPD4D"
+  ]
+ },
+ {
+  "titulo": "ALMA GEMEA INDESEJADA",
+  "ano": 2025,
+  "comoCard": "ALMA GEMEA INDESEJADA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303229.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302194.mp4"
+  ],
+  "ids": [
+   "VOD_1CQN2FO73QN"
+  ]
+ },
+ {
+  "titulo": "Bilionario em Fuga Torna se Minha Noiva ( )",
+  "ano": 2025,
+  "comoCard": "BILIONARIO EM FUGA TORNA-SE MINHA NOIVA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303304.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303304.mp4"
+  ],
+  "ids": [
+   "VOD_2GCOQZ4VW7A"
+  ]
+ },
+ {
+  "titulo": "BILIONARIO EM FUGA TORNA-SE MINHA NOIVA",
+  "ano": 2025,
+  "comoCard": "BILIONARIO EM FUGA TORNA-SE MINHA NOIVA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303304.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302090.mp4"
+  ],
+  "ids": [
+   "VOD_2GCOQZ4VW7A"
+  ]
+ },
+ {
+  "titulo": "BOA MENINA DA MAFIA",
+  "ano": 2025,
+  "comoCard": "BOA MENINA DA MAFIA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302179.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302179.mp4"
+  ],
+  "ids": [
+   "VOD_JI13FPVIOL"
+  ]
+ },
+ {
+  "titulo": "Casamento De Repente Filhos Do Segredo",
+  "ano": 2025,
+  "comoCard": "Casamento De Repente Filhos Do Segredo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303259.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303259.mp4"
+  ],
+  "ids": [
+   "VOD_1DFP356S0Q2"
+  ]
+ },
+ {
+  "titulo": "CASAMENTO EM CHAMAS",
+  "ano": 2017,
+  "comoCard": "CASAMENTO EM CHAMAS",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303284.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301853.mp4"
+  ],
+  "ids": [
+   "VOD_1XI4FF2GQP3"
+  ]
+ },
+ {
+  "titulo": "Ceo Quer Meu Pequeno Rascal",
+  "ano": 2025,
+  "comoCard": "Ceo Quer Meu Pequeno Rascal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303273.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303273.mp4"
+  ],
+  "ids": [
+   "VOD_1WF7QQFLHO3"
+  ]
+ },
+ {
+  "titulo": "Como Conquistar um Raposa Prateada",
+  "ano": 2025,
+  "comoCard": "Como Conquistar um Raposa Prateada",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303243.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303243.mp4"
+  ],
+  "ids": [
+   "VOD_1KRMBQ2TFOB"
+  ]
+ },
+ {
+  "titulo": "COMO DOMAR UM COROA",
+  "ano": 2025,
+  "comoCard": "COMO DOMAR UM COROA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302436.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302436.mp4"
+  ],
+  "ids": [
+   "VOD_1G4DR441PXE"
+  ]
+ },
+ {
+  "titulo": "Confissao",
+  "ano": 1946,
+  "comoCard": "Confissao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44193.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303212.mp4"
+  ],
+  "ids": [
+   "VOD_W513FKBNAA"
+  ]
+ },
+ {
+  "titulo": "Coroada de Amor Sua Volta Por Cima Com Tres Filhos",
+  "ano": 2025,
+  "comoCard": "Coroada de Amor Sua Volta Por Cima Com Tres Filhos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303472.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303472.mp4"
+  ],
+  "ids": [
+   "VOD_23QRQWYI2UJ"
+  ]
+ },
+ {
+  "titulo": "De Caso Com O Chefe",
+  "ano": 1998,
+  "comoCard": "De Caso Com O Chefe",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303178.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303178.mp4"
+  ],
+  "ids": [
+   "VOD_R35BZH5URI"
+  ]
+ },
+ {
+  "titulo": "DIVORCIO PARA SER A HERDEIRA",
+  "ano": 2025,
+  "comoCard": "DIVORCIO PARA SER A HERDEIRA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302260.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302260.mp4"
+  ],
+  "ids": [
+   "VOD_6A3AFCKMYV"
+  ]
+ },
+ {
+  "titulo": "ESTOU GRAVIDA, VAMOS TERMINAR",
+  "ano": 2025,
+  "comoCard": "ESTOU GRAVIDA, VAMOS TERMINAR",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302292.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302292.mp4"
+  ],
+  "ids": [
+   "VOD_1QKPK21W1P7"
+  ]
+ },
+ {
+  "titulo": "Fim dos Tempos",
+  "ano": 2013,
+  "comoCard": "Fim dos Tempos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/3701.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303257.mp4"
+  ],
+  "ids": [
+   "VOD_1IQ13L762XY"
+  ]
+ },
+ {
+  "titulo": "FORTUNA REVELADA MEU MARIDO E DE ESTOURO",
+  "ano": 2024,
+  "comoCard": "FORTUNA REVELADA MEU MARIDO E DE ESTOURO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303478.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302685.mp4"
+  ],
+  "ids": [
+   "VOD_HZFZZE5BOR"
+  ]
+ },
+ {
+  "titulo": "Frango Frito Casamento de Repente",
+  "ano": 2025,
+  "comoCard": "Frango Frito Casamento de Repente",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303215.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303215.mp4"
+  ],
+  "ids": [
+   "VOD_2DB84DRG3UC"
+  ]
+ },
+ {
+  "titulo": "GRAVIDEZ PERFEITA",
+  "ano": 2025,
+  "comoCard": "GRAVIDEZ PERFEITA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302473.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302473.mp4"
+  ],
+  "ids": [
+   "VOD_1R92HIJ15DB"
+  ]
+ },
+ {
+  "titulo": "HERDEIRA GRAVIDA MIMADA POR 5 TIOS BILIONARIOS",
+  "ano": 2025,
+  "comoCard": "HERDEIRA GRAVIDA MIMADA POR 5 TIOS BILIONARIOS",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301669.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301669.mp4"
+  ],
+  "ids": [
+   "VOD_21G2U8S2EIY"
+  ]
+ },
+ {
+  "titulo": "Herdeira Verdadeira VS Rainha Falsa",
+  "ano": 2024,
+  "comoCard": "Herdeira Verdadeira VS Rainha Falsa",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303236.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303236.mp4"
+  ],
+  "ids": [
+   "VOD_7S9I67O637"
+  ]
+ },
+ {
+  "titulo": "JA QUE VOCE NUNCA FOI MINHA",
+  "ano": 2025,
+  "comoCard": "JA QUE VOCE NUNCA FOI MINHA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303265.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302185.mp4"
+  ],
+  "ids": [
+   "VOD_1NBMS0PGS2R"
+  ]
+ },
+ {
+  "titulo": "MAMAE NAO CHORE, PAPAI ESTA ARREPENDIDO",
+  "ano": 2025,
+  "comoCard": "MAMAE NAO CHORE, PAPAI ESTA ARREPENDIDO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302189.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302189.mp4"
+  ],
+  "ids": [
+   "VOD_1QSCPAUSM15"
+  ]
+ },
+ {
+  "titulo": "Me ame me Morda",
+  "ano": 2025,
+  "comoCard": "Me ame me Morda",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303246.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303246.mp4"
+  ],
+  "ids": [
+   "VOD_1WLB3FB80D3"
+  ]
+ },
+ {
+  "titulo": "MEU PRINCIPE VAMOS SAIR DO ARMARIO",
+  "ano": 2025,
+  "comoCard": "MEU PRINCIPE VAMOS SAIR DO ARMARIO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303278.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302118.mp4"
+  ],
+  "ids": [
+   "VOD_10306QZSF2M"
+  ]
+ },
+ {
+  "titulo": "MINHA ADORAVEL TAOISTA VIVIA DE VENTO",
+  "ano": 2025,
+  "comoCard": "MINHA ADORAVEL TAOISTA VIVIA DE VENTO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301996.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301996.mp4"
+  ],
+  "ids": [
+   "VOD_JY6ABHYC6E"
+  ]
+ },
+ {
+  "titulo": "MINHA MAE E UMA CHEFE DA MAFIA",
+  "ano": 2025,
+  "comoCard": "MINHA MAE E UMA CHEFE DA MAFIA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302113.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302113.mp4"
+  ],
+  "ids": [
+   "VOD_95368F6YZ"
+  ]
+ },
+ {
+  "titulo": "Nao Mexa com os Pais de um Bilionario",
+  "ano": 2025,
+  "comoCard": "Nao Mexa com os Pais de um Bilionario",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302933.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302933.mp4"
+  ],
+  "ids": [
+   "VOD_1XYX7W96VQ4"
+  ]
+ },
+ {
+  "titulo": "NOIVA RENEGADA",
+  "ano": 2025,
+  "comoCard": "NOIVA RENEGADA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303120.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302876.mp4"
+  ],
+  "ids": [
+   "VOD_12GE402E9TV"
+  ]
+ },
+ {
+  "titulo": "Noiva Renegada ( )",
+  "ano": 2025,
+  "comoCard": "NOIVA RENEGADA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303120.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303120.mp4"
+  ],
+  "ids": [
+   "VOD_12GE402E9TV"
+  ]
+ },
+ {
+  "titulo": "O AMOR DE SR. MURILO",
+  "ano": 2025,
+  "comoCard": "O AMOR DE SR. MURILO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302027.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302027.mp4"
+  ],
+  "ids": [
+   "VOD_29JSIA1MY4J"
+  ]
+ },
+ {
+  "titulo": "O Primeiro Amor Do Quarterback",
+  "ano": 2025,
+  "comoCard": "O Primeiro Amor Do Quarterback",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303192.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303192.mp4"
+  ],
+  "ids": [
+   "VOD_24ZVYSQNUNH"
+  ]
+ },
+ {
+  "titulo": "O RETORNO DO JOVEM MESTRE",
+  "ano": 2025,
+  "comoCard": "O RETORNO DO JOVEM MESTRE",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302261.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302261.mp4"
+  ],
+  "ids": [
+   "VOD_1V44V2ZWQDD"
+  ]
+ },
+ {
+  "titulo": "Princesa e General A Jornada da Heroina!",
+  "ano": 2024,
+  "comoCard": "Princesa e General A Jornada da Heroina!",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303369.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303369.mp4"
+  ],
+  "ids": [
+   "VOD_152HJPLHYRS"
+  ]
+ },
+ {
+  "titulo": "QUANDO O AMOR SE FOI",
+  "ano": 2025,
+  "comoCard": "QUANDO O AMOR SE FOI",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301774.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301774.mp4"
+  ],
+  "ids": [
+   "VOD_WIB45Y173"
+  ]
+ },
+ {
+  "titulo": "REENCONTRO DO AMOR",
+  "ano": 2016,
+  "comoCard": "REENCONTRO DO AMOR",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301785.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301785.mp4"
+  ],
+  "ids": [
+   "VOD_1DCBCM8QQOP"
+  ]
+ },
+ {
+  "titulo": "REIVINDICADA PELO ALFA QUE EU ODEIO",
+  "ano": 2025,
+  "comoCard": "REIVINDICADA PELO ALFA QUE EU ODEIO",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301811.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301811.mp4"
+  ],
+  "ids": [
+   "VOD_1XN4S99ZFBL"
+  ]
+ },
+ {
+  "titulo": "RETORNO DE SUA MAJESTADE",
+  "ano": 2025,
+  "comoCard": "RETORNO DE SUA MAJESTADE",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302186.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302186.mp4"
+  ],
+  "ids": [
+   "VOD_1CILTMTXZ15"
+  ]
+ },
+ {
+  "titulo": "Se Te Amar e um Pecado Queimarei no Inferno",
+  "ano": 2025,
+  "comoCard": "Se Te Amar e um Pecado Queimarei no Inferno",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303163.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303163.mp4"
+  ],
+  "ids": [
+   "VOD_U0BICLUKSH"
+  ]
+ },
+ {
+  "titulo": "SNIPER AMERICANO A ULTIMA RODADA",
+  "ano": 2026,
+  "comoCard": "SNIPER AMERICANO A ULTIMA RODADA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302794.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302342.mp4"
+  ],
+  "ids": [
+   "VOD_25174K6JVKL"
+  ]
+ },
+ {
+  "titulo": "SUBSTITUTA ACIDENTAL PARA ALFA",
+  "ano": 2025,
+  "comoCard": "SUBSTITUTA ACIDENTAL PARA ALFA",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302279.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302279.mp4"
+  ],
+  "ids": [
+   "VOD_85ZBMUC7QZ"
+  ]
+ },
+ {
+  "titulo": "Substituta Errada para o Bilionario Implacavel",
+  "ano": 2024,
+  "comoCard": "Substituta Errada para o Bilionario Implacavel",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303357.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303357.mp4"
+  ],
+  "ids": [
+   "VOD_29P83383KN4"
+  ]
+ },
+ {
+  "titulo": "Voce tem um Homem",
+  "ano": 2025,
+  "comoCard": "Voce tem um Homem",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303161.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303161.mp4"
+  ],
+  "ids": [
+   "VOD_2NV14JAI2P"
+  ]
+ },
+ {
+  "titulo": "Dakota",
+  "ano": 2022,
+  "comoCard": "Dakota",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53054.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53054.mp4"
+  ],
+  "ids": [
+   "VOD_1JD8JIIXT0B"
+  ]
+ },
+ {
+  "titulo": "Escola de Magia",
+  "ano": 2020,
+  "comoCard": "Escola de Magia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53067.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53067.mp4"
+  ],
+  "ids": [
+   "VOD_20F14XDSORF"
+  ]
+ },
+ {
+  "titulo": "Um Natal Encantado",
+  "ano": 2021,
+  "comoCard": "Um Natal Encantado",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53295.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53295.mp4"
+  ],
+  "ids": [
+   "VOD_16KSDC3V1O5"
+  ]
+ },
+ {
+  "titulo": "A Menina e o Leão",
+  "ano": 2018,
+  "comoCard": "A Menina e o Leao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33481.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33481.mp4"
+  ],
+  "ids": [
+   "VOD_1X5V712BSV1"
+  ]
+ },
+ {
+  "titulo": "A Serpente Verde",
+  "ano": 2021,
+  "comoCard": "A Serpente Verde",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33532.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33532.mp4"
+  ],
+  "ids": [
+   "VOD_6OLDC1JFUT"
+  ]
+ },
+ {
+  "titulo": "Bright",
+  "ano": 2017,
+  "comoCard": "Bright",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33677.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33677.mp4"
+  ],
+  "ids": [
+   "VOD_CTS7N29CXP"
+  ]
+ },
+ {
+  "titulo": "O Culto",
+  "ano": 2017,
+  "comoCard": "O Culto",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34290.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34290.mp4"
+  ],
+  "ids": [
+   "VOD_1YLY4YEO7LG"
+  ]
+ },
+ {
+  "titulo": "O Troll da Montanha",
+  "ano": 2022,
+  "comoCard": "O Troll da Montanha",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34441.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34441.mp4"
+  ],
+  "ids": [
+   "VOD_1C43MTKVT1Q"
+  ]
+ },
+ {
+  "titulo": "Paralisia",
+  "ano": 2023,
+  "comoCard": "Paralisia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34547.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34547.mp4"
+  ],
+  "ids": [
+   "VOD_19OU4UIMDG7"
+  ]
+ },
+ {
+  "titulo": "Rainbow",
+  "ano": 2022,
+  "comoCard": "Rainbow",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34654.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34654.mp4"
+  ],
+  "ids": [
+   "VOD_1J2J5YVPU6D"
+  ]
+ },
+ {
+  "titulo": "Bravura Indomita",
+  "ano": 2010,
+  "comoCard": "Bravura Indômita",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34944.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34944.mp4"
+  ],
+  "ids": [
+   "VOD_2BNA0PT8NJG"
+  ]
+ },
+ {
+  "titulo": "o Pistoleir‪o‬",
+  "ano": 1971,
+  "comoCard": "o Pistoleir‪o‬",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35121.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35121.mp4"
+  ],
+  "ids": [
+   "VOD_25XNHTTR36B"
+  ]
+ },
+ {
+  "titulo": "Terra Sem Lei",
+  "ano": 2026,
+  "comoCard": "Terra Sem Lei",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35283.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35283.mp4"
+  ],
+  "ids": [
+   "VOD_1W11C25IMHV"
+  ]
+ },
+ {
+  "titulo": "A Caixa",
+  "ano": 2009,
+  "comoCard": "A Caixa",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35389.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35389.mp4"
+  ],
+  "ids": [
+   "VOD_9OBWZW2TT9"
+  ]
+ },
+ {
+  "titulo": "A Invasão",
+  "ano": 2016,
+  "comoCard": "A Invasão",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35424.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35424.mp4"
+  ],
+  "ids": [
+   "VOD_1IHSORQKXGY"
+  ]
+ },
+ {
+  "titulo": "A Máquina do Tempo",
+  "ano": 2002,
+  "comoCard": "A Maquina do Tempo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35448.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35448.mp4"
+  ],
+  "ids": [
+   "VOD_1N165S05ZBZ"
+  ]
+ },
+ {
+  "titulo": "Blush",
+  "ano": 2021,
+  "comoCard": "Blush",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35597.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35597.mp4"
+  ],
+  "ids": [
+   "VOD_22410TD9CCS"
+  ]
+ },
+ {
+  "titulo": "O Planeta dos Macacos",
+  "ano": 1968,
+  "comoCard": "O Planeta dos Macacos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36234.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36234.mp4"
+  ],
+  "ids": [
+   "VOD_C69RRGWA5F"
+  ]
+ },
+ {
+  "titulo": "Planeta dos Macacos",
+  "ano": 2001,
+  "comoCard": "Planeta dos Macacos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36341.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36341.mp4"
+  ],
+  "ids": [
+   "VOD_10BHLXKFGJ4"
+  ]
+ },
+ {
+  "titulo": "Possuído",
+  "ano": 2020,
+  "comoCard": "Possuído",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36383.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36383.mp4"
+  ],
+  "ids": [
+   "VOD_J1VTLRZCH"
+  ]
+ },
+ {
+  "titulo": "Irmãos de Guerra",
+  "ano": 2022,
+  "comoCard": "Irmaos de Guerra",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36961.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36961.mp4"
+  ],
+  "ids": [
+   "VOD_1TSMY4T9DB8"
+  ]
+ },
+ {
+  "titulo": "O Infiltrado",
+  "ano": 2022,
+  "comoCard": "O Infiltrado",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/37050.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/37050.mp4"
+  ],
+  "ids": [
+   "VOD_UPAUR6RGBX"
+  ]
+ },
+ {
+  "titulo": "A Rebelião de",
+  "ano": 1907,
+  "comoCard": "A Rebelião de",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/240.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/240.mp4"
+  ],
+  "ids": [
+   "VOD_CDQKBM62BO"
+  ]
+ },
+ {
+  "titulo": "É Amor",
+  "ano": 2022,
+  "comoCard": "É Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307317.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1334.mp4"
+  ],
+  "ids": [
+   "VOD_Q4AC5JNA7U"
+  ]
+ },
+ {
+  "titulo": "O Tesouro de Natal",
+  "ano": 2021,
+  "comoCard": "O Tesouro de Natal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/937.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/937.mp4"
+  ],
+  "ids": [
+   "VOD_1TK4QLBKN6L"
+  ]
+ },
+ {
+  "titulo": "A Caça",
+  "ano": 2024,
+  "comoCard": "A Caca",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2764638.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300977.mp4"
+  ],
+  "ids": [
+   "VOD_3SQ8GMPK5Q"
+  ]
+ },
+ {
+  "titulo": "A Epidemia",
+  "ano": 2010,
+  "comoCard": "A Epidemia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/256509.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/256468.mp4"
+  ],
+  "ids": [
+   "VOD_1AXXRS42RI6"
+  ]
+ },
+ {
+  "titulo": "A Night in",
+  "ano": 2005,
+  "comoCard": "A Night in",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2756136.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/61834.mp4"
+  ],
+  "ids": [
+   "VOD_1OA8XR81384"
+  ]
+ },
+ {
+  "titulo": "A Praga",
+  "ano": 2021,
+  "comoCard": "A Praga",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97716.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97716.mp4"
+  ],
+  "ids": [
+   "VOD_11E9LGORQ72"
+  ]
+ },
+ {
+  "titulo": "Alpha",
+  "ano": 2025,
+  "comoCard": "Alpha",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/63490.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307268.mp4"
+  ],
+  "ids": [
+   "VOD_1NDBRHHK8AT"
+  ]
+ },
+ {
+  "titulo": "Beast",
+  "ano": 2026,
+  "comoCard": "Beast",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/256471.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/256471.mp4"
+  ],
+  "ids": [
+   "VOD_U5ZFCKRLWD"
+  ]
+ },
+ {
+  "titulo": "Circle",
+  "ano": 2017,
+  "comoCard": "Circle",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/67656.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/67656.mp4"
+  ],
+  "ids": [
+   "VOD_ST3ZNH1HWH"
+  ]
+ },
+ {
+  "titulo": "Conquista",
+  "ano": 2021,
+  "comoCard": "Conquista",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/311003.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/310668.mp4"
+  ],
+  "ids": [
+   "VOD_FWIUEMZ0SL"
+  ]
+ },
+ {
+  "titulo": "Contra a Maré",
+  "ano": 2013,
+  "comoCard": "Contra a Maré",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/68319.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/68319.mp4"
+  ],
+  "ids": [
+   "VOD_3XM7HIEYAK"
+  ]
+ },
+ {
+  "titulo": "Contrato de Risco",
+  "ano": 2022,
+  "comoCard": "Contrato de Risco",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44214.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301068.mp4"
+  ],
+  "ids": [
+   "VOD_I926AI37YW"
+  ]
+ },
+ {
+  "titulo": "De Repente é Amor",
+  "ano": 2020,
+  "comoCard": "De Repente é Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41818.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301073.mp4"
+  ],
+  "ids": [
+   "VOD_14H5Y6D5L50"
+  ]
+ },
+ {
+  "titulo": "Depois da Morte",
+  "ano": 2023,
+  "comoCard": "Depois da Morte",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2755467.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/69609.mp4"
+  ],
+  "ids": [
+   "VOD_2DFHNY3M21I"
+  ]
+ },
+ {
+  "titulo": "Depois da Tempestade",
+  "ano": 2019,
+  "comoCard": "Depois da Tempestade",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/25229.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301076.mp4"
+  ],
+  "ids": [
+   "VOD_K5WYV4Z5WJ"
+  ]
+ },
+ {
+  "titulo": "Dinheiro Fácil",
+  "ano": 2023,
+  "comoCard": "Dinheiro Facil",
+  "motivo": "TMDB diferente",
+  "links": [
+   "https://embedplayer2.xyz/cdn/hls/e453f2c48d5dfc1e9bf73b512689b444/master.txt?format=m3u8",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/70203.mp4"
+  ],
+  "ids": [
+   "VOD_2ANNIMIBNYQ"
+  ]
+ },
+ {
+  "titulo": "É Amor",
+  "ano": 2022,
+  "comoCard": "É Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307317.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307317.mp4"
+  ],
+  "ids": [
+   "VOD_Q4AC5JNA7U"
+  ]
+ },
+ {
+  "titulo": "Entre Amores e Vinhos",
+  "ano": 2023,
+  "comoCard": "Entre Amores e Vinhos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2757097.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/71545.mp4"
+  ],
+  "ids": [
+   "VOD_FVP97JBC8H"
+  ]
+ },
+ {
+  "titulo": "Fora de Controle",
+  "ano": 2023,
+  "comoCard": "Fora de Controle",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301100.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301100.mp4"
+  ],
+  "ids": [
+   "VOD_1QQSEPR2E3I"
+  ]
+ },
+ {
+  "titulo": "Hijack",
+  "ano": 1971,
+  "comoCard": "Hijack",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2756409.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/74436.mp4"
+  ],
+  "ids": [
+   "VOD_20Z0OLFO3GW"
+  ]
+ },
+ {
+  "titulo": "Incident",
+  "ano": 2020,
+  "comoCard": "Incident",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2754626.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/75108.mp4"
+  ],
+  "ids": [
+   "VOD_1AJT17B8KYQ"
+  ]
+ },
+ {
+  "titulo": "Jogo do Amor",
+  "ano": 2022,
+  "comoCard": "Jogo do Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42092.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301118.mp4"
+  ],
+  "ids": [
+   "VOD_1J5Z4W476QM"
+  ]
+ },
+ {
+  "titulo": "June",
+  "ano": 2023,
+  "comoCard": "June",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301124.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301124.mp4"
+  ],
+  "ids": [
+   "VOD_1FW48ARMO8C"
+  ]
+ },
+ {
+  "titulo": "Medo",
+  "ano": 2023,
+  "comoCard": "Medo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/662.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301141.mp4"
+  ],
+  "ids": [
+   "VOD_1AQZHB71WR1"
+  ]
+ },
+ {
+  "titulo": "Minha Melhor Amiga",
+  "ano": 2026,
+  "comoCard": "Minha Melhor Amiga",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/249904.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/78879.mp4"
+  ],
+  "ids": [
+   "VOD_1BW4VOCY0TP"
+  ]
+ },
+ {
+  "titulo": "Monolith",
+  "ano": 2016,
+  "comoCard": "Monolith",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/79242.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/79242.mp4"
+  ],
+  "ids": [
+   "VOD_N5ERRL9Y7G"
+  ]
+ },
+ {
+  "titulo": "Monster Hunters",
+  "ano": 2020,
+  "comoCard": "Monster Hunters",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/79284.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/79284.mp4"
+  ],
+  "ids": [
+   "VOD_14OS6L0L6HT"
+  ]
+ },
+ {
+  "titulo": "Mulher Proibida",
+  "ano": 2024,
+  "comoCard": "Mulher Proibida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/98890.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301150.mp4"
+  ],
+  "ids": [
+   "VOD_1573EVSKAMF"
+  ]
+ },
+ {
+  "titulo": "Na Mira",
+  "ano": 2022,
+  "comoCard": "Na Mira",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/5187.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301153.mp4"
+  ],
+  "ids": [
+   "VOD_26WGYGC4UZP"
+  ]
+ },
+ {
+  "titulo": "Never Change!",
+  "ano": 2026,
+  "comoCard": "Never Change",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/306390.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/306390.mp4"
+  ],
+  "ids": [
+   "VOD_AO2OK8NWMG"
+  ]
+ },
+ {
+  "titulo": "O Assalto",
+  "ano": 2001,
+  "comoCard": "O Assalto",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/306283.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301167.mp4"
+  ],
+  "ids": [
+   "VOD_QQ8FCQIP3R"
+  ]
+ },
+ {
+  "titulo": "O Ataque dos Insetos",
+  "ano": 2003,
+  "comoCard": "O Ataque dos Insetos",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/250834.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/250487.mp4"
+  ],
+  "ids": [
+   "VOD_27SLDOUIG5R"
+  ]
+ },
+ {
+  "titulo": "O Bom Professor",
+  "ano": 2024,
+  "comoCard": "O Bom Professor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/250823.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/81253.mp4"
+  ],
+  "ids": [
+   "VOD_2797343VYYF"
+  ]
+ },
+ {
+  "titulo": "O Tanque",
+  "ano": 2025,
+  "comoCard": "O Tanque",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/84096.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/84096.mp4"
+  ],
+  "ids": [
+   "VOD_1LA7H31IQF7"
+  ]
+ },
+ {
+  "titulo": "O Tesouro de Natal",
+  "ano": 2021,
+  "comoCard": "O Tesouro de Natal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/937.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301197.mp4"
+  ],
+  "ids": [
+   "VOD_1TK4QLBKN6L"
+  ]
+ },
+ {
+  "titulo": "Os Desajustados",
+  "ano": 2018,
+  "comoCard": "Os Desajustados",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/35176.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301208.mp4"
+  ],
+  "ids": [
+   "VOD_T7VYAWWR7D"
+  ]
+ },
+ {
+  "titulo": "Os Encantados",
+  "ano": 2023,
+  "comoCard": "Os Encantados",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301400.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301210.mp4"
+  ],
+  "ids": [
+   "VOD_1KI83PRJX4F"
+  ]
+ },
+ {
+  "titulo": "Plight",
+  "ano": 2025,
+  "comoCard": "Plight",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301223.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301223.mp4"
+  ],
+  "ids": [
+   "VOD_22KLI9TVZX3"
+  ]
+ },
+ {
+  "titulo": "Quebrando o Gelo",
+  "ano": 2022,
+  "comoCard": "Quebrando o Gelo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53261.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301231.mp4"
+  ],
+  "ids": [
+   "VOD_FRYKFUTW0B"
+  ]
+ },
+ {
+  "titulo": "Querida",
+  "ano": 2025,
+  "comoCard": "Querida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58234.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301232.mp4"
+  ],
+  "ids": [
+   "VOD_1QC5CR1VALY"
+  ]
+ },
+ {
+  "titulo": "Questão de Honra",
+  "ano": 2022,
+  "comoCard": "Questão de Honra",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/31018.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301233.mp4"
+  ],
+  "ids": [
+   "VOD_JKBE3GXY4I"
+  ]
+ },
+ {
+  "titulo": "Rooney",
+  "ano": 2022,
+  "comoCard": "Rooney",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/88488.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/88488.mp4"
+  ],
+  "ids": [
+   "VOD_LQRVTTQZC5"
+  ]
+ },
+ {
+  "titulo": "Scarlet",
+  "ano": 2023,
+  "comoCard": "Scarlet",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4"
+  ],
+  "ids": [
+   "VOD_6BWKVVW8GL"
+  ]
+ },
+ {
+  "titulo": "Sedução",
+  "ano": 2026,
+  "comoCard": "Sedução",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/253455.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/253452.mp4"
+  ],
+  "ids": [
+   "VOD_TPK0FD0BLS"
+  ]
+ },
+ {
+  "titulo": "Simone",
+  "ano": 2002,
+  "comoCard": "Simone",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/250835.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/89553.mp4"
+  ],
+  "ids": [
+   "VOD_2G7QH53JYMB"
+  ]
+ },
+ {
+  "titulo": "The Wild Goose Lake",
+  "ano": 2019,
+  "comoCard": "The Wild Goose Lake",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/92087.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/92087.mp4"
+  ],
+  "ids": [
+   "VOD_TZ8NOAEE2E"
+  ]
+ },
+ {
+  "titulo": "Villain",
+  "ano": 2020,
+  "comoCard": "Villain",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/95459.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/95459.mp4"
+  ],
+  "ids": [
+   "VOD_FMOIFXPZK7"
+  ]
+ },
+ {
+  "titulo": "Winner",
+  "ano": 2024,
+  "comoCard": "Winner",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2754664.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/96100.mp4"
+  ],
+  "ids": [
+   "VOD_1MABAV22B1Y"
+  ]
+ },
+ {
+  "titulo": "Zoya",
+  "ano": 2024,
+  "comoCard": "Zoya",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33283.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301286.mp4"
+  ],
+  "ids": [
+   "VOD_VKZOFN5VQ8"
+  ]
+ },
+ {
+  "titulo": "Boa Sorte",
+  "ano": 2014,
+  "comoCard": "Boa Sorte",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/37820.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/37820.mp4"
+  ],
+  "ids": [
+   "VOD_1PSN88MUJIL"
+  ]
+ },
+ {
+  "titulo": "Carvão",
+  "ano": 2022,
+  "comoCard": "Carvao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/37914.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/37914.mp4"
+  ],
+  "ids": [
+   "VOD_H998EL3N78"
+  ]
+ },
+ {
+  "titulo": "Coração",
+  "ano": 2026,
+  "comoCard": "Coração",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/308404.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/308404.mp4"
+  ],
+  "ids": [
+   "VOD_83Z6RT4LUL"
+  ]
+ },
+ {
+  "titulo": "Deus E Brasileiro",
+  "ano": 2003,
+  "comoCard": "Deus É Brasileiro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38118.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38118.mp4"
+  ],
+  "ids": [
+   "VOD_Q9KVZLBD7Z"
+  ]
+ },
+ {
+  "titulo": "Entre sombras",
+  "ano": 2018,
+  "comoCard": "Entre Sombras",
+  "motivo": "TMDB diferente",
+  "links": [
+   "https://nixplay.lat/movie/saimo-vods/221097/417643.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38188.mp4"
+  ],
+  "ids": [
+   "VOD_A2J7ML1PPI"
+  ]
+ },
+ {
+  "titulo": "Fluxo",
+  "ano": 2023,
+  "comoCard": "Fluxo",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38250.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38250.mp4"
+  ],
+  "ids": [
+   "VOD_5ALSRL819O"
+  ]
+ },
+ {
+  "titulo": "Getúlio",
+  "ano": 2014,
+  "comoCard": "Getúlio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38289.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38289.mp4"
+  ],
+  "ids": [
+   "VOD_21IK7PS1O0U"
+  ]
+ },
+ {
+  "titulo": "Horácio",
+  "ano": 2019,
+  "comoCard": "Horácio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38337.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38337.mp4"
+  ],
+  "ids": [
+   "VOD_19GPBDE0JK7"
+  ]
+ },
+ {
+  "titulo": "Menarca",
+  "ano": 2020,
+  "comoCard": "Menarca",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38561.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38561.mp4"
+  ],
+  "ids": [
+   "VOD_WX58105TSD"
+  ]
+ },
+ {
+  "titulo": "O Porteiro",
+  "ano": 2023,
+  "comoCard": "O Porteiro",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38867.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/38867.mp4"
+  ],
+  "ids": [
+   "VOD_18PSG8NITF6"
+  ]
+ },
+ {
+  "titulo": "Sobre Rodas",
+  "ano": 2017,
+  "comoCard": "Sobre Rodas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/39304.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/39304.mp4"
+  ],
+  "ids": [
+   "VOD_SGCQ10HJW3"
+  ]
+ },
+ {
+  "titulo": "Encontro de Natal",
+  "ano": 2020,
+  "comoCard": "Encontro de Natal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/39801.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/39801.mp4"
+  ],
+  "ids": [
+   "VOD_8VRSQ8RSC7"
+  ]
+ },
+ {
+  "titulo": "O Principe do Natal",
+  "ano": 2017,
+  "comoCard": "O Principe do Natal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40208.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40208.mp4"
+  ],
+  "ids": [
+   "VOD_10JOZNCMNXN"
+  ]
+ },
+ {
+  "titulo": "Um Sonho De Natal",
+  "ano": 2017,
+  "comoCard": "Um Sonho de Natal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40447.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40447.mp4"
+  ],
+  "ids": [
+   "VOD_9WTN06OXLV"
+  ]
+ },
+ {
+  "titulo": "A Criação",
+  "ano": 2023,
+  "comoCard": "A Criação",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40650.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40650.mp4"
+  ],
+  "ids": [
+   "VOD_2FHSOTURYXD"
+  ]
+ },
+ {
+  "titulo": "Eu Só Posso Imaginar",
+  "ano": 2018,
+  "comoCard": "Eu So Posso Imaginar",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40800.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40800.mp4"
+  ],
+  "ids": [
+   "VOD_MD98J4NRI8"
+  ]
+ },
+ {
+  "titulo": "O Milagre de Fátima",
+  "ano": 1952,
+  "comoCard": "O Milagre de Fátima",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40933.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40933.mp4"
+  ],
+  "ids": [
+   "VOD_18OO8LVBVE8"
+  ]
+ },
+ {
+  "titulo": "Uma Licao de Vida",
+  "ano": 2010,
+  "comoCard": "Uma Licao de Vida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41034.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41034.mp4"
+  ],
+  "ids": [
+   "VOD_29YIIVP5ONE"
+  ]
+ },
+ {
+  "titulo": "Amor Sem Fim",
+  "ano": 1981,
+  "comoCard": "Amor Sem Fim",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41476.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41476.mp4"
+  ],
+  "ids": [
+   "VOD_JJA6D7QMJG"
+  ]
+ },
+ {
+  "titulo": "Deixa Rolar",
+  "ano": 2014,
+  "comoCard": "Deixa Rolar",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41828.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41828.mp4"
+  ],
+  "ids": [
+   "VOD_1WO87ABD12C"
+  ]
+ },
+ {
+  "titulo": "Diorama",
+  "ano": 2022,
+  "comoCard": "Diorama",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41874.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41874.mp4"
+  ],
+  "ids": [
+   "VOD_M39VIWTB4"
+  ]
+ },
+ {
+  "titulo": "Minha Namorada Favorita",
+  "ano": 2022,
+  "comoCard": "Minha Namorada Favorita",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42247.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42247.mp4"
+  ],
+  "ids": [
+   "VOD_1ZYA2BCXPB7"
+  ]
+ },
+ {
+  "titulo": "Ofélia",
+  "ano": 2019,
+  "comoCard": "Ofélia",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42519.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42519.mp4"
+  ],
+  "ids": [
+   "VOD_ALKYEXC2GQ"
+  ]
+ },
+ {
+  "titulo": "Ruido",
+  "ano": 2022,
+  "comoCard": "Ruido",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42842.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/42842.mp4"
+  ],
+  "ids": [
+   "VOD_KO96YI6800"
+  ]
+ },
+ {
+  "titulo": "Uma Historia Diferente",
+  "ano": 1978,
+  "comoCard": "Uma História Diferente",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43249.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43249.mp4"
+  ],
+  "ids": [
+   "VOD_13GED6IOS5L"
+  ]
+ },
+ {
+  "titulo": "Uma Pitada de Amor",
+  "ano": 2019,
+  "comoCard": "Uma Pitada de Amor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43305.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43305.mp4"
+  ],
+  "ids": [
+   "VOD_1WAXOKBKCG"
+  ]
+ },
+ {
+  "titulo": "A Maldicao Do Espelho",
+  "ano": 1980,
+  "comoCard": "A Maldicao Do Espelho",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43624.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43624.mp4"
+  ],
+  "ids": [
+   "VOD_1KMPRX7MLUR"
+  ]
+ },
+ {
+  "titulo": "A Premonicao",
+  "ano": 2013,
+  "comoCard": "A Premonicao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43703.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43703.mp4"
+  ],
+  "ids": [
+   "VOD_UHZ0R3WJX8"
+  ]
+ },
+ {
+  "titulo": "Banho de Sangue",
+  "ano": 2018,
+  "comoCard": "Banho de Sangue",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44003.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44003.mp4"
+  ],
+  "ids": [
+   "VOD_2COCYLB7JCT"
+  ]
+ },
+ {
+  "titulo": "Fúria Assassina",
+  "ano": 2024,
+  "comoCard": "Furia Assassina",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44606.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44606.mp4"
+  ],
+  "ids": [
+   "VOD_19RV009QIHT"
+  ]
+ },
+ {
+  "titulo": "Linha Reta",
+  "ano": 2019,
+  "comoCard": "Linha Reta",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44793.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44793.mp4"
+  ],
+  "ids": [
+   "VOD_1D83JZ1B3NQ"
+  ]
+ },
+ {
+  "titulo": "Mentiras de Família",
+  "ano": 2019,
+  "comoCard": "Mentiras de Família",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44879.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44879.mp4"
+  ],
+  "ids": [
+   "VOD_6U4VO9GM4D"
+  ]
+ },
+ {
+  "titulo": "Mulheres Perigosas",
+  "ano": 2015,
+  "comoCard": "Mulheres Perigosas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44963.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/44963.mp4"
+  ],
+  "ids": [
+   "VOD_THRYEP88X4"
+  ]
+ },
+ {
+  "titulo": "No Fim do Túnel",
+  "ano": 2016,
+  "comoCard": "No Fim do Tunel",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45065.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45065.mp4"
+  ],
+  "ids": [
+   "VOD_99ZDX1C2O8"
+  ]
+ },
+ {
+  "titulo": "O Fantasma da Opera",
+  "ano": 2004,
+  "comoCard": "O Fantasma da Ópera",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45204.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45204.mp4"
+  ],
+  "ids": [
+   "VOD_JMSI2ONLQJ"
+  ]
+ },
+ {
+  "titulo": "O Misterio de Grace",
+  "ano": 2014,
+  "comoCard": "O Misterio de Grace",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45322.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45322.mp4"
+  ],
+  "ids": [
+   "VOD_DQYYD9OW4"
+  ]
+ },
+ {
+  "titulo": "Operação Hunt",
+  "ano": 2022,
+  "comoCard": "Operacao Hunt",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45506.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45506.mp4"
+  ],
+  "ids": [
+   "VOD_59UBQ2BHJD"
+  ]
+ },
+ {
+  "titulo": "Quem com Ferro Fere",
+  "ano": 2019,
+  "comoCard": "Quem com Ferro Fere",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45804.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45804.mp4"
+  ],
+  "ids": [
+   "VOD_15WVQB1PD3X"
+  ]
+ },
+ {
+  "titulo": "Regra de Três",
+  "ano": 2019,
+  "comoCard": "Regra de Três",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45863.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/45863.mp4"
+  ],
+  "ids": [
+   "VOD_298XIOKCDLJ"
+  ]
+ },
+ {
+  "titulo": "Visoes De Um Crime",
+  "ano": 2011,
+  "comoCard": "Visões de um Crime",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46456.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46456.mp4"
+  ],
+  "ids": [
+   "VOD_1BPKQ7JIDNF"
+  ]
+ },
+ {
+  "titulo": "#SemSaída",
+  "ano": 2020,
+  "comoCard": "#SemSaida",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46500.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46500.mp4"
+  ],
+  "ids": [
+   "VOD_I3I3R0YYPR"
+  ]
+ },
+ {
+  "titulo": "A Casa da Colina",
+  "ano": 1999,
+  "comoCard": "A Casa da Colina",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46661.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46661.mp4"
+  ],
+  "ids": [
+   "VOD_2D2TL4MFPQB"
+  ]
+ },
+ {
+  "titulo": "A Casa Mal-Assombrada",
+  "ano": 2021,
+  "comoCard": "A Casa Mal-Assombrada",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46691.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46691.mp4"
+  ],
+  "ids": [
+   "VOD_PSYT3TNDVU"
+  ]
+ },
+ {
+  "titulo": "A Coisa",
+  "ano": 2017,
+  "comoCard": "A Coisa",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46724.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46724.mp4"
+  ],
+  "ids": [
+   "VOD_1CRKQY80HTM"
+  ]
+ },
+ {
+  "titulo": "A Ilha da Morte",
+  "ano": 2016,
+  "comoCard": "A Ilha da Morte",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46942.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46942.mp4"
+  ],
+  "ids": [
+   "VOD_1HLXIVAC57S"
+  ]
+ },
+ {
+  "titulo": "A Maldição do Espelho",
+  "ano": 1980,
+  "comoCard": "A Maldicao Do Espelho",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43624.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47109.mp4"
+  ],
+  "ids": [
+   "VOD_1KMPRX7MLUR"
+  ]
+ },
+ {
+  "titulo": "A Noite Das Brincadeiras Mortais - April Fools Day",
+  "ano": 1986,
+  "comoCard": "A Noite Das Brincadeiras Mortais - April Fools Day",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47243.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47243.mp4"
+  ],
+  "ids": [
+   "VOD_1XDHJMTBBD2"
+  ]
+ },
+ {
+  "titulo": "Abandonada",
+  "ano": 2022,
+  "comoCard": "Abandonada",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47490.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47490.mp4"
+  ],
+  "ids": [
+   "VOD_10PD7AE7FKZ"
+  ]
+ },
+ {
+  "titulo": "Até que A Morte Nos Separe",
+  "ano": 2023,
+  "comoCard": "Até que a Morte Nos Separe",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47906.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/47906.mp4"
+  ],
+  "ids": [
+   "VOD_1Q42CWOXZ8J"
+  ]
+ },
+ {
+  "titulo": "Cacador de Demonios",
+  "ano": 2016,
+  "comoCard": "Caçador de Demônios",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48068.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48068.mp4"
+  ],
+  "ids": [
+   "VOD_MJKQTCT5C"
+  ]
+ },
+ {
+  "titulo": "Campo da Morte",
+  "ano": 2022,
+  "comoCard": "Campo da Morte",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48098.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48098.mp4"
+  ],
+  "ids": [
+   "VOD_19ILL3Z35I8"
+  ]
+ },
+ {
+  "titulo": "Censor",
+  "ano": 2021,
+  "comoCard": "Censor",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48194.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48194.mp4"
+  ],
+  "ids": [
+   "VOD_1ZN7HM5QQ4D"
+  ]
+ },
+ {
+  "titulo": "Criaturas",
+  "ano": 2023,
+  "comoCard": "Criaturas",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48370.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48370.mp4"
+  ],
+  "ids": [
+   "VOD_DVSCRXXY37"
+  ]
+ },
+ {
+  "titulo": "Disco Inferno",
+  "ano": 2023,
+  "comoCard": "Disco Inferno",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48530.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48530.mp4"
+  ],
+  "ids": [
+   "VOD_2R57HM5VJT"
+  ]
+ },
+ {
+  "titulo": "Distúrbio",
+  "ano": 2018,
+  "comoCard": "Distúrbio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48532.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48532.mp4"
+  ],
+  "ids": [
+   "VOD_AW0X4K2S0X"
+  ]
+ },
+ {
+  "titulo": "Eles Existem",
+  "ano": 2014,
+  "comoCard": "Eles Existem",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48606.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48606.mp4"
+  ],
+  "ids": [
+   "VOD_22K9WRFKXR0"
+  ]
+ },
+ {
+  "titulo": "Espiritos 1",
+  "ano": 2009,
+  "comoCard": "Espiritos 1",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48718.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48718.mp4"
+  ],
+  "ids": [
+   "VOD_17PSO3LCLJX"
+  ]
+ },
+ {
+  "titulo": "Fantasmas do Passado",
+  "ano": 2023,
+  "comoCard": "Fantasmas do Passado",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48851.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48851.mp4"
+  ],
+  "ids": [
+   "VOD_EVKE55C6E"
+  ]
+ },
+ {
+  "titulo": "Minha Morte",
+  "ano": 2020,
+  "comoCard": "Minha Morte",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/49742.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/49742.mp4"
+  ],
+  "ids": [
+   "VOD_26TSQJWESIZ"
+  ]
+ },
+ {
+  "titulo": "Não Desligue",
+  "ano": 2016,
+  "comoCard": "Nao Desligue",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/50025.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/50025.mp4"
+  ],
+  "ids": [
+   "VOD_O0NQWL6OQI"
+  ]
+ },
+ {
+  "titulo": "O Jantar Está Servido",
+  "ano": 2020,
+  "comoCard": "O Jantar Está Servido",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/50537.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/50537.mp4"
+  ],
+  "ids": [
+   "VOD_128GO60L9A3"
+  ]
+ },
+ {
+  "titulo": "Perseguição Fatal",
+  "ano": 2023,
+  "comoCard": "Perseguição Fatal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51282.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51282.mp4"
+  ],
+  "ids": [
+   "VOD_X4LXQK3LPA"
+  ]
+ },
+ {
+  "titulo": "Rose Red",
+  "ano": 1994,
+  "comoCard": "Rose Red",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51706.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51706.mp4"
+  ],
+  "ids": [
+   "VOD_1WV7U2N4ZHR"
+  ]
+ },
+ {
+  "titulo": "Sexta-Feira 13",
+  "ano": 2009,
+  "comoCard": "Sexta-Feira 13",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51840.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51860.mp4"
+  ],
+  "ids": [
+   "VOD_W2TSJ7E0FV"
+  ]
+ },
+ {
+  "titulo": "Sobrevivente",
+  "ano": 2025,
+  "comoCard": "Sobrevivente",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/308152.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/308152.mp4"
+  ],
+  "ids": [
+   "VOD_2ED3O58N7ZJ"
+  ]
+ },
+ {
+  "titulo": "The Night",
+  "ano": 2021,
+  "comoCard": "The Night",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52276.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52276.mp4"
+  ],
+  "ids": [
+   "VOD_1HTFVKYGLCO"
+  ]
+ },
+ {
+  "titulo": "Uma Noite no Inferno",
+  "ano": 2021,
+  "comoCard": "Uma Noite no Inferno",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52521.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52521.mp4"
+  ],
+  "ids": [
+   "VOD_1DBF1VFL8FJ"
+  ]
+ },
+ {
+  "titulo": "Venus",
+  "ano": 2022,
+  "comoCard": "Venus",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52611.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52611.mp4"
+  ],
+  "ids": [
+   "VOD_1HTVGQPZYNV"
+  ]
+ },
+ {
+  "titulo": "Vilões",
+  "ano": 2019,
+  "comoCard": "Vilões",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52638.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52638.mp4"
+  ],
+  "ids": [
+   "VOD_1SHIONLIJTB"
+  ]
+ },
+ {
+  "titulo": "Vozes do Passado",
+  "ano": 2020,
+  "comoCard": "Vozes do Passado",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52708.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52708.mp4"
+  ],
+  "ids": [
+   "VOD_13YX6FO03CU"
+  ]
+ }
+]
