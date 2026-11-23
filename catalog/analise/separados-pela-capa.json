@@ -1,59 +1,11 @@
 [
  {
-  "titulo": "しもべの王子様",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/201887",
-   "tv/323569"
-  ],
-  "ids": [
-   "VOD_SER_9UJ8FTNNJG",
-   "VOD_SER_9UJ8FTNNJG_UIRBNR"
-  ]
- },
- {
-  "titulo": "Yu Yu Hakusho",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/30669",
-   "tv/121659"
-  ],
-  "ids": [
-   "VOD_SER_P8HMTXJH3B",
-   "VOD_SER_P8HMTXJH3B_VWKZF4"
-  ]
- },
- {
-  "titulo": "Acampamento Mágico",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/228671",
-   "tv/228673"
-  ],
-  "ids": [
-   "LIV_ANI_152ZSU4TT41",
-   "LIV_ANI_152ZSU4TT41_1CEDEE"
-  ]
- },
- {
-  "titulo": "Devil May Cry",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/12577",
-   "tv/235930"
-  ],
-  "ids": [
-   "LIV_ANI_5AXP7TQN8R",
-   "LIV_ANI_5AXP7TQN8R_228HQ1"
-  ]
- },
- {
   "titulo": "A Casa Mal-Assombrada",
   "ano": 2021,
   "comoCard": "A Casa Mal-Assombrada",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46691.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/802777.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/802777.mp4"
   ],
   "ids": [
@@ -66,7 +18,7 @@
   "comoCard": "A Chance",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41122.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/843840.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/843840.mp4"
   ],
   "ids": [
@@ -79,7 +31,7 @@
   "comoCard": "A Extraordinaria Garota Chamada Estrela em Hollywood",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/54010.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/799883.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/799883.mp4"
   ],
   "ids": [
@@ -92,7 +44,7 @@
   "comoCard": "A Fuga",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1590.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/2087.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/2087.mp4"
   ],
   "ids": [
@@ -105,7 +57,7 @@
   "comoCard": "A Luta",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/21054.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/921.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/921.mp4"
   ],
   "ids": [
@@ -118,7 +70,7 @@
   "comoCard": "A Outra Filha",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/43678.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/461337.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/461337.mp4"
   ],
   "ids": [
@@ -131,24 +83,11 @@
   "comoCard": "A Princesa",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33504.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/759175.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/759175.mp4"
   ],
   "ids": [
    "VOD_1FZ93KGAOCX"
-  ]
- },
- {
-  "titulo": "A Ultima Ceia",
-  "ano": 2025,
-  "comoCard": "A Ultima Ceia",
-  "motivo": "TMDB diferente",
-  "links": [
-   "https://embedplayer2.xyz/cdn/hls/3f874c25aa8f55ba3855000e6b3ffe58/master.txt?format=m3u8",
-   "https://nixplay.lat/movie/saimo-vods/221097/1380415.mp4"
-  ],
-  "ids": [
-   "VOD_1I9YJ25LZO5"
   ]
  },
  {
@@ -157,7 +96,7 @@
   "comoCard": "Alem mundo",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/54452.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1096838.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/1096838.mp4"
   ],
   "ids": [
@@ -165,16 +104,16 @@
   ]
  },
  {
-  "titulo": "Amigos Para Sempre 2",
-  "ano": 2018,
-  "comoCard": "Amigos Para Sempre 2",
+  "titulo": "As Viagens de Gulliver",
+  "ano": 1960,
+  "comoCard": "As Viagens de Gulliver",
   "motivo": "TMDB diferente",
   "links": [
-   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2761822.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/497796.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/38745.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/38745.mp4"
   ],
   "ids": [
-   "VOD_18LSSNYDK78"
+   "VOD_2EJBDS9OX8Z"
   ]
  },
  {
@@ -183,7 +122,7 @@
   "comoCard": "Cats",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13830.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/536869.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/536869.mp4"
   ],
   "ids": [
@@ -204,185 +143,16 @@
   ]
  },
  {
-  "titulo": "Davi",
-  "ano": 1997,
-  "comoCard": "Davi",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40732.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/541475.mp4"
-  ],
-  "ids": [
-   "VOD_2F0Q19F6T6J"
-  ]
- },
- {
-  "titulo": "Diorama",
-  "ano": 2022,
-  "comoCard": "Diorama",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41874.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/967940.mp4"
-  ],
-  "ids": [
-   "VOD_M39VIWTB4"
-  ]
- },
- {
-  "titulo": "Espantalho",
-  "ano": 2011,
-  "comoCard": "Espantalho",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/48711.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/56906.mp4"
-  ],
-  "ids": [
-   "VOD_1OPM2WFHCJ3"
-  ]
- },
- {
-  "titulo": "Frankie",
-  "ano": 2019,
-  "comoCard": "Frankie",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/26264.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/505941.mp4"
-  ],
-  "ids": [
-   "VOD_1W89DOEEXWV"
-  ]
- },
- {
-  "titulo": "Jogada de Mestre",
-  "ano": 2015,
-  "comoCard": "Jogada de Mestre",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97000.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/228968.mp4"
-  ],
-  "ids": [
-   "VOD_2B0F5TPCRYE"
-  ]
- },
- {
   "titulo": "Lua de Sangue",
   "ano": 2021,
   "comoCard": "Lua de Sangue",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/16149.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/794960.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/794960.mp4"
   ],
   "ids": [
    "VOD_Z3VU9F1KZJ"
-  ]
- },
- {
-  "titulo": "Mansao Mal Assombrada",
-  "ano": 2023,
-  "comoCard": "Mansao Mal Assombrada",
-  "motivo": "TMDB diferente",
-  "links": [
-   "https://embedplayer2.xyz/cdn/hls/1e5f66fd07809403849db81b08781bbb/master.txt?format=m3u8",
-   "https://nixplay.lat/movie/saimo-vods/221097/616747.mp4"
-  ],
-  "ids": [
-   "VOD_AG153IKTNZ"
-  ]
- },
- {
-  "titulo": "Maya",
-  "ano": 2020,
-  "comoCard": "Maya",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34176.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/688027.mp4"
-  ],
-  "ids": [
-   "VOD_1MEPZKOIRON"
-  ]
- },
- {
-  "titulo": "Nada e Impossível",
-  "ano": 2022,
-  "comoCard": "Nada e Impossível",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28264.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/1061089.mp4"
-  ],
-  "ids": [
-   "VOD_RVBJS4YUGE"
-  ]
- },
- {
-  "titulo": "O Barco",
-  "ano": 2018,
-  "comoCard": "O Barco",
-  "motivo": "TMDB diferente",
-  "links": [
-   "https://nixplay.lat/movie/saimo-vods/221097/533412.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/533412.mp4"
-  ],
-  "ids": [
-   "VOD_25HW5O9CC5A"
-  ]
- },
- {
-  "titulo": "O Conto",
-  "ano": 2018,
-  "comoCard": "O Conto",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/28738.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/369523.mp4"
-  ],
-  "ids": [
-   "VOD_1ZYCGYOZT1F"
-  ]
- },
- {
-  "titulo": "O Homem das Cavernas",
-  "ano": 1981,
-  "comoCard": "O Homem das Cavernas",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/17730.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/18905.mp4"
-  ],
-  "ids": [
-   "VOD_2CHPOAZGN7M"
-  ]
- },
- {
-  "titulo": "O Melhor Natal de Todos",
-  "ano": 2023,
-  "comoCard": "O Melhor Natal de Todos",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57547.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/987490.mp4"
-  ],
-  "ids": [
-   "VOD_11CNCNPXGCK"
-  ]
- },
- {
-  "titulo": "O Ninho",
-  "ano": 2019,
-  "comoCard": "O Ninho",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/50708.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/600184.mp4"
-  ],
-  "ids": [
-   "VOD_1I6BH2ZPMMC"
   ]
  },
  {
@@ -391,63 +161,11 @@
   "comoCard": "O Olho",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53565.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1192906.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/1192906.mp4"
   ],
   "ids": [
    "VOD_10VD4US6UHW"
-  ]
- },
- {
-  "titulo": "O Peregrino",
-  "ano": 2019,
-  "comoCard": "O Peregrino",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/29452.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/595172.mp4"
-  ],
-  "ids": [
-   "VOD_1Q828BWI1FT"
-  ]
- },
- {
-  "titulo": "O Principe do Natal",
-  "ano": 2017,
-  "comoCard": "O Principe do Natal",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40208.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/483104.mp4"
-  ],
-  "ids": [
-   "VOD_10JOZNCMNXN"
-  ]
- },
- {
-  "titulo": "O Ultimo Dragao",
-  "ano": 2022,
-  "comoCard": "O Ultimo Dragao",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/34447.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/13938.mp4"
-  ],
-  "ids": [
-   "VOD_1F6KQTPB6SK"
-  ]
- },
- {
-  "titulo": "O Viajante do Tempo",
-  "ano": 2021,
-  "comoCard": "O Viajante do Tempo",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/36267.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/598011.mp4"
-  ],
-  "ids": [
-   "VOD_1HKLWUDX164"
   ]
  },
  {
@@ -456,50 +174,11 @@
   "comoCard": "Os Encantados",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301400.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1022725.mp4",
    "https://nixplay.lat/movie/saimo-vods/221097/1022725.mp4"
   ],
   "ids": [
    "VOD_1KI83PRJX4F"
-  ]
- },
- {
-  "titulo": "Peça por Peça",
-  "ano": 2024,
-  "comoCard": "Peça por Peça",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/10810.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/1236419.mp4"
-  ],
-  "ids": [
-   "VOD_LMOC5MEPM4"
-  ]
- },
- {
-  "titulo": "Pluft O Fantasminha",
-  "ano": 2022,
-  "comoCard": "Pluft O Fantasminha",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18761.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/861101.mp4"
-  ],
-  "ids": [
-   "VOD_DNE4T1GJM5"
-  ]
- },
- {
-  "titulo": "Ponto Cego",
-  "ano": 2018,
-  "comoCard": "Ponto Cego",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18797.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/489930.mp4"
-  ],
-  "ids": [
-   "VOD_1X03L6PH7DW"
   ]
  },
  {
@@ -516,94 +195,16 @@
   ]
  },
  {
-  "titulo": "Se Eu Fosse a Minha Mae",
-  "ano": 1976,
-  "comoCard": "Se Eu Fosse a Minha Mae",
+  "titulo": "Totem",
+  "ano": 2017,
+  "comoCard": "Totem",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19263.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/16084.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/958186.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/958186.mp4"
   ],
   "ids": [
-   "VOD_8ID36KJ7M2"
-  ]
- },
- {
-  "titulo": "Stardust",
-  "ano": 2020,
-  "comoCard": "Stardust",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7392.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/579400.mp4"
-  ],
-  "ids": [
-   "VOD_1JM3MQWOX9N"
-  ]
- },
- {
-  "titulo": "Um Natal Encantado",
-  "ano": 2021,
-  "comoCard": "Um Natal Encantado",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53295.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/918459.mp4"
-  ],
-  "ids": [
-   "VOD_16KSDC3V1O5"
-  ]
- },
- {
-  "titulo": "Vilões",
-  "ano": 2019,
-  "comoCard": "Vilões",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52638.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/510388.mp4"
-  ],
-  "ids": [
-   "VOD_1SHIONLIJTB"
-  ]
- },
- {
-  "titulo": "Voando Para Casa",
-  "ano": 2014,
-  "comoCard": "Voando Para Casa",
-  "motivo": "TMDB diferente",
-  "links": [
-   "https://nixplay.lat/movie/saimo-vods/221097/261375.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/261375.mp4"
-  ],
-  "ids": [
-   "VOD_2C4RO874LG"
-  ]
- },
- {
-  "titulo": "Você Não Está Sozinho",
-  "ano": 2022,
-  "comoCard": "Você Não Está Sozinho",
-  "motivo": "TMDB diferente",
-  "links": [
-   "https://nixplay.lat/movie/saimo-vods/221097/1029369.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/1029369.mp4"
-  ],
-  "ids": [
-   "VOD_PT3EXJRLSU"
-  ]
- },
- {
-  "titulo": "Zoom",
-  "ano": 2015,
-  "comoCard": "Zoom",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/20995.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/351065.mp4"
-  ],
-  "ids": [
-   "VOD_29APG7QNKQA"
+   "VOD_M7OZW5V7PY"
   ]
  },
  {
@@ -620,16 +221,29 @@
   ]
  },
  {
-  "titulo": "O Melhor. Natal. de Todos!",
-  "ano": 2023,
-  "comoCard": "O Melhor Natal de Todos",
+  "titulo": "A Dama E O Vagabundo",
+  "ano": 1955,
+  "comoCard": "A Dama e o Vagabundo",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57547.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/57547.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/10340.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53995.mp4"
   ],
   "ids": [
-   "VOD_11CNCNPXGCK"
+   "VOD_1AYGE9TQJDL"
+  ]
+ },
+ {
+  "titulo": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 1",
+  "ano": 2023,
+  "comoCard": "Liga da Justiça x RWBY: Super-Heróis e Caçadores - Parte 1",
+  "motivo": "TMDB diferente",
+  "links": [
+   "https://nixplay.lat/movie/saimo-vods/221097/997776.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/56646.mp4"
+  ],
+  "ids": [
+   "VOD_3IS1DSU0O2"
   ]
  },
  {
@@ -685,25 +299,12 @@
   ]
  },
  {
-  "titulo": "Transformers",
-  "ano": 2024,
-  "comoCard": "Transformers",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7671.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/7671.mp4"
-  ],
-  "ids": [
-   "VOD_UTPBQY34NN"
-  ]
- },
- {
   "titulo": "Charlie Brown",
   "ano": 1977,
   "comoCard": "Charlie Brown",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/40484.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4"
   ],
   "ids": [
@@ -716,24 +317,11 @@
   "comoCard": "Charlie Brown",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300879.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/37490.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300879.mp4"
   ],
   "ids": [
    "VOD_1BX5UF5TAA7"
-  ]
- },
- {
-  "titulo": "Dinossauro",
-  "ano": 2000,
-  "comoCard": "Dinossauro",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9294.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9294.mp4"
-  ],
-  "ids": [
-   "VOD_CSPCI77IHW"
   ]
  },
  {
@@ -750,29 +338,16 @@
   ]
  },
  {
-  "titulo": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 2",
+  "titulo": "Pretty Guardian Sailor Moon Cosmos O Filme (Parte 1)",
   "ano": 2023,
-  "comoCard": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 2",
+  "comoCard": "Pretty Guardian Sailor Moon Cosmos: O Filme – Parte 1",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9893.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/9893.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/968868.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/10959.mp4"
   ],
   "ids": [
-   "VOD_1ZUIAUQVKRS"
-  ]
- },
- {
-  "titulo": "Trolls",
-  "ano": 2016,
-  "comoCard": "Trolls",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/11607.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/11607.mp4"
-  ],
-  "ids": [
-   "VOD_OIQBEZ99N0"
+   "VOD_19UU22LDKQJ"
   ]
  },
  {
@@ -781,89 +356,11 @@
   "comoCard": "Cats",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13830.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/536869.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/13830.mp4"
   ],
   "ids": [
    "VOD_200I6N074SL"
-  ]
- },
- {
-  "titulo": "Jogada de Mestre",
-  "ano": 2015,
-  "comoCard": "Jogada de Mestre",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97000.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/97000.mp4"
-  ],
-  "ids": [
-   "VOD_2B0F5TPCRYE"
-  ]
- },
- {
-  "titulo": "Pluft O Fantasminha",
-  "ano": 2022,
-  "comoCard": "Pluft O Fantasminha",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18761.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18761.mp4"
-  ],
-  "ids": [
-   "VOD_DNE4T1GJM5"
-  ]
- },
- {
-  "titulo": "Ponto Cego",
-  "ano": 2018,
-  "comoCard": "Ponto Cego",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18797.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18797.mp4"
-  ],
-  "ids": [
-   "VOD_1X03L6PH7DW"
-  ]
- },
- {
-  "titulo": "Se Eu Fosse a Minha Mãe",
-  "ano": 1976,
-  "comoCard": "Se Eu Fosse a Minha Mae",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19263.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19263.mp4"
-  ],
-  "ids": [
-   "VOD_8ID36KJ7M2"
-  ]
- },
- {
-  "titulo": "Sonho de uma Noite de Verão",
-  "ano": 1999,
-  "comoCard": "Sonho de uma Noite de Verão",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300941.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/19553.mp4"
-  ],
-  "ids": [
-   "VOD_1G17O1CFUQT"
-  ]
- },
- {
-  "titulo": "Sonho de uma Noite de Verão",
-  "ano": 1999,
-  "comoCard": "Sonho de uma Noite de Verão",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300941.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300941.mp4"
-  ],
-  "ids": [
-   "VOD_1G17O1CFUQT"
   ]
  },
  {
@@ -885,7 +382,7 @@
   "comoCard": "A Verdade",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23117.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/517468.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/23117.mp4"
   ],
   "ids": [
@@ -903,19 +400,6 @@
   ],
   "ids": [
    "VOD_STU_SC_14U0KE5EMKY"
-  ]
- },
- {
-  "titulo": "Juntos Novamente",
-  "ano": 2023,
-  "comoCard": "Juntos Novamente",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27155.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/27155.mp4"
-  ],
-  "ids": [
-   "VOD_JHF3OX26BQ"
   ]
  },
  {
@@ -984,94 +468,16 @@
   ]
  },
  {
-  "titulo": "CASAMENTO EM CHAMAS",
-  "ano": 2017,
-  "comoCard": "CASAMENTO EM CHAMAS",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303284.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301853.mp4"
-  ],
-  "ids": [
-   "VOD_1XI4FF2GQP3"
-  ]
- },
- {
-  "titulo": "Como Conquistar um Raposa Prateada",
-  "ano": 2025,
-  "comoCard": "Como Conquistar um Raposa Prateada",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303243.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303243.mp4"
-  ],
-  "ids": [
-   "VOD_1KRMBQ2TFOB"
-  ]
- },
- {
-  "titulo": "ESTOU GRAVIDA, VAMOS TERMINAR",
-  "ano": 2025,
-  "comoCard": "ESTOU GRAVIDA, VAMOS TERMINAR",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302292.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302292.mp4"
-  ],
-  "ids": [
-   "VOD_1QKPK21W1P7"
-  ]
- },
- {
-  "titulo": "GRAVIDEZ PERFEITA",
-  "ano": 2025,
-  "comoCard": "GRAVIDEZ PERFEITA",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302473.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/302473.mp4"
-  ],
-  "ids": [
-   "VOD_1R92HIJ15DB"
-  ]
- },
- {
-  "titulo": "O Primeiro Amor Do Quarterback",
-  "ano": 2025,
-  "comoCard": "O Primeiro Amor Do Quarterback",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303192.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/303192.mp4"
-  ],
-  "ids": [
-   "VOD_24ZVYSQNUNH"
-  ]
- },
- {
   "titulo": "Escola de Magia",
   "ano": 2020,
   "comoCard": "Escola de Magia",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53067.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/708352.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53067.mp4"
   ],
   "ids": [
    "VOD_20F14XDSORF"
-  ]
- },
- {
-  "titulo": "Um Natal Encantado",
-  "ano": 2021,
-  "comoCard": "Um Natal Encantado",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53295.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53295.mp4"
-  ],
-  "ids": [
-   "VOD_16KSDC3V1O5"
   ]
  },
  {
@@ -1080,7 +486,7 @@
   "comoCard": "A Menina e o Leao",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33481.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/498248.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/33481.mp4"
   ],
   "ids": [
@@ -1132,7 +538,7 @@
   "comoCard": "Incident",
   "motivo": "TMDB diferente",
   "links": [
-   "http://acaidopt.org:80/movie/3llohwk4g9/kwf099q30o/2754626.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/47873.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/75108.mp4"
   ],
   "ids": [
@@ -1145,7 +551,7 @@
   "comoCard": "Os Encantados",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301400.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1022725.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301210.mp4"
   ],
   "ids": [
@@ -1153,16 +559,16 @@
   ]
  },
  {
-  "titulo": "Quebrando o Gelo",
-  "ano": 2022,
-  "comoCard": "Quebrando o Gelo",
+  "titulo": "Scarlet",
+  "ano": 2023,
+  "comoCard": "Scarlet",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/53261.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301231.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/1210363.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4"
   ],
   "ids": [
-   "VOD_FRYKFUTW0B"
+   "VOD_6BWKVVW8GL"
   ]
  },
  {
@@ -1179,38 +585,12 @@
   ]
  },
  {
-  "titulo": "O Principe do Natal",
-  "ano": 2017,
-  "comoCard": "O Principe do Natal",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40208.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/40208.mp4"
-  ],
-  "ids": [
-   "VOD_10JOZNCMNXN"
-  ]
- },
- {
-  "titulo": "Diorama",
-  "ano": 2022,
-  "comoCard": "Diorama",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41874.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/41874.mp4"
-  ],
-  "ids": [
-   "VOD_M39VIWTB4"
-  ]
- },
- {
   "titulo": "A Casa Mal-Assombrada",
   "ano": 2021,
   "comoCard": "A Casa Mal-Assombrada",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46691.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/802777.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/46691.mp4"
   ],
   "ids": [
@@ -1236,24 +616,11 @@
   "comoCard": "Rose Red",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51706.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/377037.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/51706.mp4"
   ],
   "ids": [
    "VOD_1WV7U2N4ZHR"
-  ]
- },
- {
-  "titulo": "Vilões",
-  "ano": 2019,
-  "comoCard": "Vilões",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52638.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/52638.mp4"
-  ],
-  "ids": [
-   "VOD_1SHIONLIJTB"
   ]
  },
  {

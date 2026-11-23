@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-23T04:48:07.795Z",
+  "geradoEm": "2026-11-23T16:53:57.401Z",
   "modo": "desligado",
   "opcoes": {
     "modo": "desligado",
@@ -8,15 +8,15 @@
     "tituloLimpo": true
   },
   "explicacao": "sem filtro: todos os filmes aparecem como vieram da lista",
-  "filmesNasFontes": 37174,
-  "cardsDeFilmesNoApp": 27662,
-  "retirados": 7243,
+  "filmesNasFontes": 36671,
+  "cardsDeFilmesNoApp": 27561,
+  "retirados": 8493,
   "porMotivo": {
-    "mesmo TMDB": 7243
+    "mesmo TMDB": 8493
   },
-  "separados": 119,
+  "separados": 70,
   "separadosPorMotivo": {
-    "série homônima: TMDB diferente": 26,
-    "TMDB diferente": 93
+    "TMDB diferente": 48,
+    "série homônima: TMDB diferente": 22
   }
 }
