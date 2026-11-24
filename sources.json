@@ -1,27 +1,41 @@
 {
-  "_comentarioFontesDoStudio": "Sistemas novos criados no painel do Cartoonzine Studio (Jogos Web → + Novo sistema) entram sozinhos no catálogo por aqui: o build lê a lista que o Studio publica e acrescenta o que ainda não está em fontes.",
+  "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
+  "_comoEstaOrganizado": "fontesDoStudio = tudo o que o Cartoonzine Studio publica (coleções, jogos e Sidechain) entra sozinho, sem editar aqui. listas = jeito simples de colar links. fontes = listas de fora do Studio, por grupo: 🎬 filmes/séries → 📺 Desenhos 24H → 📡 canais (TVzine). deduplicacao = filtro de cópias. validacao = teste dos links.",
+  "_comentarioFontesDoStudio": "Tudo o que o Cartoonzine Studio publica entra sozinho por aqui: o build lê a lista que o Studio publica e acrescenta o que ainda não está em fontes (mesmo link = já existe). Coleção nova no Studio = basta pôr o id dela em colecoes.",
   "fontesDoStudio": [
     {
       "nome": "Cartoonzine Studio · Coleções (jogos, filmes, séries, cartoons, animes, rádios…)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/fontes-cloud.json",
-      "colecoes": ["jogos", "jogos-web", "cartoons", "animes", "desenhos-24h", "filmes", "filmes-torrent", "series", "youtoon", "radios", "bookzine"]
+      "colecoes": [
+        "jogos",
+        "jogos-web",
+        "cartoons",
+        "animes",
+        "desenhos-24h",
+        "filmes",
+        "filmes-torrent",
+        "series",
+        "youtoon",
+        "radios",
+        "bookzine"
+      ]
     },
     {
       "nome": "Cartoonzine Studio · Sidechain",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/listas/sidechain-fontes.json",
-      "colecoes": ["sidechain"]
+      "colecoes": [
+        "sidechain"
+      ]
     }
   ],
   "_comentarioListas": "Jeito simples de pôr listas de canais, filmes e séries: só cole os links abaixo (entre aspas, separados por vírgula). Serve M3U, JSON, Markdown e links de site sem extensão (ex.: https://canais-exemplo.pages.dev/) — o robô descobre o formato sozinho e, se o link abrir uma página, usa as listas que a página aponta. Link que traz filmes E séries juntos vai em \"filmesESeries\": os filmes ficam em Filmes e os episódios (\"Naruto S01E03\") viram série na prateleira de Séries. Para dar nome, guia (EPG) ou desligar um link: { \"url\": \"https://…\", \"nome\": \"Meus canais\", \"epg\": \"https://…/guia.xml.gz\", \"ativo\": false }.",
   "listas": {
-    "canais": ["https://canais-teste.pages.dev/"],
+    "canais": [],
     "filmes": [],
     "series": [],
-    "filmesESeries": ["https://filmes-teste.pages.dev/"]
+    "filmesESeries": []
   },
-  "_comentario": "Manifesto único de fontes. Lido pelo build (tools/build-catalog.mjs) e pelo cloud-engine.js no modo legado. Fontes sem URL ou com SEU_USER são ignoradas. destino: videos|games|iptv|radio|streams|audio|filmes|series (em qual lista do app os itens entram). agruparSeries:false mantém episódios soltos (listas M3U do TVzine).",
-
-    "deduplicacao": {
+  "deduplicacao": {
     "_como_usar": "Troque o valor de 'modo' abaixo e salve. O robô gera o catálogo de novo sozinho. Relatórios em catalog/analise/",
     "_modo_ativo": "ativo → No app: as cópias viram um card, com o link da cópia como reserva. No relatório: o que foi retirado e para qual card foi.",
     "_modo_analisar": "analisar → No app: todos os filmes aparecem, nada é juntado. No relatório: o que seria retirado se estivesse ativo.",
@@ -30,13 +44,11 @@
     "_travaCapa": "true = nunca junta dois filmes com capas diferentes (evita juntar filmes distintos). false = junta só por título + ano.",
     "_travas_sempre_ligadas": "🛡 Sempre, em qualquer modo: TMDB diferente nunca junta (O Rei Leão 1994 × 2019); TMDB achado só pelo nome (tmdbPorNome) só junta se título ou ano baterem; séries com o mesmo nome e TMDB diferente ficam separadas (Doctor Who 1963 × 2005). Tudo que foi separado aparece no relatório com o motivo.",
     "_tituloLimpo": "true = 'Matrix 1080p DUB' (1999) acha a cópia de 'Matrix' (1999) — só para achar; o card e o id não mudam. Passa pelas mesmas travas. false = desliga.",
-
     "modo": "desligado",
     "anoNoTitulo": true,
     "travaCapa": true,
     "tituloLimpo": true
   },
-  
   "validacao": {
     "_como_usar": "Teste dos links a cada 6h. Relatórios em catalog/analise/validacao*.json. Detalhes em tools/validador/LEIAME.md",
     "_modo_relatorio": "relatorio → No app: nada muda. No relatório: quais links funcionam, quais falharam e por quê. Comece por este.",
@@ -44,7 +56,6 @@
     "_modo_desligado": "desligado → não testa nada.",
     "_apenasFontes": "Só as fontes desta lista são testadas. As outras ficam exatamente como vieram.",
     "_semFonte": "marcar = item com TODAS as fontes falhando por 'falhasParaIndisponivel' ciclos seguidos recebe indisponivel:true | remover = sai do catálogo (nunca mais de 20% de uma vez).",
-
     "modo": "relatorio",
     "apenasFontes": [
       "Filmes Saimo",
@@ -62,81 +73,37 @@
     "orcamentoMin": 20,
     "prioridadeServidores": {}
   },
-
   "fontes": [
-    {
-      "nome": "Filmes Saimo",
-      "tipo": "vod_json",
-      "prefixoId": "VOD",
-      "targetCategory": "Filmes",
-      "url": [
-      "",
-      ""
-    ]
-    },
-    {
-      "nome": "Séries Saimo",
-      "tipo": "vod_json",
-      "prefixoId": "VOD_SER",
-      "targetCategory": "Séries",
-      "urls": [
-        
-    ]
-    },
-    {
-      "nome": "Adultos Saimo",
-      "tipo": "vod_json",
-      "prefixoId": "VOD_ADU",
-      "targetCategory": "Adulto",
-      "url": ""
-    },
-    {
-     "nome": "Filmes Torrent (Studio)",
-     "tipo": "vod_json",
-     "prefixoId": "VOD_TOR",
-     "targetCategory": "Filmes",
-     "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/filmes-torrent.json"
-    },
     {
       "nome": "Filmes",
       "tipo": "vod_json",
       "prefixoId": "VOD",
       "targetCategory": "Filmes",
       "url": [
-      "https://raw.githubusercontent.com/USUARIO/REPOSITORIO/main/playlists/pluto_vod.m3u",
-      "https://raw.githubusercontent.com/josemtocco/runtime-vod-m3u-Oreate/refs/heads/main/playlists/runtime_vod.m3u",
-      "https://raw.githubusercontent.com/josemtocco/soplayfilmes/refs/heads/main/playlists/soplay_filmes.m3u"
+        "https://raw.githubusercontent.com/josemtocco/runtime-vod-m3u-Oreate/refs/heads/main/playlists/runtime_vod.m3u",
+        "https://raw.githubusercontent.com/josemtocco/soplayfilmes/refs/heads/main/playlists/soplay_filmes.m3u"
       ]
-    },
-    {
-      "nome": "Séries",
-      "tipo": "vod_json",
-      "prefixoId": "VOD_SER",
-      "targetCategory": "Séries",
-      "url": ""
-    },
-    {
-      "nome": "Cartoons VOD",
-      "tipo": "vod_json",
-      "prefixoId": "VOD_CRT",
-      "targetCategory": "Cartoons",
-      "url": ""
-    },
-    {
-      "nome": "Desenhos 24 Horas",
-      "tipo": "vod_json",
-      "prefixoId": "LIV_KID",
-      "targetCategory": "Desenhos 24 Horas",
-      "url": ""
     },
     {
       "nome": "Desenhos 24H",
       "tipo": "vod_m3u",
       "prefixoId": "LIV_KID",
       "targetCategory": "Desenhos 24H",
-      "grupos": ["Kids", "Infantil", "Anime", "Desenhos", "Nick", "Soulth Park br"],
-      "incluir": ["Mr. Bean"],
-      "excluir": ["", ""],
+      "grupos": [
+        "Kids",
+        "Infantil",
+        "Anime",
+        "Desenhos",
+        "Nick",
+        "Soulth Park br"
+      ],
+      "incluir": [
+        "Mr. Bean"
+      ],
+      "excluir": [
+        "",
+        ""
+      ],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u"
     },
@@ -146,9 +113,21 @@
       "prefixoId": "LIV_KID_ES",
       "targetCategory": "Desenhos 24H",
       "idioma": "es",
-      "grupos": ["Kids", "Infantil", "Niños", "Anime", "Animé", "Nick", "Soulth Park es"],
-      "incluir": ["Mr. Bean"],
-      "excluir": [""],
+      "grupos": [
+        "Kids",
+        "Infantil",
+        "Niños",
+        "Anime",
+        "Animé",
+        "Nick",
+        "Soulth Park es"
+      ],
+      "incluir": [
+        "Mr. Bean"
+      ],
+      "excluir": [
+        ""
+      ],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-MX.m3u"
     },
@@ -158,67 +137,43 @@
       "prefixoId": "LIV_KID_EN",
       "targetCategory": "Desenhos 24H",
       "idioma": "en",
-      "grupos": ["Kids", "Children's", "Teen", "Anime", "Nick", "Soulth Park en"],
-      "incluir": ["Mr. Bean"],
-      "excluir": [""],
+      "grupos": [
+        "Kids",
+        "Children's",
+        "Teen",
+        "Anime",
+        "Nick",
+        "Soulth Park en"
+      ],
+      "incluir": [
+        "Mr. Bean"
+      ],
+      "excluir": [
+        ""
+      ],
       "generoDoGrupo": true,
       "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-US.m3u"
     },
     {
-  "nome": "Desenhos 24H · Português PT",
-  "ativo": true,
-  "tipo": "vod_m3u",
-  "prefixoId": "LIV_KID_PT",
-  "targetCategory": "Desenhos 24H",
-  "idioma": "pt-PT",
-  "grupos": ["Kids", "Infantil", "Anime", "Desenhos", "Nick"],
-  "incluir": ["Mr. Bean"],
-  "excluir": [],
-  "generoDoGrupo": true,
-  "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u",
-},
-    {
-      "nome": "YouToon · Português",
-      "tipo": "vod_json",
-      "categoryType": "live",
-      "prefixoId": "YTN_BR",
-      "targetCategory": "Desenhos 24H",
-      "idioma": "pt-BR",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/pt-br.json"
-    },
-    {
-      "nome": "YouToon · Espanhol",
-      "tipo": "vod_json",
-      "categoryType": "live",
-      "prefixoId": "YTN_ES",
-      "targetCategory": "Desenhos 24H",
-      "idioma": "es",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/es.json"
-    },
-    {
-      "nome": "YouToon · Inglês",
-      "tipo": "vod_json",
-      "categoryType": "live",
-      "prefixoId": "YTN_EN",
-      "targetCategory": "Desenhos 24H",
-      "idioma": "en",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/en.json"
-    },
-    {
-      "nome": "YouToon · Português (Portugal)",
-      "tipo": "vod_json",
-      "categoryType": "live",
-      "prefixoId": "YTN_PT",
+      "nome": "Desenhos 24H · Português PT",
+      "ativo": true,
+      "tipo": "vod_m3u",
+      "prefixoId": "LIV_KID_PT",
       "targetCategory": "Desenhos 24H",
       "idioma": "pt-PT",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/youtoon/pt-pt.json"
-    },
-    {
-      "nome": "Animes",
-      "tipo": "vod_m3u",
-      "prefixoId": "LIV_ANI",
-      "targetCategory": "Animes",
-      "url": ""
+      "grupos": [
+        "Kids",
+        "Infantil",
+        "Anime",
+        "Desenhos",
+        "Nick"
+      ],
+      "incluir": [
+        "Mr. Bean"
+      ],
+      "excluir": [],
+      "generoDoGrupo": true,
+      "url": "https://raw.githubusercontent.com/OwnerPlugins/pluto-tv-m3u/refs/heads/main/pluto-live-PT.m3u"
     },
     {
       "nome": "TVzine - Canais (Saimo)",
@@ -227,552 +182,18 @@
       "url": "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/canais_sm.json"
     },
     {
-     "nome": "TVzine - Canais",
-     "tipo": "tvzine_worker",
-     "prefixoId": "TV",
-     "url": [
-     "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/canais.json",
-     "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
-     "https://raw.githubusercontent.com/josemtocco/brasil-stream-catalog/refs/heads/main/canais.m3u"
-     ],
-    "epg": [
-    "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz",
-    "https://exemplo.com/outro-guia.xml.gz"
-    ]
-    },
-    {
-      "nome": "TVzine - Filmes M3U",
+      "nome": "TVzine - Canais",
       "tipo": "tvzine_worker",
-      "prefixoId": "TV_VOD",
-      "categoryType": "vod",
-      "url": "",
-      "destino": "filmes",
-      "agruparSeries": false
-    },
-    {
-      "nome": "TVzine - Séries M3U",
-      "tipo": "tvzine_worker",
-      "prefixoId": "TV_SER",
-      "categoryType": "vod",
-      "url": "",
-      "destino": "series",
-      "agruparSeries": false
-    },
-    {
-      "nome": "Rádios FM/Web (Links Diretos)",
-      "tipo": "radio",
-      "targetCategory": "Rádios",
-      "url": ""
-    },
-    {
-      "nome": "Rádios M3U",
-      "tipo": "radio",
-      "formato": "m3u",
-      "targetCategory": "Rádios",
-      "url": "",
-      "destino": "streams"
-    },
-    {
-      "nome": "Mídias de Rádio",
-      "tipo": "radio",
-      "targetCategory": "Mídias de Rádio",
-      "url": "",
-      "destino": "audio"
-    },
-    {
-      "nome": "Arcade",
-      "tipo": "emulator_json",
-      "prefixoId": "ARC",
-      "console": "arcade",
-      "targetCategory": "Arcade",
-      "url": ""
-    },
-    {
-      "nome": "Nintendo (NES)",
-      "tipo": "emulator_json",
-      "prefixoId": "NES",
-      "console": "nes",
-      "targetCategory": "Nintendo (NES)",
-      "url": ""
-    },
-    {
-      "nome": "Super Nintendo",
-      "tipo": "emulator_json",
-      "prefixoId": "SNE",
-      "console": "snes",
-      "targetCategory": "Super Nintendo",
-      "url": ""
-    },
-    {
-      "nome": "Nintendo 64",
-      "tipo": "emulator_json",
-      "prefixoId": "N64",
-      "console": "n64",
-      "targetCategory": "Nintendo 64",
-      "url": ""
-    },
-    {
-      "nome": "Nintendo DS",
-      "tipo": "emulator_json",
-      "prefixoId": "NDS",
-      "console": "nds",
-      "targetCategory": "Nintendo DS",
-      "url": ""
-    },
-    {
-      "nome": "Game Boy Color",
-      "tipo": "emulator_json",
-      "prefixoId": "GBC",
-      "console": "gbc",
-      "targetCategory": "Game Boy Color",
-      "url": ""
-    },
-    {
-      "nome": "Game Boy Advance",
-      "tipo": "emulator_json",
-      "prefixoId": "GBA",
-      "console": "gba",
-      "targetCategory": "Game Boy Advance",
-      "url": ""
-    },
-    {
-      "nome": "Mega Drive",
-      "tipo": "emulator_json",
-      "prefixoId": "MD",
-      "console": "megadrive",
-      "targetCategory": "Mega Drive",
-      "url": ""
-    },
-    {
-      "nome": "Master System",
-      "tipo": "emulator_json",
-      "prefixoId": "MS",
-      "console": "mastersystem",
-      "targetCategory": "Master System",
-      "url": ""
-    },
-    {
-      "nome": "Game Gear",
-      "tipo": "emulator_json",
-      "prefixoId": "GG",
-      "console": "gamegear",
-      "targetCategory": "Game Gear",
-      "url": ""
-    },
-    {
-      "nome": "Sega CD",
-      "tipo": "emulator_json",
-      "prefixoId": "SCD",
-      "console": "segacd",
-      "targetCategory": "Sega CD",
-      "url": ""
-    },
-    {
-      "nome": "Sega 32X",
-      "tipo": "emulator_json",
-      "prefixoId": "32X",
-      "console": "sega32x",
-      "targetCategory": "Sega 32X",
-      "url": ""
-    },
-    {
-      "nome": "Sega Saturn",
-      "tipo": "emulator_json",
-      "prefixoId": "SAT",
-      "console": "saturn",
-      "targetCategory": "Sega Saturn",
-      "url": ""
-    },
-    {
-      "nome": "Atari 2600",
-      "tipo": "emulator_json",
-      "prefixoId": "A26",
-      "console": "atari2600",
-      "targetCategory": "Atari 2600",
-      "url": ""
-    },
-    {
-      "nome": "PC Engine",
-      "tipo": "emulator_json",
-      "prefixoId": "PCE",
-      "console": "pcengine",
-      "targetCategory": "PC Engine",
-      "url": ""
-    },
-    {
-      "nome": "PC Engine CD",
-      "tipo": "emulator_json",
-      "prefixoId": "PCD",
-      "console": "pcenginecd",
-      "targetCategory": "PC Engine CD",
-      "url": ""
-    },
-    {
-      "nome": "Neo Geo Pocket",
-      "tipo": "emulator_json",
-      "prefixoId": "NGP",
-      "console": "ngp",
-      "targetCategory": "Neo Geo Pocket",
-      "url": ""
-    },
-    {
-      "nome": "Neo Geo CD",
-      "tipo": "emulator_json",
-      "prefixoId": "NGC",
-      "console": "neogeocd",
-      "targetCategory": "Neo Geo CD",
-      "url": ""
-    },
-    {
-      "nome": "Neo Geo",
-      "tipo": "emulator_json",
-      "prefixoId": "NEO",
-      "console": "neogeo",
-      "targetCategory": "Neo Geo",
-      "url": ""
-    },
-    {
-      "nome": "MSX",
-      "tipo": "emulator_json",
-      "prefixoId": "MSX",
-      "console": "msx",
-      "targetCategory": "MSX",
-      "url": ""
-    },
-    {
-      "nome": "Odyssey 2",
-      "tipo": "emulator_json",
-      "prefixoId": "ODY",
-      "console": "odyssey2",
-      "targetCategory": "Odyssey 2",
-      "url": ""
-    },
-    {
-      "nome": "ColecoVision",
-      "tipo": "emulator_json",
-      "prefixoId": "COL",
-      "console": "colecovision",
-      "targetCategory": "ColecoVision",
-      "url": ""
-    },
-    {
-      "nome": "Amiga",
-      "tipo": "emulator_json",
-      "prefixoId": "AMI",
-      "console": "amiga",
-      "targetCategory": "Amiga",
-      "url": ""
-    },
-    {
-      "nome": "MS-DOS",
-      "tipo": "emulator_json",
-      "prefixoId": "DOS",
-      "console": "msdos",
-      "targetCategory": "MS-DOS",
-      "url": ""
-    },
-    {
-      "nome": "Flash Player",
-      "tipo": "emulator_json",
-      "prefixoId": "FLA",
-      "console": "flash",
-      "targetCategory": "Flash Player",
-      "url": ""
-    },
-    {
-      "nome": "PlayStation 1",
-      "tipo": "emulator_json",
-      "prefixoId": "PS1",
-      "console": "ps1",
-      "targetCategory": "PlayStation 1",
-      "url": ""
-    },
-    {
-      "nome": "3DO",
-      "tipo": "emulator_json",
-      "prefixoId": "3DO",
-      "console": "3do",
-      "targetCategory": "3DO",
-      "url": ""
-    },
-    {
-      "nome": "Fangames",
-      "tipo": "emulator_json",
-      "prefixoId": "FAN",
-      "console": "web-fangames",
-      "targetCategory": "Fangames",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-fangames.json",
-      "_studio": "jogos-web:web-fangames"
-    },
-    {
-      "nome": "Indie",
-      "tipo": "emulator_json",
-      "prefixoId": "IND",
-      "console": "web-indie",
-      "targetCategory": "Indie",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-indie.json",
-      "_studio": "jogos-web:web-indie"
-    },
-    {
-      "nome": "Remakes",
-      "tipo": "emulator_json",
-      "prefixoId": "RMK",
-      "console": "web-remakes",
-      "targetCategory": "Remakes",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-remakes.json",
-      "_studio": "jogos-web:web-remakes"
-    },
-    {
-      "nome": "PC",
-      "tipo": "emulator_json",
-      "prefixoId": "WPC",
-      "console": "web-pc",
-      "targetCategory": "PC",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-pc.json",
-      "_studio": "jogos-web:web-pc"
-    },
-    {
-      "nome": "Nintendo 64 (Web)",
-      "tipo": "emulator_json",
-      "prefixoId": "WN64",
-      "console": "web-n64",
-      "targetCategory": "Nintendo 64 (Web)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-n64.json",
-      "_studio": "jogos-web:web-n64"
-    },
-    {
-      "nome": "GameCube",
-      "tipo": "emulator_json",
-      "prefixoId": "GCN",
-      "console": "web-gamecube",
-      "targetCategory": "GameCube",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-gamecube.json",
-      "_studio": "jogos-web:web-gamecube"
-    },
-    {
-      "nome": "Wii",
-      "tipo": "emulator_json",
-      "prefixoId": "WII",
-      "console": "web-wii",
-      "targetCategory": "Wii",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-wii.json",
-      "_studio": "jogos-web:web-wii"
-    },
-    {
-      "nome": "Nintendo Switch",
-      "tipo": "emulator_json",
-      "prefixoId": "NSW",
-      "console": "web-switch",
-      "targetCategory": "Nintendo Switch",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-switch.json",
-      "_studio": "jogos-web:web-switch"
-    },
-    {
-      "nome": "Dreamcast",
-      "tipo": "emulator_json",
-      "prefixoId": "DC",
-      "console": "web-dreamcast",
-      "targetCategory": "Dreamcast",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-dreamcast.json",
-      "_studio": "jogos-web:web-dreamcast"
-    },
-    {
-      "nome": "DOS (Web)",
-      "tipo": "emulator_json",
-      "prefixoId": "WDOS",
-      "console": "web-dos",
-      "targetCategory": "DOS (Web)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-dos.json",
-      "_studio": "jogos-web:web-dos"
-    },
-    {
-      "nome": "Windows",
-      "tipo": "emulator_json",
-      "prefixoId": "WIN",
-      "console": "web-windows",
-      "targetCategory": "Windows",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-windows.json",
-      "_studio": "jogos-web:web-windows"
-    },
-    {
-      "nome": "Xbox 360",
-      "tipo": "emulator_json",
-      "prefixoId": "X360",
-      "console": "web-xbox360",
-      "targetCategory": "Xbox 360",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xbox360.json",
-      "_studio": "jogos-web:web-xbox360"
-    },
-    {
-      "nome": "Xbox One",
-      "tipo": "emulator_json",
-      "prefixoId": "XONE",
-      "console": "web-xboxone",
-      "targetCategory": "Xbox One",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xboxone.json",
-      "_studio": "jogos-web:web-xboxone"
-    },
-    {
-      "nome": "Xbox Series X|S",
-      "tipo": "emulator_json",
-      "prefixoId": "XSX",
-      "console": "web-xboxseries",
-      "targetCategory": "Xbox Series X|S",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xboxseries.json",
-      "_studio": "jogos-web:web-xboxseries"
-    },
-    {
-      "nome": "Xbox",
-      "tipo": "emulator_json",
-      "prefixoId": "XBOX",
-      "console": "web-xbox",
-      "targetCategory": "Xbox",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-xbox.json",
-      "_studio": "jogos-web:web-xbox"
-    },
-    {
-      "nome": "PlayStation (Web)",
-      "tipo": "emulator_json",
-      "prefixoId": "WPS1",
-      "console": "web-ps1",
-      "targetCategory": "PlayStation (Web)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps1.json",
-      "_studio": "jogos-web:web-ps1"
-    },
-    {
-      "nome": "PlayStation 2",
-      "tipo": "emulator_json",
-      "prefixoId": "PS2",
-      "console": "web-ps2",
-      "targetCategory": "PlayStation 2",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps2.json",
-      "_studio": "jogos-web:web-ps2"
-    },
-    {
-      "nome": "PSP",
-      "tipo": "emulator_json",
-      "prefixoId": "PSP",
-      "console": "web-psp",
-      "targetCategory": "PSP",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-psp.json",
-      "_studio": "jogos-web:web-psp"
-    },
-    {
-      "nome": "PlayStation 4",
-      "tipo": "emulator_json",
-      "prefixoId": "PS4",
-      "console": "web-ps4",
-      "targetCategory": "PlayStation 4",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps4.json",
-      "_studio": "jogos-web:web-ps4"
-    },
-    {
-      "nome": "PlayStation 3",
-      "tipo": "emulator_json",
-      "prefixoId": "PS3",
-      "console": "web-ps3",
-      "targetCategory": "PlayStation 3",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ps3.json",
-      "_studio": "jogos-web:web-ps3"
-    },
-    {
-      "nome": "Android",
-      "tipo": "emulator_json",
-      "prefixoId": "AND",
-      "console": "web-android",
-      "targetCategory": "Android",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-android.json",
-      "_studio": "jogos-web:web-android"
-    },
-    {
-      "nome": "iOS",
-      "tipo": "emulator_json",
-      "prefixoId": "IOS",
-      "console": "web-ios",
-      "targetCategory": "iOS",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-ios.json",
-      "_studio": "jogos-web:web-ios"
-    },
-    {
-      "nome": "Arcade (Web)",
-      "tipo": "emulator_json",
-      "prefixoId": "WARC",
-      "console": "web-arcade",
-      "targetCategory": "Arcade (Web)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-arcade.json",
-      "_studio": "jogos-web:web-arcade"
-    },
-    {
-      "nome": "Navegador (Web browser)",
-      "tipo": "emulator_json",
-      "prefixoId": "NAV",
-      "console": "web-navegador",
-      "targetCategory": "Navegador (Web browser)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-navegador.json",
-      "_studio": "jogos-web:web-navegador"
-    },
-    {
-      "nome": "Java",
-      "tipo": "emulator_json",
-      "prefixoId": "JAVA",
-      "console": "web-java",
-      "targetCategory": "Java",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-java.json",
-      "_studio": "jogos-web:web-java"
-    },
-    {
-      "nome": "Mobile",
-      "tipo": "emulator_json",
-      "prefixoId": "MOB",
-      "console": "web-mobile",
-      "targetCategory": "Mobile",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-mobile.json",
-      "_studio": "jogos-web:web-mobile"
-    },
-    {
-      "nome": "Tabletop",
-      "tipo": "emulator_json",
-      "prefixoId": "TAB",
-      "console": "web-tabletop",
-      "targetCategory": "Tabletop",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-tabletop.json",
-      "_studio": "jogos-web:web-tabletop"
-    },
-    {
-      "nome": "macOS",
-      "tipo": "emulator_json",
-      "prefixoId": "MAC",
-      "console": "web-macos",
-      "targetCategory": "macOS",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-macos.json",
-      "_studio": "jogos-web:web-macos"
-    },
-    {
-      "nome": "ZX Spectrum",
-      "tipo": "emulator_json",
-      "prefixoId": "ZX",
-      "console": "web-zxspectrum",
-      "targetCategory": "ZX Spectrum",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-zxspectrum.json",
-      "_studio": "jogos-web:web-zxspectrum"
-    },
-    {
-      "nome": "Neo Geo (Web)",
-      "tipo": "emulator_json",
-      "prefixoId": "WNEO",
-      "console": "web-neogeo",
-      "targetCategory": "Neo Geo (Web)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-neogeo.json",
-      "_studio": "jogos-web:web-neogeo"
-    },
-    {
-      "nome": "Sem categoria (Web)",
-      "tipo": "emulator_json",
-      "prefixoId": "WOUT",
-      "console": "web-outros",
-      "targetCategory": "Sem categoria (Web)",
-      "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/jogos/web-outros.json",
-      "_studio": "jogos-web:web-outros"
+      "prefixoId": "TV",
+      "url": [
+        "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/canais.json",
+        "https://raw.githubusercontent.com/josemtocco/Pluto-TV/refs/heads/main/pluto_br.m3u",
+        "https://raw.githubusercontent.com/josemtocco/brasil-stream-catalog/refs/heads/main/canais.m3u"
+      ],
+      "epg": [
+        "https://github.com/matthuisman/i.mjh.nz/raw/refs/heads/master/PlutoTV/all.xml.gz",
+        "https://exemplo.com/outro-guia.xml.gz"
+      ]
     }
   ]
 }
