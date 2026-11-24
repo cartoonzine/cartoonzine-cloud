@@ -223,6 +223,12 @@ async function emit(builder, args, epg, sourcesReport, validacao) {
             writes.push([path.join(tmp, 'cat', s, `${p}.json`), cards]);
         }
         const entry = { nome: cat.nome, slug: s, type: cat.type, destino: cat.destino, total: ids.length, pages };
+        // 📥 o que os cards são: filmes, séries (com quantos episódios) e outros — para conferir com o que chegou
+        if (cat.type === 'vod' || cat.type === 'series') {
+            const comp = { filmes: 0, series: 0, episodios: 0, outros: 0 };
+            for (const id of ids) { const se = builder.series.get(id); if (se) { comp.series++; comp.episodios += se.episodes.length; } else { const it = builder.items.get(id); if (it && it.categoryType === 'vod') comp.filmes++; else comp.outros++; } }
+            entry.cards = comp;
+        }
         // 🔎 ficha de filtro (canais ao vivo não têm filtros de filme)
         if (cat.type !== 'live' && ids.length) {
             writes.push([path.join(tmp, 'filtros', `${s}.json`), builder.fichaFiltro(cat.nome)]);
@@ -530,18 +536,19 @@ async function main() {
     for (let i = 0; i < usable.length; i++) {
         const src = usable[i];
         try {
-            let n;
+            let n, cont = null;
             if (prefetched[i]) {
                 const text = await prefetched[i];
                 if (text && text.error) throw text.error;
                 const before = builder.items.size;
-                for (const raw of Core.parseSourceText(text, h => h.epg.forEach(u => epg.add(u)))) builder.addRaw(raw, src);
+                cont = { recebidos: 0, episodios: 0 };
+                for (const raw of Core.parseSourceText(text, h => h.epg.forEach(u => epg.add(u)))) { cont.recebidos++; if (raw && (raw.serie || raw.series || raw.season != null || raw.episode != null)) cont.episodios++; builder.addRaw(raw, src); }
                 n = builder.items.size - before;
                 log(`✔ ${src.nome}${src._parte ? ` [${src._parte}]` : ''}: +${n} itens`);
             } else {
                 n = await ingest(builder, src, args, epg);
             }
-            report.push({ nome: src.nome, parte: src._parte, categoria: src.targetCategory || src.categoria || undefined, ok: true, itens: n });
+            report.push(Object.assign({ nome: src.nome, parte: src._parte, categoria: src.targetCategory || src.categoria || undefined, ok: true, itens: n }, cont ? { recebidos: cont.recebidos, episodios: cont.episodios, filmes: cont.recebidos - cont.episodios } : {}));
         } catch (e) {
             log(`✖ ${src.nome}${src._parte ? ` [${src._parte}]` : ''}: ${e.message}`);
             report.push({ nome: src.nome, parte: src._parte, categoria: src.targetCategory || src.categoria || undefined, ok: false, erro: String(e.message || e) });
