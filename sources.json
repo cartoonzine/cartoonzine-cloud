@@ -218,7 +218,7 @@
       "tipo": "vod_m3u",
       "prefixoId": "LIV_ANI",
       "targetCategory": "Animes",
-      "url": "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/animes_sm.json"
+      "url": ""
     },
     {
       "nome": "TVzine - Canais (Saimo)",
