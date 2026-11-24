@@ -57,3 +57,8 @@ t('mesma série, mesmo TMDB: os episódios repetidos viram reserva (como antes)'
     assert.equal(b.series.size, 1);
     const eps = [...b.items.values()].filter(i => i.categoryType === 'episode'); assert.equal(eps.length, 1); assert.deepEqual(eps[0].mirrors, ['http://m/l1b.mp4']);
 });
+t('🧪 modo "nenhum" (teste): nem o mesmo TMDB junta — cada filme que chega vira um card', () => {
+    const fontes = [[A, [{ title: 'Matrix', year: 1999, url: 'http://a/m.mp4', tmdbId: 603 }, { title: 'Up', year: 2009, url: 'http://a/up.mp4' }]], [B, [{ title: 'The Matrix', url: 'http://b/m.mp4', tmdbId: 603 }, { title: 'Up', year: 2009, url: 'http://b/up.mp4' }, { title: 'Up', year: 2009, url: 'http://a/up.mp4' }]]];
+    assert.equal(vods(montar('desligado', fontes)).length, 3);          // desligado: o mesmo TMDB (Matrix) ainda vira 1 card
+    assert.equal(vods(montar('nenhum', fontes)).length, 4);          // 5 chegaram, 1 com o link idêntico
+});

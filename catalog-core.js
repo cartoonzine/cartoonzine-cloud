@@ -1150,10 +1150,10 @@
         constructor(opts = {}) {
             this.maxItems = opts.maxItems || Infinity;
             // Filtro de cópias (sources.json → "deduplicacao"):
-            //   modo: 'ativo' (junta) | 'analisar' (não junta, só relata) | 'desligado' (sem filtro)
+            //   modo: 'ativo' (junta) | 'analisar' (não junta, só relata) | 'desligado' (sem filtro) | 'nenhum' (teste: nem o mesmo TMDB junta)
             const d = opts.deduplicacao || {};
             this.dedup = {
-                modo: ['ativo', 'analisar', 'desligado'].includes(d.modo) ? d.modo : 'ativo',
+                modo: ['ativo', 'analisar', 'desligado', 'nenhum'].includes(d.modo) ? d.modo : 'ativo',
                 anoNoTitulo: d.anoNoTitulo !== false,
                 travaCapa: d.travaCapa !== false,
                 tituloLimpo: d.tituloLimpo !== false
@@ -1231,7 +1231,7 @@
             }
             // título limpo ("Matrix 1999 1080p DUB" = "Matrix" 1999) só para ACHAR a cópia — passa pelas mesmas travas
             let porLimpo = false;
-            const kl = item.categoryType === 'vod' && item.year && this.dedup.tituloLimpo && this.dedup.modo !== 'desligado' ? 'vod|' + tituloLimpo(item._tituloOriginal || item.title) + '|' + item.year : '';
+            const kl = item.categoryType === 'vod' && item.year && this.dedup.tituloLimpo && !['desligado', 'nenhum'].includes(this.dedup.modo) ? 'vod|' + tituloLimpo(item._tituloOriginal || item.title) + '|' + item.year : '';
             if (!existingId && kl && kl.length > 8 && this.limpoToId.has(kl)) { existingId = this.limpoToId.get(kl); porLimpo = true; }
             let mesmaObra = !!(tk && existingId && this.tmdbToId.get(tk) === existingId);
             // 🛡 TRAVA TMDB: dois códigos do TMDB diferentes = obras diferentes. Nunca junta (O Rei Leão 1994 × 2019).
@@ -1245,7 +1245,7 @@
 
             // Trava pela capa: mesmo título + mesmo ano, mas capas DIFERENTES do TMDB
             // = filmes diferentes (lista de origem com título/ano errado). Não junta.
-            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.travaCapa && this.dedup.modo !== 'desligado') {
+            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.travaCapa && !['desligado', 'nenhum'].includes(this.dedup.modo)) {
                 const o = this.items.get(existingId);
                 if (o && capasDiferentes(o.thumb, item.thumb)) {
                     this.relatorio.separados.push({ titulo: item._tituloOriginal || item.title, ano: item.year, comoCard: o.title, motivo: 'capas diferentes', capas: [o.thumb, item.thumb], links: [o.url, item.url], ids: [o.id] });
@@ -1258,7 +1258,8 @@
 
             // Modo "analisar"/"desligado": filmes nunca são juntados (cada um vira um card).
             // Em "analisar", registra o que SERIA retirado, para comparar antes de ativar.
-            if (existingId && !mesmaObra && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
+            // 🧪 modo "nenhum" (teste): nem o mesmo TMDB junta — cada filme que chega vira um card (só link idêntico se junta)
+            if (existingId && (!mesmaObra || this.dedup.modo === 'nenhum') && item.categoryType === 'vod' && this.dedup.modo !== 'ativo') {
                 const o = this.items.get(existingId);
                 if (!o || item.url !== o.url) {
                     this._sep++;
@@ -1375,7 +1376,7 @@
         addRaw(raw, src) {
             let n = 0;
             // "desligado" também não tira o "(ano)" do nome (comportamento do motor antigo)
-            const anoNoTitulo = this.dedup.modo !== 'desligado' && this.dedup.anoNoTitulo;
+            const anoNoTitulo = !['desligado', 'nenhum'].includes(this.dedup.modo) && this.dedup.anoNoTitulo;
             const s = anoNoTitulo ? src : Object.assign({}, src, { anoNoTitulo: false });
             for (const it of normalize(raw, s)) if (this.add(it)) n++;
             return n;
