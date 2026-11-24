@@ -1,30 +1,5 @@
 [
  {
-  "titulo": "Charlie Brown!",
-  "ano": 1977,
-  "comoCard": "Charlie Brown",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307275.mp4"
-  ],
-  "ids": [
-   "VOD_IPG9NVX42X"
-  ]
- },
- {
-  "titulo": "Acampamento Mágico",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/228671",
-   "tv/228673"
-  ],
-  "ids": [
-   "LIV_ANI_152ZSU4TT41",
-   "LIV_ANI_152ZSU4TT41_1CEDEE"
-  ]
- },
- {
   "titulo": "Amor²",
   "ano": 2021,
   "comoCard": "Amor",
@@ -51,6 +26,19 @@
   ]
  },
  {
+  "titulo": "Pinóquio",
+  "ano": 2026,
+  "comoCard": "Pinóquio",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58086.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1248723.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_1DDPRGHPYCG"
+  ]
+ },
+ {
   "titulo": "Renegados",
   "ano": 2022,
   "comoCard": "Renegados",
@@ -71,28 +59,9 @@
  },
  {
   "titulo": "Ingresso Para o Paraíso",
-  "comoCard": "Paraiso",
+  "comoCard": "Paraíso",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/800939"
- },
- {
-  "titulo": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 1",
-  "ano": 2023,
-  "comoCard": "Liga da Justiça x RWBY Super-Heróis e Caçadores - Parte 1",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/56646.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/56646.mp4"
-  ],
-  "ids": [
-   "VOD_3IS1DSU0O2"
-  ]
- },
- {
-  "titulo": "Batman O Retorno",
-  "comoCard": "O Retorno",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/364"
  },
  {
   "titulo": "Brothers by Blood",
@@ -131,16 +100,23 @@
   "tmdb": "movie/608"
  },
  {
-  "titulo": "Na Natureza Selvagem",
-  "comoCard": "Selvagem",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/5915"
- },
- {
   "titulo": "O Retorno da Múmia",
   "comoCard": "Retorno",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/1734"
+ },
+ {
+  "titulo": "O Último Herói",
+  "ano": 2019,
+  "comoCard": "O Ultimo Heroi",
+  "motivo": "TMDB diferente",
+  "links": [
+   "https://nixplay.lat/movie/saimo-vods/221097/575075.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/6176.mp4"
+  ],
+  "ids": [
+   "LIV_ANI_SC_1T5VQ3Y8HSS"
+  ]
  },
  {
   "titulo": "Os Renegados",
@@ -161,68 +137,35 @@
   "tmdb": "movie/1541"
  },
  {
-  "titulo": "Charlie Brown",
-  "ano": 1974,
-  "comoCard": "Charlie Brown",
+  "titulo": "Porco Rosso O Último Herói Romântico",
+  "comoCard": "O Ultimo Heroi",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/11621"
+ },
+ {
+  "titulo": "Pretty Guardian Sailor Moon Cosmos O Filme (Parte 1)",
+  "ano": 2023,
+  "comoCard": "Pretty Guardian Sailor Moon Cosmos: O Filme – Parte 1",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300873.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300873.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/968868.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/10959.mp4"
   ],
   "ids": [
-   "VOD_GRUTT3EC36"
+   "LIV_ANI_SC_19UU22LDKQJ"
   ]
  },
  {
-  "titulo": "Charlie Brown",
-  "ano": 1976,
-  "comoCard": "Charlie Brown",
+  "titulo": "That Time I Got Reincarnated as a Slime o Filme Lágrimas do mar azul-celeste",
+  "ano": 2026,
+  "comoCard": "That Time I Got Reincarnated as a Slime o Filme: Lágrimas do mar azul-celeste",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300874.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300874.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/1363974.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/310625.mp4"
   ],
   "ids": [
-   "VOD_111PDJT4C9V"
-  ]
- },
- {
-  "titulo": "Charlie Brown",
-  "ano": 1977,
-  "comoCard": "Charlie Brown",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4"
-  ],
-  "ids": [
-   "VOD_IPG9NVX42X"
-  ]
- },
- {
-  "titulo": "Charlie Brown",
-  "ano": 2003,
-  "comoCard": "Charlie Brown",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300885.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300885.mp4"
-  ],
-  "ids": [
-   "VOD_IK0T8187IY"
-  ]
- },
- {
-  "titulo": "Charlie Brown",
-  "ano": 2011,
-  "comoCard": "Charlie Brown",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300887.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300887.mp4"
-  ],
-  "ids": [
-   "VOD_7RD7NYAH3V"
+   "LIV_ANI_SC_M033KLZSIX"
   ]
  },
  {
@@ -260,6 +203,12 @@
   "comoCard": "Adeus Professor",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/467956"
+ },
+ {
+  "titulo": "Possuídos",
+  "comoCard": "Fallen",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/9411"
  },
  {
   "titulo": "Professor",
@@ -310,12 +259,6 @@
   "tmdb": "movie/28510"
  },
  {
-  "titulo": "Predators",
-  "comoCard": "Predadores",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/34851"
- },
- {
   "titulo": "Busca Sem Limites",
   "comoCard": "Collide",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
@@ -328,6 +271,19 @@
   "tmdb": "movie/649401"
  },
  {
+  "titulo": "Scarlet",
+  "ano": 2023,
+  "comoCard": "Scarlet",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4"
+  ],
+  "ids": [
+   "LIV_ANI_SC_6BWKVVW8GL"
+  ]
+ },
+ {
   "titulo": "The Professor",
   "comoCard": "Adeus Professor",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
@@ -338,19 +294,6 @@
   "comoCard": "Strangers",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/994108"
- },
- {
-  "titulo": "Um Conto de Natal",
-  "ano": 2022,
-  "comoCard": "Um Conto de Natal",
-  "motivo": "TMDB diferente",
-  "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/1216.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301272.mp4"
-  ],
-  "ids": [
-   "VOD_DC4B6MPX5V"
-  ]
  },
  {
   "titulo": "Waiting For The Barbarians",
@@ -425,6 +368,42 @@
   "tmdb": "movie/1117321"
  },
  {
+  "titulo": "Em Busca do Vale Encantado 13",
+  "comoCard": "Em Busca do Vale Encantado XIII A União dos Amigos",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/39961"
+ },
+ {
+  "titulo": "Guardioes",
+  "comoCard": "A Origem dos Guardioes",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/81188"
+ },
+ {
+  "titulo": "O Rei",
+  "comoCard": "O Rei Leão",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/8587"
+ },
+ {
+  "titulo": "Selvagem",
+  "comoCard": "Na Natureza Selvagem",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/5915"
+ },
+ {
+  "titulo": "Entre a Vida e a Morte",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/226529",
+   "tv/104486"
+  ],
+  "ids": [
+   "VOD_SER_SC_ZN0ZIPU17W",
+   "VOD_SER_SC_ZN0ZIPU17W_1R5JHQ"
+  ]
+ },
+ {
   "titulo": "Girls Dorm",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -446,6 +425,18 @@
   "ids": [
    "VOD_SER_SC_19XTWHVONF9",
    "VOD_SER_SC_19XTWHVONF9_1U8XQP"
+  ]
+ },
+ {
+  "titulo": "Our Skyy",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/219038",
+   "tv/84351"
+  ],
+  "ids": [
+   "VOD_SER_SC_27F1NLS3ZGE",
+   "VOD_SER_SC_27F1NLS3ZGE_IC898B"
   ]
  },
  {
@@ -485,6 +476,18 @@
   ]
  },
  {
+  "titulo": "A Acusação",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/74447",
+   "tv/110886"
+  ],
+  "ids": [
+   "VOD_SER_SC_23UUAP2NT3I",
+   "VOD_SER_SC_23UUAP2NT3I_VALLL3"
+  ]
+ },
+ {
   "titulo": "A Missao",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -506,6 +509,30 @@
   "ids": [
    "VOD_SER_SC_1USDLIJMOTR",
    "VOD_SER_SC_1USDLIJMOTR_1YI2JG"
+  ]
+ },
+ {
+  "titulo": "Agência",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/219971",
+   "tv/195819"
+  ],
+  "ids": [
+   "VOD_SER_SC_28Y2BEQHHVR",
+   "VOD_SER_SC_28Y2BEQHHVR_HUUBFN"
+  ]
+ },
+ {
+  "titulo": "Agency",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/219971",
+   "tv/203698"
+  ],
+  "ids": [
+   "VOD_SER_SC_2FQPF2HV5V0",
+   "VOD_SER_SC_2FQPF2HV5V0_6T4OJ2"
   ]
  },
  {
@@ -569,18 +596,6 @@
   ]
  },
  {
-  "titulo": "As Aventuras do Batman",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/4625",
-   "tv/31749"
-  ],
-  "ids": [
-   "VOD_SER_SC_1ONSRHTBWBU",
-   "VOD_SER_SC_1ONSRHTBWBU_2GFETI"
-  ]
- },
- {
   "titulo": "As Novas Aventuras do Superman",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -617,6 +632,30 @@
   ]
  },
  {
+  "titulo": "Case",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/2171",
+   "tv/69871"
+  ],
+  "ids": [
+   "VOD_SER_SC_10EADGWCNU5",
+   "VOD_SER_SC_10EADGWCNU5_NWZNCT"
+  ]
+ },
+ {
+  "titulo": "Chad",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/247168",
+   "tv/89578"
+  ],
+  "ids": [
+   "VOD_SER_SC_6IPZ16FXCZ",
+   "VOD_SER_SC_6IPZ16FXCZ_BVPES5"
+  ]
+ },
+ {
   "titulo": "Chefe da Casa",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -626,6 +665,30 @@
   "ids": [
    "VOD_SER_SC_DEADT8I1IS",
    "VOD_SER_SC_DEADT8I1IS_2FZ414"
+  ]
+ },
+ {
+  "titulo": "Chosen",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/85077",
+   "tv/26777"
+  ],
+  "ids": [
+   "VOD_SER_SC_12CHWC1R4WX",
+   "VOD_SER_SC_12CHWC1R4WX_1O9XII"
+  ]
+ },
+ {
+  "titulo": "Clark",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/4515",
+   "tv/157008"
+  ],
+  "ids": [
+   "VOD_SER_SC_2APW61A0O7Y",
+   "VOD_SER_SC_2APW61A0O7Y_JLWVFZ"
   ]
  },
  {
@@ -641,159 +704,15 @@
   ]
  },
  {
-  "titulo": "Heartbreak High Onde Tudo Acontece",
+  "titulo": "As Aventuras do Batman",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
-   "tv/158154",
-   "tv/12998"
+   "tv/4625",
+   "tv/31749"
   ],
   "ids": [
-   "VOD_SER_SC_1VHB11GNB1U",
-   "VOD_SER_SC_1VHB11GNB1U_5Q4ATS"
-  ]
- },
- {
-  "titulo": "Inside Man",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/245312",
-   "tv/121710"
-  ],
-  "ids": [
-   "VOD_SER_SC_2E7SCGQIEE9",
-   "VOD_SER_SC_2E7SCGQIEE9_1VIVW9"
-  ]
- },
- {
-  "titulo": "Intelligence",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/50628",
-   "tv/5232"
-  ],
-  "ids": [
-   "VOD_SER_SC_178DD9JR5QO",
-   "VOD_SER_SC_178DD9JR5QO_WOJNV5"
-  ]
- },
- {
-  "titulo": "Jane",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/61418",
-   "tv/118534"
-  ],
-  "ids": [
-   "VOD_SER_SC_16M99PGB9FK",
-   "VOD_SER_SC_16M99PGB9FK_26882A"
-  ]
- },
- {
-  "titulo": "MAD",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/1104",
-   "tv/33428"
-  ],
-  "ids": [
-   "VOD_SER_SC_NLCXFUMP8J",
-   "VOD_SER_SC_NLCXFUMP8J_1M3EBL"
-  ]
- },
- {
-  "titulo": "Marcada",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/95175",
-   "tv/293808"
-  ],
-  "ids": [
-   "VOD_SER_SC_YZ982JCUB5",
-   "VOD_SER_SC_YZ982JCUB5_IDV79T"
-  ]
- },
- {
-  "titulo": "Montecristo",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/240456",
-   "tv/17998"
-  ],
-  "ids": [
-   "VOD_SER_SC_2GFZ2SDREJI",
-   "VOD_SER_SC_2GFZ2SDREJI_86Z6J9"
-  ]
- },
- {
-  "titulo": "O Bom Doutor",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/71712",
-   "tv/79983"
-  ],
-  "ids": [
-   "VOD_SER_SC_1GIO7720YG4",
-   "VOD_SER_SC_1GIO7720YG4_1FFM6P"
-  ]
- },
- {
-  "titulo": "O Refugio",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/245648",
-   "tv/201697"
-  ],
-  "ids": [
-   "VOD_SER_SC_1YWU87VM8KL",
-   "VOD_SER_SC_1YWU87VM8KL_SHSMQ6"
-  ]
- },
- {
-  "titulo": "Paraíso",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/41956",
-   "tv/282339"
-  ],
-  "ids": [
-   "VOD_SER_SC_29ZKWSONSWU",
-   "VOD_SER_SC_29ZKWSONSWU_1ULWLA"
-  ]
- },
- {
-  "titulo": "Stranger",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/66732",
-   "tv/70626"
-  ],
-  "ids": [
-   "VOD_SER_SC_1UBKVUYMKGO",
-   "VOD_SER_SC_1UBKVUYMKGO_234925"
-  ]
- },
- {
-  "titulo": "The Curse",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/60603",
-   "tv/114655"
-  ],
-  "ids": [
-   "VOD_SER_SC_YE8ODE9X0G",
-   "VOD_SER_SC_YE8ODE9X0G_2J6ZJ8"
-  ]
- },
- {
-  "titulo": "百日成王",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/323569",
-   "tv/286069"
-  ],
-  "ids": [
-   "VOD_SER_SC_1UNWBDOU10P",
-   "VOD_SER_SC_1UNWBDOU10P_1PVHUJ"
+   "VOD_SER_SC_1ONSRHTBWBU",
+   "VOD_SER_SC_1ONSRHTBWBU_2GFETI"
   ]
  },
  {
@@ -909,17 +828,5 @@
   "comoCard": "4X4 Sob Medida S01E01",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "tv/209303"
- },
- {
-  "titulo": "PJ Masks Herois de Pijama",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/224022",
-   "tv/65417"
-  ],
-  "ids": [
-   "VOD_SER_SC_EXP9BHKMU1",
-   "VOD_SER_SC_EXP9BHKMU1_6YG8GS"
-  ]
  }
 ]
