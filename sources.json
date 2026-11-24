@@ -71,7 +71,7 @@
       "targetCategory": "Filmes",
       "url": [
       "",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/kids_sm.json"
+      ""
     ]
     },
     {
@@ -80,12 +80,7 @@
       "prefixoId": "VOD_SER",
       "targetCategory": "Séries",
       "urls": [
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt1.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt2.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/series_sm_pt3.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/doramas_sm.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/novelas_sm.json",
-      "https://raw.githubusercontent.com/cartoonzine/sm-scraper-bridge/refs/heads/main/listas/novelinhas_sm.json"
+        
     ]
     },
     {
