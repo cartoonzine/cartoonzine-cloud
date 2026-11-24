@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-23T16:53:25.359Z",
+  "geradoEm": "2026-11-24T03:38:57.111Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -34,10 +34,10 @@
     "limiteLinks": 3000
   },
   "links": {
-    "links": 208212,
+    "links": 208163,
     "testados": 0,
     "doCache": 0,
-    "pulados": 208212,
+    "pulados": 208163,
     "ok": 0,
     "falhou": 0,
     "protegido": 0,
@@ -48,12 +48,12 @@
     "porTipo": {},
     "servidoresDesligados": [],
     "motivoParada": "memória acima de 1536 MB",
-    "duracaoS": 0.6
+    "duracaoS": 0.4
   },
   "itens": {
-    "avaliados": 243159,
-    "ok": 1108,
-    "semTeste": 242048,
+    "avaliados": 243194,
+    "ok": 1101,
+    "semTeste": 242090,
     "principalTrocado": 0,
     "indisponiveis": 0,
     "removidos": 0,
