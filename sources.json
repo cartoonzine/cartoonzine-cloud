@@ -2,9 +2,9 @@
   "_comentarioFontesDoStudio": "Sistemas novos criados no painel do Cartoonzine Studio (Jogos Web → + Novo sistema) entram sozinhos no catálogo por aqui: o build lê a lista que o Studio publica e acrescenta o que ainda não está em fontes.",
   "fontesDoStudio": [
     {
-      "nome": "Cartoonzine Studio · Jogos (retrô e web)",
+      "nome": "Cartoonzine Studio · Coleções (jogos, filmes, séries, cartoons, animes, rádios…)",
       "url": "https://raw.githubusercontent.com/cartoonzine/cartoonzine-studio/main/dist/fontes-cloud.json",
-      "colecoes": ["jogos", "jogos-web"]
+      "colecoes": ["jogos", "jogos-web", "cartoons", "animes", "desenhos-24h", "filmes", "filmes-torrent", "series", "youtoon", "radios", "bookzine"]
     },
     {
       "nome": "Cartoonzine Studio · Sidechain",
