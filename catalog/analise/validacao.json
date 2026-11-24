@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-24T06:00:28.514Z",
+  "geradoEm": "2026-11-24T16:46:11.063Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -35,25 +35,36 @@
   },
   "links": {
     "links": 463,
-    "testados": 0,
+    "testados": 348,
     "doCache": 0,
-    "pulados": 463,
-    "ok": 0,
-    "falhou": 0,
-    "protegido": 0,
+    "pulados": 115,
+    "ok": 338,
+    "falhou": 9,
+    "protegido": 1,
     "naoVerificavel": 0,
     "bloqueado": 0,
-    "novasTentativas": 0,
-    "porMotivo": {},
-    "porTipo": {},
-    "servidoresDesligados": [],
-    "motivoParada": "memória acima de 1536 MB",
-    "duracaoS": 0
+    "novasTentativas": 2,
+    "porMotivo": {
+      "http_429": 3,
+      "http_403": 2,
+      "playlist_malformada": 2,
+      "http_401": 2
+    },
+    "porTipo": {
+      "hls": 336,
+      "dash": 7,
+      "mpegts": 5
+    },
+    "servidoresDesligados": [
+      "play.saimotv.com"
+    ],
+    "motivoParada": null,
+    "duracaoS": 109.9
   },
   "itens": {
     "avaliados": 211,
-    "ok": 0,
-    "semTeste": 211,
+    "ok": 186,
+    "semTeste": 23,
     "principalTrocado": 0,
     "indisponiveis": 0,
     "removidos": 0,

@@ -368,30 +368,6 @@
   "tmdb": "movie/1117321"
  },
  {
-  "titulo": "Em Busca do Vale Encantado 13",
-  "comoCard": "Em Busca do Vale Encantado XIII A União dos Amigos",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/39961"
- },
- {
-  "titulo": "Guardioes",
-  "comoCard": "A Origem dos Guardioes",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/81188"
- },
- {
-  "titulo": "O Rei",
-  "comoCard": "O Rei Leão",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/8587"
- },
- {
-  "titulo": "Selvagem",
-  "comoCard": "Na Natureza Selvagem",
-  "motivo": "TMDB achado pelo nome, título e ano não batem",
-  "tmdb": "movie/5915"
- },
- {
   "titulo": "Entre a Vida e a Morte",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -461,6 +437,256 @@
   "ids": [
    "VOD_SER_SC_M941QNVN7E",
    "VOD_SER_SC_M941QNVN7E_1RDBQN"
+  ]
+ },
+ {
+  "titulo": "Ana",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/4568",
+   "tv/290407"
+  ],
+  "ids": [
+   "VOD_SER_SC_K73G28WR9Q",
+   "VOD_SER_SC_K73G28WR9Q_1EP4ZC"
+  ]
+ },
+ {
+  "titulo": "Arnold",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/537",
+   "tv/226135"
+  ],
+  "ids": [
+   "VOD_SER_SC_U8JDN0TDOJ",
+   "VOD_SER_SC_U8JDN0TDOJ_1NGZ3X"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 1974,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300873.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300873.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_GRUTT3EC36"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 1976,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300874.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/40489.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_111PDJT4C9V"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 1977,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300876.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/40484.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_IPG9NVX42X"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 2003,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300885.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300885.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_IK0T8187IY"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 2011,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300887.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300887.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_7RD7NYAH3V"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown",
+  "ano": 2022,
+  "comoCard": "Charlie Brown",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300888.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/300888.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_1UQNV4V437R"
+  ]
+ },
+ {
+  "titulo": "Charlie Brown!",
+  "ano": 1978,
+  "comoCard": "Charlie Brown!",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307275.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/307275.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_RYMP1D0ZFM"
+  ]
+ },
+ {
+  "titulo": "Em Busca do Vale Encantado 13",
+  "comoCard": "Em Busca do Vale Encantado XIII A União dos Amigos",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/39961"
+ },
+ {
+  "titulo": "Go",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/45140",
+   "tv/62569"
+  ],
+  "ids": [
+   "VOD_SER_SC_16CUMA24CRZ",
+   "VOD_SER_SC_16CUMA24CRZ_FFBFDF"
+  ]
+ },
+ {
+  "titulo": "Guardioes",
+  "comoCard": "A Origem dos Guardioes",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/81188"
+ },
+ {
+  "titulo": "Kenan",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/1835",
+   "tv/116609"
+  ],
+  "ids": [
+   "VOD_SER_SC_2CH7RXVWU0J",
+   "VOD_SER_SC_2CH7RXVWU0J_1XC67L"
+  ]
+ },
+ {
+  "titulo": "Kick Kick Kick Kick",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/17572",
+   "tv/255697"
+  ],
+  "ids": [
+   "VOD_SER_SC_GPQCIOC03A",
+   "VOD_SER_SC_GPQCIOC03A_13L6M1"
+  ]
+ },
+ {
+  "titulo": "Na Batida do Coracao",
+  "ano": 2012,
+  "comoCard": "Na Batida do Coracao",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/17072.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/17072.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_A1U7EGRD6G"
+  ]
+ },
+ {
+  "titulo": "O Rei",
+  "comoCard": "O Rei Leão",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/8587"
+ },
+ {
+  "titulo": "Selvagem",
+  "ano": 2006,
+  "comoCard": "Selvagem",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/11233.mp4",
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/11233.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_2EGRCSZ3F7H"
+  ]
+ },
+ {
+  "titulo": "Selvagem",
+  "comoCard": "Na Natureza Selvagem",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/5915"
+ },
+ {
+  "titulo": "Sereias",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/2260",
+   "tv/246992"
+  ],
+  "ids": [
+   "VOD_SER_SC_1GNM8WJES14",
+   "VOD_SER_SC_1GNM8WJES14_1UV44Y"
+  ]
+ },
+ {
+  "titulo": "Tintin",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/1570",
+   "tv/218430"
+  ],
+  "ids": [
+   "VOD_SER_SC_B1N2GZXJRF",
+   "VOD_SER_SC_B1N2GZXJRF_1VGJKN"
+  ]
+ },
+ {
+  "titulo": "Um Conto de Natal",
+  "ano": 2022,
+  "comoCard": "Um Conto de Natal",
+  "motivo": "TMDB diferente",
+  "links": [
+   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301272.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1001865.mp4"
+  ],
+  "ids": [
+   "VOD_STU_SC_DC4B6MPX5V"
+  ]
+ },
+ {
+  "titulo": "Vizinhos",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/80587",
+   "tv/136192"
+  ],
+  "ids": [
+   "VOD_SER_SC_MJY7YSSKNJ",
+   "VOD_SER_SC_MJY7YSSKNJ_128QE8"
   ]
  },
  {
@@ -828,5 +1054,17 @@
   "comoCard": "4X4 Sob Medida S01E01",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "tv/209303"
+ },
+ {
+  "titulo": "DuckTales Os Caçadores de Aventuras",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/72350",
+   "tv/720"
+  ],
+  "ids": [
+   "VOD_SER_SC_LH8P7B6STU",
+   "VOD_SER_SC_LH8P7B6STU_1F1G8P"
+  ]
  }
 ]
