@@ -383,7 +383,8 @@ async function escreverAnalise(builder, dir, geradoEm) {
         explicacao: {
             ativo: 'as cópias foram juntadas: cada uma virou LINK RESERVA do card que ficou (nada é apagado)',
             analisar: 'nada foi juntado no app; os "retirados" mostram o que SERIA juntado se o modo fosse "ativo"',
-            desligado: 'sem filtro: todos os filmes aparecem como vieram da lista'
+            desligado: 'sem filtro de cópias (o mesmo TMDB ainda vira 1 card)',
+            nenhum: 'teste: nada é juntado — cada filme que chega vira um card (só link idêntico se junta)'
         }[d.modo],
         filmesNasFontes: builder.vodRecebidos,
         cardsDeFilmesNoApp: ativos.length,
@@ -540,10 +541,10 @@ async function main() {
             } else {
                 n = await ingest(builder, src, args, epg);
             }
-            report.push({ nome: src.nome, parte: src._parte, ok: true, itens: n });
+            report.push({ nome: src.nome, parte: src._parte, categoria: src.targetCategory || src.categoria || undefined, ok: true, itens: n });
         } catch (e) {
             log(`✖ ${src.nome}${src._parte ? ` [${src._parte}]` : ''}: ${e.message}`);
-            report.push({ nome: src.nome, parte: src._parte, ok: false, erro: String(e.message || e) });
+            report.push({ nome: src.nome, parte: src._parte, categoria: src.targetCategory || src.categoria || undefined, ok: false, erro: String(e.message || e) });
         }
     }
 
