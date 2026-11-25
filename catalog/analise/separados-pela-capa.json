@@ -32,7 +32,7 @@
   "motivo": "TMDB diferente",
   "links": [
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/58086.mp4",
-   "https://nixplay.lat/movie/saimo-vods/221097/1248723.mp4"
+   "https://nixplay.lat/movie/saimo-vods/221097/532639.mp4"
   ],
   "ids": [
    "VOD_STU_SC_1DDPRGHPYCG"
@@ -141,19 +141,6 @@
   "comoCard": "O Ultimo Heroi",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/11621"
- },
- {
-  "titulo": "Pretty Guardian Sailor Moon Cosmos O Filme (Parte 1)",
-  "ano": 2023,
-  "comoCard": "Pretty Guardian Sailor Moon Cosmos: O Filme – Parte 1",
-  "motivo": "TMDB diferente",
-  "links": [
-   "https://nixplay.lat/movie/saimo-vods/221097/968868.mp4",
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/10959.mp4"
-  ],
-  "ids": [
-   "LIV_ANI_SC_19UU22LDKQJ"
-  ]
  },
  {
   "titulo": "That Time I Got Reincarnated as a Slime o Filme Lágrimas do mar azul-celeste",
@@ -276,7 +263,7 @@
   "comoCard": "Scarlet",
   "motivo": "TMDB diferente",
   "links": [
-   "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4",
+   "https://nixplay.lat/movie/saimo-vods/221097/1210363.mp4",
    "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/301241.mp4"
   ],
   "ids": [
@@ -312,6 +299,12 @@
   "comoCard": "Noite das Vampiras",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/1146019"
+ },
+ {
+  "titulo": "Dois Mais Dois",
+  "comoCard": "Dois Velhos Mais Rabugentos",
+  "motivo": "TMDB achado pelo nome, título e ano não batem",
+  "tmdb": "movie/15602"
  },
  {
   "titulo": "A Bruxa",
@@ -366,18 +359,6 @@
   "comoCard": "You'll Never Find Me",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/1117321"
- },
- {
-  "titulo": "Entre a Vida e a Morte",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/226529",
-   "tv/104486"
-  ],
-  "ids": [
-   "VOD_SER_SC_ZN0ZIPU17W",
-   "VOD_SER_SC_ZN0ZIPU17W_1R5JHQ"
-  ]
  },
  {
   "titulo": "Girls Dorm",
@@ -437,6 +418,18 @@
   "ids": [
    "VOD_SER_SC_M941QNVN7E",
    "VOD_SER_SC_M941QNVN7E_1RDBQN"
+  ]
+ },
+ {
+  "titulo": "百日成王",
+  "motivo": "série homônima: TMDB diferente",
+  "tmdb": [
+   "tv/323569",
+   "tv/201887"
+  ],
+  "ids": [
+   "VOD_SER_SC_1UNWBDOU10P",
+   "VOD_SER_SC_1UNWBDOU10P_FMECLF"
   ]
  },
  {
@@ -639,18 +632,6 @@
   "comoCard": "Na Natureza Selvagem",
   "motivo": "TMDB achado pelo nome, título e ano não batem",
   "tmdb": "movie/5915"
- },
- {
-  "titulo": "Sereias",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/2260",
-   "tv/246992"
-  ],
-  "ids": [
-   "VOD_SER_SC_1GNM8WJES14",
-   "VOD_SER_SC_1GNM8WJES14_1UV44Y"
-  ]
  },
  {
   "titulo": "Tintin",
@@ -930,15 +911,15 @@
   ]
  },
  {
-  "titulo": "As Aventuras do Batman",
+  "titulo": "Six",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
-   "tv/4625",
-   "tv/31749"
+   "tv/93405",
+   "tv/66871"
   ],
   "ids": [
-   "VOD_SER_SC_1ONSRHTBWBU",
-   "VOD_SER_SC_1ONSRHTBWBU_2GFETI"
+   "VOD_SER_SC_1DTXS1BIRFB",
+   "VOD_SER_SC_1DTXS1BIRFB_J240TS"
   ]
  },
  {
