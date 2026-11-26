@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-26T01:21:10.908Z",
+  "geradoEm": "2026-11-26T16:04:48.111Z",
   "modo": "desligado",
   "opcoes": {
     "modo": "desligado",
@@ -8,16 +8,16 @@
     "tituloLimpo": true
   },
   "explicacao": "sem filtro de cópias (o mesmo TMDB ainda vira 1 card)",
-  "filmesNasFontes": 31345,
-  "cardsDeFilmesNoApp": 28430,
-  "retirados": 2797,
+  "filmesNasFontes": 30094,
+  "cardsDeFilmesNoApp": 28405,
+  "retirados": 1684,
   "porMotivo": {
-    "mesmo TMDB": 2797
+    "mesmo TMDB": 1684
   },
-  "separados": 119,
+  "separados": 140,
   "separadosPorMotivo": {
-    "TMDB diferente": 17,
-    "TMDB achado pelo nome, título e ano não batem": 68,
-    "série homônima: TMDB diferente": 34
+    "TMDB diferente": 6,
+    "TMDB achado pelo nome, título e ano não batem": 67,
+    "série homônima: TMDB diferente": 67
   }
 }
