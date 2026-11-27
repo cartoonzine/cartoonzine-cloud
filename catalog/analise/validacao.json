@@ -1,5 +1,5 @@
 {
-  "geradoEm": "2026-11-26T16:03:21.113Z",
+  "geradoEm": "2026-11-27T01:19:03.982Z",
   "modo": "relatorio",
   "aviso": "ok = a nuvem conseguiu abrir o começo do conteúdo a partir de um servidor nos EUA. Não garante que toca em todo aparelho/região.",
   "cicloSuspeito": false,
@@ -34,10 +34,10 @@
     "limiteLinks": 3000
   },
   "links": {
-    "links": 746,
+    "links": 1129,
     "testados": 0,
     "doCache": 1,
-    "pulados": 745,
+    "pulados": 1128,
     "ok": 0,
     "falhou": 0,
     "protegido": 0,
@@ -51,9 +51,9 @@
     "duracaoS": 0
   },
   "itens": {
-    "avaliados": 239,
-    "ok": 185,
-    "semTeste": 52,
+    "avaliados": 368,
+    "ok": 179,
+    "semTeste": 187,
     "principalTrocado": 0,
     "indisponiveis": 0,
     "removidos": 0,
