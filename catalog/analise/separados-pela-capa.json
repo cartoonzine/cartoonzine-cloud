@@ -498,18 +498,6 @@
   ]
  },
  {
-  "titulo": "Vizinhos",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/80587",
-   "tv/136192"
-  ],
-  "ids": [
-   "VOD_SER_SC_MJY7YSSKNJ",
-   "VOD_SER_SC_MJY7YSSKNJ_128QE8"
-  ]
- },
- {
   "titulo": "3%",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -1224,18 +1212,6 @@
   "tmdb": "tv/209303"
  },
  {
-  "titulo": "DuckTales Os Caçadores de Aventuras",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/72350",
-   "tv/720"
-  ],
-  "ids": [
-   "VOD_SER_SC_LH8P7B6STU",
-   "VOD_SER_SC_LH8P7B6STU_1F1G8P"
-  ]
- },
- {
   "titulo": "Mistérios Animais",
   "motivo": "série homônima: TMDB diferente",
   "tmdb": [
@@ -1257,30 +1233,6 @@
   "ids": [
    "VOD_SER_SC_EXP9BHKMU1",
    "VOD_SER_SC_EXP9BHKMU1_6YG8GS"
-  ]
- },
- {
-  "titulo": "Magnum P.I",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/734",
-   "tv/79593"
-  ],
-  "ids": [
-   "VOD_SER_SC_WXA0ZGJRUM",
-   "VOD_SER_SC_WXA0ZGJRUM_1DA3CG"
-  ]
- },
- {
-  "titulo": "MasterChef Brasil",
-  "motivo": "série homônima: TMDB diferente",
-  "tmdb": [
-   "tv/205212",
-   "tv/64203"
-  ],
-  "ids": [
-   "VOD_SER_SC_1UHA3IOL06F",
-   "VOD_SER_SC_1UHA3IOL06F_1C9PV0"
   ]
  }
 ]

@@ -1283,7 +1283,7 @@
   "juntadoEm": {
    "id": "VOD_STU_SC_25HUQ9GEKUV",
    "titulo": "Nobody",
-   "linkPrincipal": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/80461.mp4",
+   "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/1304434.mp4?lang=leg",
    "capa": "https://image.tmdb.org/t/p/w342/63TMBafWxYdOqRKamwMadkZ8sY0.jpg"
   }
  },
@@ -5110,6 +5110,20 @@
   }
  },
  {
+  "titulo": "Bernardo e Bianca",
+  "ano": 1977,
+  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/8960.mp4",
+  "capa": "https://image.tmdb.org/t/p/w500/wQzrtMYlWgiirWSx9Sf19UUtkV0.jpg",
+  "origem": "Filmes (Studio) · Sidechain",
+  "motivo": "mesmo TMDB",
+  "juntadoEm": {
+   "id": "VOD_CRT_SC_1B30BF3THIB",
+   "titulo": "Bernardo e Bianca",
+   "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/11319.mp4",
+   "capa": "https://image.tmdb.org/t/p/w342/wQzrtMYlWgiirWSx9Sf19UUtkV0.jpg"
+  }
+ },
+ {
   "titulo": "Bio-Broly",
   "ano": 1994,
   "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/8995.mp4",
@@ -6871,6 +6885,34 @@
    "titulo": "Os Gatões - O Início",
    "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/19580.mp4",
    "capa": "https://image.tmdb.org/t/p/w342/nV9ZdtdhfW1BuOGDVh8HPhhL8h4.jpg"
+  }
+ },
+ {
+  "titulo": "Paddington",
+  "ano": 2014,
+  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18452.mp4",
+  "capa": "https://image.tmdb.org/t/p/w500/5OkckWBfVPajkIye5PqommeLtDS.jpg",
+  "origem": "Filmes (Studio) · Sidechain",
+  "motivo": "mesmo TMDB",
+  "juntadoEm": {
+   "id": "VOD_CRT_SC_L1OG15I5S5",
+   "titulo": "As Aventuras de Paddington",
+   "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/116149.mp4",
+   "capa": "https://image.tmdb.org/t/p/w342/5OkckWBfVPajkIye5PqommeLtDS.jpg"
+  }
+ },
+ {
+  "titulo": "Paddington 2",
+  "ano": 2017,
+  "link": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18456.mp4",
+  "capa": "https://image.tmdb.org/t/p/w500/RVoZ9zEGwmw7bEs6TWTcEQFdla.jpg",
+  "origem": "Filmes (Studio) · Sidechain",
+  "motivo": "mesmo TMDB",
+  "juntadoEm": {
+   "id": "VOD_CRT_SC_G3AUYEL83P",
+   "titulo": "As Aventuras de Paddington 2",
+   "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/346648.mp4",
+   "capa": "https://image.tmdb.org/t/p/w342/RVoZ9zEGwmw7bEs6TWTcEQFdla.jpg"
   }
  },
  {
@@ -9639,10 +9681,10 @@
   "origem": "Filmes (Studio) · Sidechain",
   "motivo": "mesmo TMDB",
   "juntadoEm": {
-   "id": "VOD_STU_SC_MF9FRNC92T",
-   "titulo": "Paddington 2",
-   "linkPrincipal": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18456.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/RVoZ9zEGwmw7bEs6TWTcEQFdla.jpg"
+   "id": "VOD_CRT_SC_G3AUYEL83P",
+   "titulo": "As Aventuras de Paddington 2",
+   "linkPrincipal": "https://nixplay.lat/movie/saimo-vods/221097/346648.mp4",
+   "capa": "https://image.tmdb.org/t/p/w342/RVoZ9zEGwmw7bEs6TWTcEQFdla.jpg"
   }
  },
  {
@@ -22243,20 +22285,6 @@
    "titulo": "As Aristogatas",
    "linkPrincipal": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/8682.mp4",
    "capa": "https://image.tmdb.org/t/p/w500/feu311aXpDoSQC7tNZ6HpE7I1aw.jpg"
-  }
- },
- {
-  "titulo": "As Aventuras de Paddington",
-  "ano": 2014,
-  "link": "https://nixplay.lat/movie/saimo-vods/221097/116149.mp4",
-  "capa": "https://image.tmdb.org/t/p/w342/5OkckWBfVPajkIye5PqommeLtDS.jpg",
-  "origem": "Filmes (Studio) · Sidechain",
-  "motivo": "mesmo TMDB",
-  "juntadoEm": {
-   "id": "VOD_STU_SC_125529COX6U",
-   "titulo": "Paddington",
-   "linkPrincipal": "http://dbonline.tech-cdn.top:80/movie/ke-vin-0928392083/PZjF6XATTZ/18452.mp4",
-   "capa": "https://image.tmdb.org/t/p/w500/5OkckWBfVPajkIye5PqommeLtDS.jpg"
   }
  },
  {
